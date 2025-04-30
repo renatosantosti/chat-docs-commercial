@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": "./src",  // Base URL for module resolution
+    "rootDir": "./src",  // Root directory of the source files
+    "paths": {
+      "@base/*": ["src/domain/models/*"],
+      "@errors/*": ["src/shared/errors/*"],
+      "@models/*": ["src/domain/models/*"],
+      "@interfaces/*": ["src/application/interfaces/*"],
+      "@usecases/*": ["src/application/usecases/*"],
+      "@dtos/*": ["src/domain/dtos/*"],
+      "@infrastructure/*": ["src/infrastructure/*"],
+      "@config/*": ["src/config/*"],
+      "@persistence/*": ["src/persistence/*"],
+      "@adapters/*": ["src/application/adapters/*"],
+      "@controllers/*": ["src/presentation/controllers/*"],
+      "@presentation/*": ["src/presentation/*"],
+    },
+    "typeRoots": ["./src/types", "./node_modules/@types"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
