@@ -138,17 +138,10 @@ export class SlasticSearchIndexer implements IIndexerAdapter {
         };
     
         try {
-            console.log("Will create index: ", {
-                index: indexName,
-                body: mapping
-            });
-            
-            const response = await this.client.indices.create({
+             await this.client.indices.create({
                 index: indexName,
                 body: mapping
             }  as any);
-    
-            console.log('Index created successfully:', response);
         } catch (error) {
             console.error('Error creating index:', error);
         }
