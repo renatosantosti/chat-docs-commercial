@@ -26,7 +26,7 @@ as clean code strategy some enhancement were done here. You must are free to col
  - Elastic Search - for index document pages and semantic search - vector database was used to.
  - Kibana - used as UI to manage Elastic Search
 
-## MVC 
+### MVP
 Here I will present main goals and backlogs that could be implemented on the future.
 
 ### Functional Requirements (user stories)
@@ -79,11 +79,64 @@ Also here you can see that wrireframe: [concept](documentation/about-concept.md)
 #### Solution Design
 
 The software design was develop to maximize flexility to change any component as required without side-effect another parts of system - loose coupling. 
-Some S.O.L.I.D principles were implemented and Clean Architecture foundations.
+
 
 ![alt text](/documentation/sofware-design.png)
 
-![alt text](/documentation//clean-arch.png)
+Some S.O.L.I.D principles were implemented and also clean Architecture foundations, those approach ensure separation of concerns, scalability, and ease of maintenance. Below is the proposed folder structure:
+
+```plaintext
+src/
+├── application/                # Application Layer
+│   ├── interfaces/             # Interfaces for external systems
+│   ├── services/               # Business logic services
+│   ├── usecases/               # Specific use cases
+├── config/                     # Configuration files
+├── domain/                     # Domain Layer
+│   ├── dtos/                   # Data Transfer Objects (DTOs)
+│   ├── models/                 # Models or Entities
+├── infrastructure/             # Infrastructure Layer
+│   ├── mappers/                # Data mappers
+│   ├── persistence/            # Database or storage-related code
+│   ├── external-services/      # External API integrations
+├── presentation/               # Presentation Layer
+│   ├── controllers/            # Controllers for handling requests
+│   ├── helpers/                # Utilities for presentation layer
+│   ├── http-middlewares/       # HTTP-related middlewares
+│   ├── routes/                 # Route definitions
+│       └── auth/
+│   └── views/                  # (Optional) Views or templates (if using a server-side rendered app)
+├── shared/                     # Shared utilities, constants, or helpers
+├── types/                      # Global TypeScript type definitions
+└── index.ts                    # Main entry point
+```
+
+#### Folder Details
+
+- **application/**: Contains the application layer logic, including interfaces, services, and use cases that interact with the `domain` layer.
+- **config/**: Holds configuration files, such as environment settings or constants.
+- **domain/**: Includes the core business logic of the application, such as entities (`models`) and data transfer objects (`dtos`).
+- **infrastructure/**: Manages external dependencies, such as data mappers, database connections, and third-party services.
+- **presentation/**: Handles the application’s presentation logic, including request controllers, routes, and helpers for HTTP communication.
+- **shared/**: Contains utilities or constants shared across multiple layers.
+- **types/**: Stores global TypeScript type definitions for type-checking consistency.
+- **index.ts**: The main entry point of the application.
+
+#### Benefits of Clean Architecture
+
+1. **Separation of Concerns**:
+   - Each layer is responsible for a specific functionality, making the code easier to maintain and extend.
+
+2. **Scalability**:
+   - You can add new features or modules without affecting other parts of the system.
+
+3. **Testability**:
+   - The decoupled design allows independent testing of each layer.
+
+4. **Code Readability**:
+   - Well-organized structure improves developer understanding and onboarding.
+
+
 #### More information about UI (frontend app)
  - [Documentação da UI](ui/README.md)
 
@@ -135,7 +188,7 @@ docker exec -it elasticsearch bin/elasticsearch-service-tokens create elastic/ki
 ```
 Copy that generated token and change you docker-compose.yml on Kibana section environment variables set: ELASTICSEARCH_SERVICEACCOUNTTOKEN with that generated token. 
 
-if you need to see Kibana´s log run: 
+if you need to see Kibana´s logs you must run: 
 ```sh
 docker logs kibana
 ```
