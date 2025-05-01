@@ -1,12 +1,12 @@
 import express from "express";
 import { container } from "tsyringe";
 import IPasswordHashAdapter from "application/interfaces/adapters/password-hashing";
-import { authConfig } from "config";
 import AuthUserDto from "domain/dtos/auth/user";
-import AuthController from "presentation/controllers/auth/index";
+import AuthController from "presentation/controllers/auth";
 import { unauthorizedHttpError } from "presentation/helpers/http-helper";
 import HttpStatusCode from "presentation/helpers/http-status";
 import { InternalError, UnauthorizedError } from "shared/errors";
+import { authConfig } from "config";
 
 const authRouter = express.Router();
 

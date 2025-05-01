@@ -2,8 +2,9 @@ import dotenv from "dotenv";
 import path from "path";
 import { OpenAIChatEnumModels, OpenAIEmbeddingEnumModels, OpenAIEmbeddingModels } from "presentation/helpers/openai-embedding-models";
 
-const envPath = path.resolve(__dirname, process.env.NODE_ENV === 'production' ? `../../.env`
-  : `../../.env.development`);
+const envPath = path.resolve(__dirname, process.env.NODE_ENV === 'production' 
+                                                                    ? `../../.env`
+                                                                    : `../../.env.development`);
 
 dotenv.config({
   path: envPath,

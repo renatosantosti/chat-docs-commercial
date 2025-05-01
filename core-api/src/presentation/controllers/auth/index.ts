@@ -1,13 +1,12 @@
 import { inject, injectable } from "tsyringe";
+import Joi from "joi";
 import IBaseHttpResponse from "application/interfaces/base/base-http-response";
 import IBaseNonAuthenticadedController from "application/interfaces/base/base-non-authenticated-controller";
 import AuthRequest from "application/usecases/auth/auth-request";
 import AuthResponse from "application/usecases/auth/auth-response";
-import { badRequestHttpError, internalHttpError, notFoundHttpError, ok, unauthorizedHttpError,} from "presentation/helpers/http-helper";
-
+import { badRequestHttpError, internalHttpError, ok, unauthorizedHttpError,} from "presentation/helpers/http-helper";
 import { ErrorTypes } from "shared/errors/error-types";
 import { isNotError } from "shared/utils/dto-is-error-type-guard ";
-import Joi from "joi";
 import IAuthUseCase from "application/interfaces/use-cases/auth-usecase-interface";
 
 @injectable()

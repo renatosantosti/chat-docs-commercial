@@ -4,16 +4,18 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
-import defaultRouter from "./presentation/routes/default/router";
-import liveCheckRouter from "./presentation/routes/live-check/router";
-import authRouter from "./presentation/routes/auth/router";
+// import liveCheckRouter from "presentation/routes/live-check";
+import liveCheckRouter from "presentation/routes/live";
+import authRouter from "presentation/routes/auth";
 import { serverConfig } from "./config";
-import dbContext from "./infrastructure/database/sequelize";
-import userRouters from "presentation/routes/user/router";
-import documentRouters from "presentation/routes/document/router";
+import dbContext from "infrastructure/database/sequelize";
+import userRouters from "presentation/routes/user";
+import documentRouters from "presentation/routes/document";
 import "infrastructure/container/config";
-import chatDocRouters from "presentation/routes/chat-doc/router";
-import searchRouters from "presentation/routes/search/router";
+import chatDocRouters from "presentation/routes/chat-doc";
+import searchRouters from "presentation/routes/search";
+import swaggerRouter from "presentation/routes/swagger";
+
 
 const PORT = serverConfig.apiPort || 8000;
 
@@ -77,7 +79,7 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Apply all other routers
-app.use(defaultRouter);
+app.use(swaggerRouter);
 app.use(liveCheckRouter);
 app.use(authRouter);
 app.use(userRouters);

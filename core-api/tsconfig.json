@@ -3,27 +3,30 @@
     "target": "es6",
     "module": "commonjs",
     "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": "./src",  // Base URL for module resolution
-    "rootDir": "./src",  // Root directory of the source files
+    "baseUrl": ".",
     "paths": {
-      "@base/*": ["src/domain/models/*"],
-      "@errors/*": ["src/shared/errors/*"],
-      "@models/*": ["src/domain/models/*"],
-      "@interfaces/*": ["src/application/interfaces/*"],
-      "@usecases/*": ["src/application/usecases/*"],
-      "@dtos/*": ["src/domain/dtos/*"],
-      "@infrastructure/*": ["src/infrastructure/*"],
-      "@config/*": ["src/config/*"],
-      "@persistence/*": ["src/persistence/*"],
-      "@adapters/*": ["src/application/adapters/*"],
-      "@controllers/*": ["src/presentation/controllers/*"],
-      "@presentation/*": ["src/presentation/*"],
+      "@/*": ["src/*"]
     },
-    "typeRoots": ["./src/types", "./node_modules/@types"]
+    // "paths": {
+    //   "application/*": ["./src/application/*"],
+    //   "domain/*": ["./src/domain/*"],
+    //   "infrastructure/*": ["./src/infrastructure/*"],
+    //   "presentation/*": ["./src/presentation/*"],
+    //   "shared/*": ["./src/shared/*"],
+    //   "types/*": ["./src/types/*"],
+    //   "config/*": ["./src/config/*"]
+    // },
+    "typeRoots": ["./src/types", "./node_modules/@types"],
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

@@ -1,6 +1,6 @@
-import AuthResponse from "./auth-response";
-import AuthRequest from "./auth-request";
 import IBaseNonAuthenticadedUseCaseRequestHandler from "application/interfaces/base/base-non-authenticated-usecase-handler";
+import AuthRequest from "application/usecases/auth/auth-request";
+import AuthResponse from "application/usecases/auth/auth-response";
 
 /**
  * Interface representing an authentication use case.
