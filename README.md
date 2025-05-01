@@ -91,14 +91,8 @@ Some S.O.L.I.D principles were implemented and Clean Architecture foundations.
  - [Documentação da Core API](core-api/README.md)
  - For a full end-point documentation, please start Rest API and read OpenAPI documentation made over Swagger.
 
-#### 
 
-## Features
-
-## Other features
-
-
-## Getting Started
+### Getting Started
 To get started with TS-Clean-Architecture-Rest-APi-Boilerplate, follow these steps:
 
 Clone the repository: 
@@ -109,13 +103,14 @@ For folders UI and CORE-API, install dependencies:
 ```sh 
 npm install
 ```
+
 To run locally you can start each service using (you must be within service´s folder): 
 - ATTENTION: rest-api services depends on services: Elastic & Kibana, their host & ports should fill on .env
 ```sh 
 npm run dev
 ```
 
-## Up all environment using docker container
+## Starting all services at same time using Docker
 
 Alternativelly you can start all services using Docker by docker-compose.yml
 
