@@ -57,8 +57,7 @@ Alternativelly you can start all services using Docker by docker-compose.yml
 docker compose -f 'docker-compose.yml' up -d --build
 ```
 
-ATTENTION: ignore other docdocker-compose.yml within other folders if don´t want up services manually one-by-one.
-#### Creating project 
+ATTENTION: ignore other docker-compose.yml files within other folders if you don´t want start up each services manually.
 
 ## Generate ElasticSearch Token be used by Kibana
 Before start all environment you need to make assure ElasticSearch has a volume to save its state also, start ElasticSearch container to create a token to used by Kibana.

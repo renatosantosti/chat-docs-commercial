@@ -3,10 +3,10 @@
 
 Chat with your PDF documents using AI superpowers
 
-This REST API was develop ever my another project called TS-Clean-Archicteture-Rest-API-Boilerplate but 
-as clean code strategy some enhancement were done here, soon I will apply there as well. Feel free to colaborate that project -  https://github.com/renatosantosti/TS-Clean-Architecture-Rest-APi-Boilerplate
+This REST API was developed based on my another project called TS-Clean-Archicteture-Rest-API-Boilerplate but 
+as clean code strategy some enhancement were done here. You must are free to colaborate on that project -  https://github.com/renatosantosti/TS-Clean-Architecture-Rest-APi-Boilerplate
 
-Stack applied on this project:
+### Stack applied on this project:
 - TypeScript
 - Express
 - Swagger
@@ -21,12 +21,77 @@ Stack applied on this project:
 - Jest
 - Sqlite  - mocked database
 
-AI Driven Stack:
+### AI Driven Stack:
  - OpenAI API - to generate vector db embedding and to create insights and finds during chat conversation
  - Elastic Search - for index document pages and semantic search - vector database was used to.
  - Kibana - used as UI to manage Elastic Search
 
 ## MVC 
+Here I will present main goals and backlogs that could be implemented on the future.
+
+### Functional Requirements (user stories)
+-  As user I need to sign-in and sign-out on ChatDocs.com
+-  As non user I need to create my account and set my  image avatar
+-  As user I want to edit my profile, reset my password and change my avatar image
+-  As user I need to upload my documents and set its properties(details)
+-  As user my documents will be available only to my account
+-  As user I need to search term and find all documents have those terms
+-  As user I can preview document sumarry before chat this document 
+-  As user I want o chat with a specific document -  so I could ask somethinng about document context or ask for conclusions and etc.
+-  As user I want o chat with a specific document -  so I could ask something about document context or ask for conclusions and etc.
+
+-  When I am chatting with document, as an user I want search for terms and found all pages that have that term.
+
+A wireframe was create to clarify that app behavior. It´s wireframe with first concept of this app, some stuffs are litle bit different on real application - [Click here](https://excalidraw.com/)
+
+Also here you can see that wrireframe: [concept](documentation/about-concept.md) or [click here](documentation/image.png)
+
+### Non-Functional Requirements
+ - For that moment only .pdf files can be uploaded
+ -  Authorization access by JWT token
+ -  Only authenticaded users can access app and manage documents
+ -  AI api should be agnositic and shift by another easily
+ -  Documents should storage on no-relational database and /or cloud storage instead hard-disk
+ -  Documents should be pre-processed and indexed to quick search term or AI works
+ - Vector Databases should be used to delivery semantic search and avoid use AI for non-terms searchs
+ - Implement core business api and microservices on server-to-server communication instead monolith application server
+ - On frontend should be used React with UI framework such as ReactTrap or MUI,
+ - Unit test should be applied for each uses cases, repositories, services and controllers
+ - Integration tests should assure all services can work together
+ - Ever as possible apply UI unit test
+ - Use typescript instead pure(simple) JS on React(Frontend) or NodeJS(API)
+ - For AI services that consume external resources -  AI provider could be a Python miroservices using FastAPI to provider rest api or 3rd partners, e.g: HuggingFace API, Anthropic, OpenAI/ChatGPT and etc.
+ - ORM  should be used to access database on agnostic mode for NodeJS use Sequelize and for Python use SQL Alckmin
+ - Perfomance test must assure upload files less 1 minute, each search should be less 10 seconds and AI responses less 2 minutes.
+
+### Backlog:
+-  As user I want to choose a folder for new uploaded document
+-  As user I need to choose document list as folder or as gridview as well (view mode)
+-  As user I want to create folder as move document to my folders
+-  As user when I am within folder I want to delete document when I press delete key
+-  As user I want to rename documents as I rename it on Windows 11 Folder
+-  As user I need to star (favourite) certain documents and filter stared documents
+-  As user I want to see history from my conversation with each document
+-  As user I want create annotation for document pages and see it any time or delete it
+-  As user I want upload other document format such as .doc, .dock, .pptx and .txt
+-  As manager user i need dispacher ai requests for diferents provider to optmize my budget to this project - so, on demand I can route ai request to cheaper services by one click (on system setup - admin)
+
+#### Solution Design
+
+The software design was develop to maximize flexility to change any component as required without side-effect another parts of system - loose coupling. 
+Some S.O.L.I.D principles were implemented and Clean Architecture foundations.
+
+![alt text](/documentation/sofware-design.png)
+
+![alt text](/documentation//clean-arch.png)
+#### More information about UI (frontend app)
+ - [Documentação da UI](ui/README.md)
+
+#### More information about API
+ - [Documentação da Core API](core-api/README.md)
+ - For a full end-point documentation, please start Rest API and read OpenAPI documentation made over Swagger.
+
+#### 
 
 ## Features
 
@@ -79,7 +144,8 @@ if you need to see Kibana´s log run:
 ```sh
 docker logs kibana
 ```
-## Contributors
+
+## Base Contributors
 
 | Used Projects | Link |
 | ------ | ------ |
