@@ -27,14 +27,16 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { DocumentItem } from "@/shared/models";
 import { useNavigate } from "react-router-dom";
-import { searchRequest } from "@/store/search/slices";
+import { searchRequest, SearchState } from "@/store/search/slices";
 
 interface DocumentSearchProps {}
 
 const DocumentSearch: React.FC<DocumentSearchProps> = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
+  const state = useSelector((store: { search: SearchState }) => store.search);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const { toast } = useToast();
   //   const { documents, filtered, isFiltered } = useSelector((state: DocumentState) => state.documents);
 
