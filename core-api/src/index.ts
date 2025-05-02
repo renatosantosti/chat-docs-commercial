@@ -19,7 +19,6 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
-// import liveCheckRouter from "@/presentation/routes/live-check";
 import liveCheckRouter from "@/presentation/routes/live";
 import authRouter from "@/presentation/routes/auth";
 import { serverConfig } from "./config";
@@ -36,9 +35,14 @@ const PORT = serverConfig.apiPort || 8000;
 const app: Application = express();
 
 // Enable CORS
+/* TODO: get host from env */
 app.use(
   cors({
-    origin: "http://localhost:8080", // Allow requests from your React app
+    origin: [
+      "http://127.0.0.1:8080",
+      "http://localhost:8080",
+      "http://ui:8080",
+    ], // Allow requests from your React app
     credentials: true, // Allow cookies to be sent with requests
   }),
 );
