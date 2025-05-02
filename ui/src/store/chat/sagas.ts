@@ -18,11 +18,15 @@ function* handleChatRequest() {
 
       try {
         if (action.payload.mode === "chat") {
-          const res = yield call(http.post, "/chat", action.payload);
+          const res = yield call(http.post, "/chat", {});
           yield put(chatRequestSuccess(res.data.result));
           return;
         }
-        const res = yield call(http.post, "/search", action.payload);
+        const res = yield call(http.post, "/search", {
+          mode: action.payload.mode,
+          term: action.payload.term,
+          documentId: action.payload.documentId,
+        });
         yield put(chatRequestSuccess(res.data.result));
       } catch (err) {
         yield put(chatRequestFailure());

@@ -22,7 +22,8 @@ const onlyWithAccessAuthMiddleware = async (
   const passwordHashAdapter = container.resolve(
     "IPasswordHashAdapter",
   ) as IPasswordHashAdapter;
-  const token = req.cookies.token; //req.headers["authorization"]?.split("Bearer ")[1];
+  const token =
+    req.cookies.token || req.headers["authorization"]?.split("Bearer ")[1];
   let response: IBaseHttpResponse<Error>;
 
   if (!token) {
