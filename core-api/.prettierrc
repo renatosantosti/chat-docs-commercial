@@ -6,10 +6,7 @@
   "tabWidth": 2,
   "arrowParens": "always",
   "endOfLine": "lf",
-  "plugins": [
-    "prettier-plugin-organize-imports",
-    "prettier-plugin-packagejson"
-  ],
+  "plugins": ["prettier-plugin-packagejson"],
   "importOrder": ["<THIRD_PARTY_MODULES>", "", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true

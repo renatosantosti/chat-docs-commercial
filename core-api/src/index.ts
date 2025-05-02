@@ -1,4 +1,5 @@
-import 'module-alias/register';
+import "module-alias/register";
+import "reflect-metadata";
 import express, { Application } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -17,16 +18,17 @@ import chatDocRouters from "@/presentation/routes/chat-doc";
 import searchRouters from "@/presentation/routes/search";
 import swaggerRouter from "@/presentation/routes/swagger";
 
-
 const PORT = serverConfig.apiPort || 8000;
 
 const app: Application = express();
 
 // Enable CORS
-app.use(cors({
-  origin: "http://localhost:8080", // Allow requests from your React app
-  credentials: true, // Allow cookies to be sent with requests
-}));
+app.use(
+  cors({
+    origin: "http://localhost:8080", // Allow requests from your React app
+    credentials: true, // Allow cookies to be sent with requests
+  }),
+);
 app.use(cookieParser()); // Use cookie-parser middleware
 app.use(express.json());
 app.use(morgan("tiny"));
@@ -34,30 +36,30 @@ app.use(express.static("public"));
 app.use(express.static("public"));
 
 const swaggerDefinition = {
-  openapi: '3.0.0',
+  openapi: "3.0.0",
   info: {
-    title: 'ChatDocs -  API',
-    version: '0.0.1',
+    title: "ChatDocs -  API",
+    version: "0.0.1",
     description:
-      'A RESTful API for ChatDocs. This API was implemented in TypeScript using Express.js and Swagger. It follows the principles of Clean Architecture, focusing on separation of concerns and maintainability.',
+      "A RESTful API for ChatDocs. This API was implemented in TypeScript using Express.js and Swagger. It follows the principles of Clean Architecture, focusing on separation of concerns and maintainability.",
     license: {
-      name: 'Licensed Under MIT',
-      url: 'https://spdx.org/licenses/MIT.html',
+      name: "Licensed Under MIT",
+      url: "https://spdx.org/licenses/MIT.html",
     },
     contact: {
-      name: 'Renato Santos',
-      url: 'https://github.com/renatosantosti/node-ts-swagger-boilerplate',
+      name: "Renato Santos",
+      url: "https://github.com/renatosantosti/node-ts-swagger-boilerplate",
     },
   },
   components: {
     securitySchemes: {
       bearerAuth: {
-        type: 'http',
-        in: 'header',
-        name: 'authorization',
-        description: 'Bearer Token',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
+        type: "http",
+        in: "header",
+        name: "authorization",
+        description: "Bearer Token",
+        scheme: "bearer",
+        bearerFormat: "JWT",
       },
     },
   },
@@ -71,13 +73,13 @@ const swaggerDefinition = {
 const swaggerOptions = {
   swaggerDefinition,
   // Paths to files containing OpenAPI definitions. It applied *.* to accept both .js and .ts extension for dev and after built the project.
-  apis: [`**/*.ts`, `${__dirname}/presentation/routes/**/*.js`,],
+  apis: [`**/*.ts`, `${__dirname}/presentation/routes/**/*.js`],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 // Define route to api documentation (swagger)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Apply all other routers
 app.use(swaggerRouter);
@@ -95,8 +97,8 @@ app.listen(PORT, () => {
 dbContext.dbConnection
   .authenticate()
   .then(function (err) {
-    console.log('Database connection has been established successfully.');
+    console.log("Database connection has been established successfully.");
   })
   .catch(function (err) {
-    console.error('Unable to connect to the database:', err);
+    console.error("Unable to connect to the database:", err);
   });

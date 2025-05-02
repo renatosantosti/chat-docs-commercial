@@ -44,7 +44,6 @@
 
   // Organize imports and fix issues on save
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.organizeImports": "explicit"
+    "source.fixAll.eslint": "explicit"
   }
 }

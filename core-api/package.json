@@ -2,24 +2,52 @@
   "name": "chat-docs-api",
   "version": "1.0.0",
   "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index.js",
     "build": "tsc",
-    "dev": "set NODE_ENV=development&& nodemon"
+    "dev": "set NODE_ENV=development&& nodemon",
+    "start": "node dist/index.js"
   },
   "nodemonConfig": {
+    "exec": "ts-node -r ./src/index.ts",
+    "ext": "ts",
     "watch": [
       "src"
-    ],
-    "ext": "ts",
-    "exec": "ts-node -r src/index.ts"
+    ]
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "_moduleAliases": {
-    "@": "./dist"
+  "dependencies": {
+    "@automapper/classes": "^8.8.1",
+    "@automapper/core": "^8.8.1",
+    "@automapper/pojos": "^8.8.1",
+    "@elastic/elasticsearch": "^8.18.2",
+    "@tsoa/cli": "^5.0.0",
+    "@tsoa/runtime": "^5.0.0",
+    "@types/module-alias": "^2.0.4",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "joi": "^17.12.3",
+    "jsonwebtoken": "^9.0.2",
+    "mime-types": "^3.0.1",
+    "module-alias": "^2.2.3",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.2",
+    "openai": "^4.96.0",
+    "pdf2json": "^3.1.4",
+    "reflect-metadata": "0.1.13",
+    "sequelize": "^6.37.3",
+    "sequelize-typescript": "^2.1.6",
+    "sqlite3": "^5.1.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "tsoa": "^5.0.0",
+    "tsyringe": "^4.10.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -43,35 +71,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
-  "dependencies": {
-    "@automapper/classes": "^8.8.1",
-    "@automapper/core": "^8.8.1",
-    "@automapper/pojos": "^8.8.1",
-    "@elastic/elasticsearch": "^8.18.2",
-    "@tsoa/cli": "^5.0.0",
-    "@tsoa/runtime": "^5.0.0",
-    "@types/module-alias": "^2.0.4",
-    "bcrypt": "^5.1.1",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^4.21.2",
-    "joi": "^17.12.3",
-    "sqlite3": "^5.1.7",
-    "jsonwebtoken": "^9.0.2",
-    "mime-types": "^3.0.1",
-    "module-alias": "^2.2.3",
-    "morgan": "^1.10.0",
-    "multer": "^1.4.5-lts.2",
-    "openai": "^4.96.0",
-    "pdf2json": "^3.1.4",
-    "reflect-metadata": "0.1.13",
-    "sequelize": "^6.37.3",
-    "sequelize-typescript": "^2.1.6",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0",
-    "tsconfig-paths": "^4.2.0",
-    "tsoa": "^5.0.0",
-    "tsyringe": "^4.10.0"
+  "_moduleAliases": {
+    "@": "./dist"
   }
 }
