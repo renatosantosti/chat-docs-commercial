@@ -1,44 +1,49 @@
 import { PageItem } from "@/shared/models";
-import { ChatMode } from "@/shared/types";
+import { SearchMode } from "@/shared/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface ChatResult {
+export interface SearchResult {
   documentId: Number;
   term: string;
   pages: PageItem[];
   response?: string;
 }
 
-export interface ChatRequest {
+export interface SearchRequest {
   documentId: number;
   term: string;
-  mode: ChatMode;
+  mode: SearchMode;
 }
 
-export interface ChatState {
-  results: ChatResult[];
+export interface SearchState {
+  term: string;
+  results: SearchResult[];
   wasActivated: boolean;
   isLoading: boolean;
 }
 
-const initialState: ChatState = {
+const initialState: SearchState = {
+  term: "",
   results: [],
   wasActivated: false,
   isLoading: false,
 };
 
-const chatSlice = createSlice({
-  name: "chat",
+const searchSlice = createSlice({
+  name: "search",
   initialState,
   reducers: {
-    chatRequest: (state: ChatState, action: PayloadAction<ChatRequest>) => {
+    searchRequest: (
+      state: SearchState,
+      action: PayloadAction<SearchRequest>,
+    ) => {
       state.wasActivated = true;
       state.isLoading = true;
     },
 
-    chatRequestSuccess: (
-      state: ChatState,
-      action: PayloadAction<ChatResult>,
+    searchRequestSuccess: (
+      state: SearchState,
+      action: PayloadAction<SearchResult>,
     ) => {
       state.results = [
         ...state.results.filter(
@@ -50,22 +55,22 @@ const chatSlice = createSlice({
       state.isLoading = false;
     },
 
-    chatRequestFailure: (state: ChatState) => {
+    searchRequestFailure: (state: SearchState) => {
       state.isLoading = false;
     },
 
-    setActivated: (state: ChatState) => {
+    setActivated: (state: SearchState) => {
       state.wasActivated = true;
     },
   },
 });
 
 export const {
-  chatRequest,
-  chatRequestSuccess,
-  chatRequestFailure,
+  searchRequest,
+  searchRequestSuccess,
+  searchRequestFailure,
   setActivated,
-} = chatSlice.actions;
+} = searchSlice.actions;
 
-const chatReducer = chatSlice.reducer;
-export default chatReducer;
+const searchReducer = searchSlice.reducer;
+export default searchReducer;

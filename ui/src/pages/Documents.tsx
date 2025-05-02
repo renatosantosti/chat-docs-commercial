@@ -5,19 +5,8 @@ import DocumentsFilter from "@/components/DocumentsFilter";
 import DocumentGrid from "@/components/DocumentGrid";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
-import { DocumentItem } from "@/shared/models";
 import { documentListRequest, DocumentState } from "@/store/document/slices";
 import Loading from "@/components/Loading";
-
-// Mock data for documents
-// In a real app, this would come from an API call
-// const mockDocuments:DocumentItem[] = Array.from({ length: 30 }, (_, i) => ({
-//   id: 15,
-//   title: `Document ${i + 1}`,
-//   date: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000).toISOString(),
-//   pages: Math.floor(Math.random() * 50) + 1,
-//   type: "pdf"
-// }));
 
 const Documents = () => {
   const navigate = useNavigate();

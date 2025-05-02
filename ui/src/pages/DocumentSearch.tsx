@@ -1,10 +1,15 @@
-
 import React, { useState, useEffect } from "react";
 import Highlighter from "react-highlight-words";
 import { useDispatch, useSelector } from "react-redux";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { EyeIcon, Trash2, FileEdit as Edit2, Search, BotMessageSquare} from "lucide-react";
+import {
+  EyeIcon,
+  Trash2,
+  FileEdit as Edit2,
+  Search,
+  BotMessageSquare,
+} from "lucide-react";
 import {
   Table,
   TableBody,
@@ -13,10 +18,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { documentListRequest, documentResetSearch, documentSearchRequest, DocumentState } from "@/store/document/slices";
+import {
+  documentListRequest,
+  documentResetSearch,
+  documentSearchRequest,
+  DocumentState,
+} from "@/store/document/slices";
 import { useToast } from "@/hooks/use-toast";
 import { DocumentItem } from "@/shared/models";
 import { useNavigate } from "react-router-dom";
+import { searchRequest } from "@/store/search/slices";
 
 interface DocumentSearchProps {}
 
@@ -25,24 +36,24 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
   const { toast } = useToast();
-//   const { documents, filtered, isFiltered } = useSelector((state: DocumentState) => state.documents);
+  //   const { documents, filtered, isFiltered } = useSelector((state: DocumentState) => state.documents);
 
-const documents:DocumentItem[] = Array.from({ length: 30 }, (_, i) => ({
+  const documents: DocumentItem[] = Array.from({ length: 30 }, (_, i) => ({
     id: 15,
     title: `Document ${i + 1}`,
     description: "xyz...",
-    date: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000).toISOString(),
+    date: new Date(
+      Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000,
+    ).toISOString(),
     pages: Math.floor(Math.random() * 50) + 1,
-    type: "pdf"
+    type: "pdf",
   }));
-  
-  const notImplemented =  () =>{
-    alert('It was not integrated on UI yet, please see it working REST API on Swagger.')
-  };
 
-  useEffect(() => {
-    dispatch(documentListRequest());
-  }, [dispatch]);
+  const notImplemented = () => {
+    alert(
+      "It was not integrated on UI yet, please see it working REST API on Swagger.",
+    );
+  };
 
   const handleSearch = () => {
     if (!searchTerm.trim()) {
@@ -53,7 +64,9 @@ const documents:DocumentItem[] = Array.from({ length: 30 }, (_, i) => ({
       });
       return;
     }
-    dispatch(documentSearchRequest(searchTerm));
+    dispatch(
+      searchRequest({ documentId: null, term: searchTerm, mode: "documents" }),
+    );
   };
 
   const handleClearSearch = () => {
@@ -62,8 +75,8 @@ const documents:DocumentItem[] = Array.from({ length: 30 }, (_, i) => ({
   };
 
   const displayedDocuments = documents; //isFiltered ? filtered?.documents : documents;
-  const isFiltered =  false;
-  const filtered = {term: "ssss", documents: []};
+  const isFiltered = false;
+  const filtered = { term: "agile", documents: [] };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -95,7 +108,11 @@ const documents:DocumentItem[] = Array.from({ length: 30 }, (_, i) => ({
               You have {filtered?.documents.length || 0} document(s)
               {filtered?.term ? ` matching "${filtered?.term}"` : ""}
             </p>
-            <Button variant="outline" onClick={handleClearSearch} className="text-red-500">
+            <Button
+              variant="outline"
+              onClick={handleClearSearch}
+              className="text-red-500"
+            >
               Clear search
             </Button>
           </div>
@@ -118,34 +135,56 @@ const documents:DocumentItem[] = Array.from({ length: 30 }, (_, i) => ({
             {displayedDocuments && displayedDocuments.length > 0 ? (
               displayedDocuments.map((doc: any) => (
                 <TableRow key={doc.id}>
-                  <TableCell>{new Date(doc.date || Date.now()).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    {new Date(doc.date || Date.now()).toLocaleDateString()}
+                  </TableCell>
                   <TableCell>{doc.title}</TableCell>
                   <TableCell>1</TableCell>
                   <TableCell>
-                  <Highlighter
-                        highlightClassName="YourHighlightClass"
-                        searchWords={[...searchTerm.split(" ")]}
-                        autoEscape={true}
-                        textToHighlight="The dog is chasing the cat. Or perhaps they're just playing?"
+                    <Highlighter
+                      highlightClassName="YourHighlightClass"
+                      searchWords={[...searchTerm.split(" ")]}
+                      autoEscape={true}
+                      textToHighlight="The dog is chasing the cat. Or perhaps they're just playing?"
                     />
                   </TableCell>
                   <TableCell>
-                    <Button variant="outline" size="sm" className="w-full"  onClick={() => navigate('/chatdoc/56')}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                      onClick={() => navigate("/chatdoc/56")}
+                    >
                       <BotMessageSquare className="mr-2 h-4 w-4" />
                       Chat this doc!
                     </Button>
                   </TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => notImplemented()}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => notImplemented()}
+                      >
                         <span className="sr-only">Delete</span>
                         <Trash2 className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => notImplemented()}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => notImplemented()}
+                      >
                         <span className="sr-only">Preview</span>
                         <EyeIcon className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => notImplemented()}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => notImplemented()}
+                      >
                         <span className="sr-only">Edit</span>
                         <Edit2 className="h-4 w-4" />
                       </Button>

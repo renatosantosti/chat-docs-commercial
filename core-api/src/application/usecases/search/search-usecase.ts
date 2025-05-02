@@ -48,7 +48,7 @@ export default class SearchTermUseCase implements ISearchTermUseCase {
 
     if (request.documentId && request.mode == "documents") {
       return new BadRequestError(
-        "Document is not required when mode is 'document' due all document will be searched.",
+        "Document is not required when mode is 'documents' due all document will be searched.",
       );
     }
 
@@ -79,9 +79,6 @@ export default class SearchTermUseCase implements ISearchTermUseCase {
           ? `${result.length} record(s) found.`
           : "Empty result.",
       result: result.map((r) => {
-        /* TODO: force type as SearchResultDto without embedding */
-        //r as Omit<SearchResultDto, "embedding">
-        // Hard code until todo above is done
         const { documentId, documentName, pageNumber, content } = r;
         return {
           documentId,

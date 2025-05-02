@@ -2,35 +2,30 @@ import * as RadioGroup from "@radix-ui/react-radio-group";
 import Highlighter from "react-highlight-words";
 import { Typewriter } from "react-simple-typewriter";
 import { Search, Download, Bot } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { ChatState, setActivated } from "@/store/chat/slices";
-
-const mockResults = [
-  {
-    page: 1,
-    text: "Demonstrated expertise in developing scalable web applications using TypeScript and React, ensuring responsive and user-friendly interfaces.",
-  },
-  {
-    page: 2,
-    text: "Implemented RESTful APIs with Node.js and Express, facilitating seamless communication between front-end and back-end systems.",
-  },
-  {
-    page: 7,
-    text: "Optimized database queries, resulting in a 30% improvement in application performance and reduced load times.",
-  },
-  {
-    page: 4,
-    text: "Led a team of 5 developers, overseeing project timelines and ensuring the delivery of high-quality software solutions.",
-  },
-];
+import { chatRequest, ChatState, setActivated } from "@/store/chat/slices";
+import { ChatMode } from "@/shared/types";
+import { DocumentState } from "@/store/document/slices";
+import { useNavigate, useParams } from "react-router-dom";
+import Loading from "@/components/Loading";
 
 const ChatDoc = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const state = useSelector((store: { chat: ChatState }) => store.chat);
-  const [mode, setMode] = useState("chat");
+  const docState = useSelector(
+    (store: { document: DocumentState }) => store.document,
+  );
+  const limitText = 1130;
+  const { id } = useParams<{ id: string }>();
+  const documentId = parseInt(id || "0");
+
+  const [pages, setPages] = useState([]);
+  const [mode, setMode] = useState<ChatMode>("chat");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showTermHistory, setShowTermHistory] = useState(true);
   const [typedText, setTypedText] = useState(
     `Hi guys, I will leverage this moment to speak a little bit about me...well as you know I am Renato Santos. 
     During my career, I worked in different industries and with different approaches to solving problems. So, I am flexible, innovative, and fast-paced to learn new things. 
@@ -40,7 +35,28 @@ const ChatDoc = () => {
     Go ahead, ask something to the doc!`,
   );
 
-  const documentName = "My Resume.pdf";
+  const { isLoading } = state;
+  const result = state.results.filter((r) => r.documentId == documentId);
+  useEffect(() => {
+    if (result.length > 0) {
+      setPages(result[0].pages);
+      if (searchTerm === "" && showTermHistory) setSearchTerm(result[0].term);
+    }
+  }, [result]);
+
+  useEffect(() => {
+    // Redireciona para "/documents" se o ID não for válido
+    if (
+      !id ||
+      isNaN(parseInt(id, 10)) ||
+      docState.documents.filter((doc) => doc.id == documentId).length === 0
+    ) {
+      navigate("/documents");
+    }
+  }, [id, navigate, docState]);
+
+  const doc = docState.documents.filter((doc) => doc.id == documentId)[0];
+  const documentName = doc?.title;
 
   const notImplemented = () => {
     alert(
@@ -49,12 +65,20 @@ const ChatDoc = () => {
   };
 
   // after 60 seconds -  close demo
-  if (!state.wasActivated) {
-    setTimeout(() => {
-      dispatch(setActivated());
-      setTypedText("Thanks! Waiting for questions.");
-    }, 2 * 1000);
-  }
+  setTimeout(() => {
+    dispatch(setActivated());
+    setTypedText("Thanks! Waiting for questions.");
+  }, 2 * 1000);
+
+  const handleChatSearchClick = () => {
+    dispatch(
+      chatRequest({
+        documentId,
+        mode,
+        term: searchTerm,
+      }),
+    );
+  };
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-8">
@@ -63,7 +87,6 @@ const ChatDoc = () => {
         <h1 className="text-3xl font-bold gradient-text">
           {mode === "chat" ? "Chatting with" : "Search in"}:{" "}
           <b>{documentName}</b>
-          {"Thanks! Waiting for questions."}
         </h1>
       </div>
 
@@ -80,6 +103,7 @@ const ChatDoc = () => {
           onChange={(e) => {
             setSearchTerm(e.target.value);
             setTypedText("");
+            setShowTermHistory(false);
           }}
         />
       </div>
@@ -89,7 +113,7 @@ const ChatDoc = () => {
         <RadioGroup.Root
           className="flex gap-6"
           value={mode}
-          onValueChange={setMode}
+          onValueChange={(val) => setMode(val as ChatMode)}
         >
           <label className="flex items-center gap-2 cursor-pointer">
             <RadioGroup.Item
@@ -104,10 +128,10 @@ const ChatDoc = () => {
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <RadioGroup.Item
-              value="search"
+              value="pages"
               className="w-4 h-4 rounded-full border border-black flex items-center justify-center"
             >
-              {mode === "search" && (
+              {mode === "pages" && (
                 <div className="w-2 h-2 bg-black rounded-full" />
               )}
             </RadioGroup.Item>
@@ -115,7 +139,10 @@ const ChatDoc = () => {
           </label>
         </RadioGroup.Root>
 
-        <Button className="Button-gradient px-4 py-2 rounded hover:opacity-90 transition">
+        <Button
+          className="Button-gradient px-4 py-2 rounded hover:opacity-90 transition"
+          onClick={handleChatSearchClick}
+        >
           {`${mode === "chat" ? " Chat" : "Search"} Now`}
         </Button>
       </div>
@@ -138,40 +165,46 @@ const ChatDoc = () => {
           </p>
         </div>
       )}
-
+      <Loading isLoading={isLoading}></Loading>
       {/* Grid View */}
-      <div className="rounded-md border border-gray-200 overflow-hidden shadow-sm">
-        <div className="grid grid-cols-12 bg-gray-100 text-sm font-medium text-gray-700 px-4 py-3">
-          <div className="col-span-2">Page Number</div>
-          <div className="col-span-8">Source Text</div>
-          <div className="col-span-2"></div>
-        </div>
-        {mockResults.map((res, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-12 items-center px-4 py-3 border-t text-sm"
-          >
-            <div className="col-span-2 text-gray-700">{res.page}</div>
-            <div className="col-span-8 text-gray-600">
-              <Highlighter
-                highlightClassName="YourHighlightClass"
-                searchWords={[...searchTerm.split(" ")]}
-                autoEscape={true}
-                textToHighlight={res.text}
-              />
-            </div>
-            <div className="col-span-2 text-right">
-              <Button
-                className="flex items-center gap-2 px-3 py-1 text-sm border rounded  hover:opacity-90 transition"
-                onClick={() => notImplemented()}
-              >
-                <Download className="w-4 h-4" />
-                Download page
-              </Button>
-            </div>
+      {pages.length > 0 && (
+        <div className="rounded-md border border-gray-200 overflow-hidden shadow-sm">
+          <div className="grid grid-cols-12 bg-gray-100 text-sm font-medium text-gray-700 px-4 py-3">
+            <div className="col-span-2">Page Number</div>
+            <div className="col-span-8">Source Text</div>
+            <div className="col-span-2"></div>
           </div>
-        ))}
-      </div>
+          {pages.map((res, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-12 items-center px-4 py-3 border-t text-sm"
+            >
+              <div className="col-span-2 text-gray-700">{res.pageNumber}</div>
+              <div className="col-span-8 text-gray-600">
+                <Highlighter
+                  highlightClassName=""
+                  searchWords={[...searchTerm.split(" ")]}
+                  autoEscape={true}
+                  textToHighlight={
+                    res.content.length > 100
+                      ? `${res.content.substring(0, limitText)}...`
+                      : res.content
+                  }
+                />
+              </div>
+              <div className="col-span-2 text-right">
+                <Button
+                  className="flex items-center gap-2 px-3 py-1 text-sm border rounded  hover:opacity-90 transition"
+                  onClick={() => notImplemented()}
+                >
+                  <Download className="w-4 h-4" />
+                  Download page
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Full Document Download */}
       <div className="text-right">

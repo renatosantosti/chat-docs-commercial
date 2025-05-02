@@ -8,16 +8,16 @@ const Login = () => {
   const authState = useSelector((store: { auth: AuthState }) => store.auth);
   const isAuthenticated = authState.isAuthenticated;
   const error = authState.error;
-  // alert(error)
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   // State for form inputs
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/documents');
+      navigate("/documents");
     }
   }, [isAuthenticated, navigate, error]);
 
@@ -25,12 +25,14 @@ const Login = () => {
     e.preventDefault();
     dispatch(loginRequest({ email, password }));
   };
-  
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold gradient-text">Welcome back</h2>
+          <h2 className="mt-6 text-3xl font-extrabold gradient-text">
+            Welcome back
+          </h2>
           <p className="mt-2 text-sm text-gray-600">Sign in to your account</p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
@@ -43,7 +45,7 @@ const Login = () => {
                 id="email-address"
                 name="email"
                 type="email"
-                value={email} 
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
                 required
@@ -59,7 +61,7 @@ const Login = () => {
                 id="password"
                 name="password"
                 type="password"
-                value={password} 
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
                 required
@@ -77,13 +79,20 @@ const Login = () => {
                 type="checkbox"
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+              <label
+                htmlFor="remember-me"
+                className="ml-2 block text-sm text-gray-900"
+              >
                 Remember me
               </label>
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={() => alert("Not implemented yet.")}>
+              <a
+                href="#"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+                onClick={() => alert("Not implemented yet.")}
+              >
                 Forgot your password?
               </a>
             </div>
@@ -102,15 +111,15 @@ const Login = () => {
       {/* Display AlertDialogBox if there is an error */}
       <h1>{error}</h1>
       <AlertDialogBox
-      open={!!error}
-          mode="error"
-          title="Authentication Error"
-          description={error}
-          cancelButtonText="Close"
-          confirmButtonText="Retry"
-          onCancel={() => dispatch(clearError())}
-          onConfirm={() =>  dispatch(clearError())}
-        />
+        open={!!error}
+        mode="error"
+        title="Authentication Error"
+        description={error}
+        cancelButtonText="Close"
+        confirmButtonText="Retry"
+        onCancel={() => dispatch(clearError())}
+        onConfirm={() => dispatch(clearError())}
+      />
     </div>
   );
 };

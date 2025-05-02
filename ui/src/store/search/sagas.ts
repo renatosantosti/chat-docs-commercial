@@ -1,21 +1,21 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import {
-  chatRequest,
-  chatRequestSuccess,
-  chatRequestFailure,
-  ChatResult,
+  searchRequest,
+  searchRequestSuccess,
+  searchRequestFailure,
+  SearchResult,
 } from "./slices";
 import http from "@/shared/api/http";
 
-function* handleChatRequest() {
-  yield takeLatest(chatRequest, function* (action) {
-    if (!chatRequest.match(action)) {
+function* handleSearchRequest() {
+  yield takeLatest(searchRequest, function* (action) {
+    if (!searchRequest.match(action)) {
       return;
     }
     try {
-      if (action.payload.mode === "chat") {
-        const res = yield call(http.post, "/chat", {});
-        yield put(chatRequestSuccess(res.data.data.result));
+      if (action.payload.mode === "documents") {
+        const res = yield call(http.post, "/search", {});
+        yield put(searchRequestSuccess(res.data.data.result));
         return;
       }
 
@@ -27,12 +27,12 @@ function* handleChatRequest() {
       });
 
       if (res.status != 200 || !res.data.data.success) {
-        yield put(chatRequestFailure());
+        yield put(searchRequestFailure());
         return;
       }
 
       const data = res.data.data;
-      const result: ChatResult = {
+      const result: SearchResult = {
         documentId: action.payload.documentId,
         term: action.payload.term,
         pages: data.result.map((page: any) => ({
@@ -44,13 +44,13 @@ function* handleChatRequest() {
         })),
         response: undefined,
       };
-      yield put(chatRequestSuccess(result));
+      yield put(searchRequestSuccess(result));
     } catch (err) {
-      yield put(chatRequestFailure());
+      yield put(searchRequestFailure());
     }
   });
 }
 
-export default function* chatSagas() {
-  yield all([handleChatRequest()]);
+export default function* searchSagas() {
+  yield all([handleSearchRequest()]);
 }

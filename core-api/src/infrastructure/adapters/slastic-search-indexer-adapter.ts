@@ -47,21 +47,36 @@ export class SlasticSearchIndexer implements IIndexerAdapter {
     filter: SearchTermDto,
   ): Promise<SearchResultDto[]> {
     const query: any = {
-      wildcard: {
-        content: {
-          value: `*${filter.term}*`, // Use wildcard to match the term within words
-          case_insensitive: true,
-        },
+      bool: {
+        must: [
+          {
+            wildcard: {
+              content: {
+                value: `*${filter.term}*`, // Use wildcard to match the term within words
+                case_insensitive: true,
+              },
+            },
+          },
+        ],
+        ...(!!filter.documentId && {
+          filter: [
+            {
+              term: {
+                documentId: filter.documentId,
+              },
+            },
+          ],
+        }),
       },
     };
 
     const highlight: any = {
       fields: {
         content: {
-          fragment_size: 500, // Limit the size of the highlighted fragment
-          number_of_fragments: 1, // Return only one fragment
-          pre_tags: ["<strong>"], // Highlight start tag
-          post_tags: ["</strong>"], // Highlight end tag
+          fragment_size: 350, // Limit the size of the highlighted fragment
+          number_of_fragments: 3,
+          pre_tags: [""], // Highlight start tag
+          post_tags: [""], // Highlight end tag
         },
       },
     };
@@ -72,10 +87,14 @@ export class SlasticSearchIndexer implements IIndexerAdapter {
       highlight: highlight,
     });
 
-    return response.hits.hits.map((hit: any) => ({
-      ...hit._source,
-      highlight: hit.highlight?.content || [], // Include highlighted content in the result
-    }));
+    return response.hits.hits.map((hit: any) => {
+      const { documentId, documentName, pageNumber, content } = {
+        ...hit._source,
+        content: (hit.highlight?.content || []).join(" "),
+      };
+
+      return { documentId, documentName, pageNumber, content };
+    });
   }
 
   /**
