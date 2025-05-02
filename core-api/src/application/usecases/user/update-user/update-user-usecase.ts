@@ -67,10 +67,7 @@ export default class UpdateUserUseCase implements IUpdateUserUseCase {
         modifiedOn: this.timeProvider.utcNow(),
       };
 
-      console.log("O user ", { user });
       const result = await this.repository.updateOne(user);
-
-      console.log("ok?", { result });
 
       if (result) {
         const userMapped: UserDto = this.mapper.map({

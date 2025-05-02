@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
+import { all, call, delay, put, takeLatest } from "redux-saga/effects";
 import { PayloadAction } from "@reduxjs/toolkit";
 import {
   documentCreateRequest,
@@ -16,77 +16,97 @@ import {
   CreateDocument,
 } from "./slices";
 import http from "@/shared/api/http";
+import { DocumentItem } from "@/shared/models";
 
 function* handleCreateDocument() {
-    yield takeLatest([
-      documentCreateRequest
-      ], function* (action: PayloadAction<CreateDocument>) {
-        if (!documentCreateRequest.match(action)) {
-            return;
-        }
-        try {
-            const res = yield call(http.post, "/documents", action.payload);
-            yield put(documentCreateSuccess(res.data.user)); 
-        } catch (err) {
-            yield put(documentCreateFailure());
-        }
-  });
+  yield takeLatest(
+    [documentCreateRequest],
+    function* (action: PayloadAction<CreateDocument>) {
+      if (!documentCreateRequest.match(action)) {
+        return;
+      }
+      try {
+        const res = yield call(http.post, "/documents", action.payload);
+        yield put(documentCreateSuccess(res.data.document));
+      } catch (err) {
+        yield put(documentCreateFailure());
+      }
+    },
+  );
 }
 
 function* handleDocumentList() {
-    yield takeLatest([
-      documentListRequest,
-      ], function* (action: PayloadAction) {
-        if (!documentListRequest.match(action)) {
-            return;
-        }
+  yield takeLatest([documentListRequest], function* (action: PayloadAction) {
+    if (!documentListRequest.match(action)) {
+      return;
+    }
 
-        try {
-          const list:Document[] = yield call(http.post, "/documents");
-          //put...
-        } catch (err) {
-            console.error("Get all documents -  failed", err);
-            yield put(documentListFailure());
-        }
-        yield put(documentListSuccess());
+    try {
+      const res = yield call(http.get, "/documents");
+      if (res.statusCode !== 200 && res.data.success) {
+        yield put(documentListFailure());
+        return;
+      }
+
+      const docs: DocumentItem[] = res.data.data.documents.map((doc: any) => ({
+        id: doc.id,
+        title: doc.title,
+        description: doc.description,
+        date: doc.createdOn,
+        pages: doc.numPages,
+        type: "PDF",
+      }));
+
+      yield delay(1000);
+      yield put(documentListSuccess(docs));
+    } catch (err) {
+      console.error("Get all documents -  failed", err);
+      yield put(documentListFailure());
+    }
   });
 }
 
 function* handleDocumentSearch() {
-  yield takeLatest([
-    documentSearchRequest
-  ], function* (action: PayloadAction<string>) {
-    if (!documentSearchRequest.match(action)) {
+  yield takeLatest(
+    [documentSearchRequest],
+    function* (action: PayloadAction<string>) {
+      if (!documentSearchRequest.match(action)) {
         return;
-    }
-    try {
-      const res = yield call(http.get, `/documents/search?term=${action.payload}`);
-      yield put(documentSearchSuccess({ 
-        term: action.payload,
-        documents: res.data 
-      })); 
-    } catch (err) {
-      yield put(documentSearchFailure());
-    }
-  });
+      }
+      try {
+        const res = yield call(
+          http.get,
+          `/documents/search?term=${action.payload}`,
+        );
+        yield put(
+          documentSearchSuccess({
+            term: action.payload,
+            documents: res.data,
+          }),
+        );
+      } catch (err) {
+        yield put(documentSearchFailure());
+      }
+    },
+  );
 }
 
 function* handleDeletionDocument() {
-  yield takeLatest([
-    documentDeletionRequest
-    ], function* (action: PayloadAction<number>) {
+  yield takeLatest(
+    [documentDeletionRequest],
+    function* (action: PayloadAction<number>) {
       if (!documentDeletionRequest.match(action)) {
-          return;
+        return;
       }
       try {
-          const res = yield call(http.delete, `/documents/${action.payload}`);
-          yield put(documentDeletionSuccess(res.data.user)); 
+        const res = yield call(http.delete, `/documents/${action.payload}`);
+        yield put(documentDeletionSuccess(res.data.user));
       } catch (err) {
-          yield put(documentDeletionFailure());
+        yield put(documentDeletionFailure());
       }
-});
+    },
+  );
 }
-
 
 export default function* documentSagas() {
   yield all([

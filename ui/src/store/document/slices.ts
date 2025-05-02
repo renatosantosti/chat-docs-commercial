@@ -13,73 +13,102 @@ export interface SearchResult {
 }
 
 export interface DocumentState {
-  documents:DocumentItem[];
-  filtered:SearchResult | null;
+  documents: DocumentItem[];
+  filtered: SearchResult | null;
   isFiltered: boolean;
+  isLoading: boolean;
 }
 
 const initialState: DocumentState = {
   documents: [],
   filtered: null,
   isFiltered: false,
+  isLoading: false,
 };
 
 const documentSlice = createSlice({
   name: "document",
   initialState,
   reducers: {
+    documentCreateRequest: (_, action: PayloadAction<CreateDocument>) => {},
 
-    documentCreateRequest: (_, action: PayloadAction<CreateDocument>) => {
-    },
-
-    documentCreateSuccess: (state, action: PayloadAction<DocumentItem>) => {
+    documentCreateSuccess: (
+      state: DocumentState,
+      action: PayloadAction<DocumentItem>,
+    ) => {
       state.isFiltered = false;
-      state.documents  =  [...state.documents, action.payload];
+      state.documents = [...state.documents, action.payload];
     },
 
-    documentCreateFailure: () => {
+    documentCreateFailure: (state: DocumentState) => {
+      state.isLoading = false;
     },
 
-    documentListRequest: () => {
+    documentListRequest: (state: DocumentState) => {
+      state.isLoading = true;
     },
 
-    documentListSuccess: (state:DocumentState, action: PayloadAction<DocumentItem[]>) => {
+    documentListSuccess: (
+      state: DocumentState,
+      action: PayloadAction<DocumentItem[]>,
+    ) => {
       state.isFiltered = false;
-      state.documents  =  action.payload;
+      state.isLoading = false;
+      state.documents = action.payload;
     },
 
-    documentListFailure: (state:DocumentState) => {
-      state.documents  = [];
+    documentListFailure: (state: DocumentState) => {
+      state.documents = [];
     },
 
-    documentSearchRequest: (_, action: PayloadAction<string>) => {
+    documentSearchRequest: (
+      state: DocumentState,
+      action: PayloadAction<string>,
+    ) => {
+      state.isLoading = true;
     },
 
-    documentSearchSuccess: (state:DocumentState, action: PayloadAction<SearchResult>) => {
+    documentSearchSuccess: (
+      state: DocumentState,
+      action: PayloadAction<SearchResult>,
+    ) => {
       state.isFiltered = true;
       state.filtered = action.payload;
+      state.isLoading = false;
     },
 
-    documentSearchFailure: (state:DocumentState) => {
-      state.filtered  = null;
+    documentSearchFailure: (state: DocumentState) => {
+      state.filtered = null;
+      state.isLoading = false;
     },
 
-    documentResetSearch: (state:DocumentState) => {
-      state.filtered  = null;
+    documentResetSearch: (state: DocumentState) => {
+      state.filtered = null;
       state.isFiltered = false;
     },
 
-    documentDeletionRequest: (_, action: PayloadAction<number>) => {
+    documentDeletionRequest: (
+      state: DocumentState,
+      action: PayloadAction<number>,
+    ) => {
+      state.isLoading = true;
     },
 
-    documentDeletionSuccess: (state:DocumentState, action: PayloadAction<number>)=> {
-      state.documents = state.documents.filter(d => d.id !== action.payload);
-      if(state.isFiltered){
-        state.filtered.documents = state.filtered.documents.filter(d => d.id !== action.payload);
+    documentDeletionSuccess: (
+      state: DocumentState,
+      action: PayloadAction<number>,
+    ) => {
+      state.documents = state.documents.filter((d) => d.id !== action.payload);
+      if (state.isFiltered) {
+        state.filtered.documents = state.filtered.documents.filter(
+          (d) => d.id !== action.payload,
+        );
       }
+      state.isLoading = false;
     },
 
-    documentDeletionFailure: () => {
+    documentDeletionFailure: (state: DocumentState) => {
+      state.isLoading = false;
     },
   },
 });
@@ -98,7 +127,6 @@ export const {
   documentDeletionSuccess,
   documentDeletionFailure,
   documentResetSearch,
-  
 } = documentSlice.actions;
 
 export default documentSlice.reducer;

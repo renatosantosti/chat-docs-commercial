@@ -48,7 +48,7 @@ switch (databaseConfig.dbDialect) {
 dbConnection
   .authenticate()
   .then(() => {
-    // console.log('Database authentication has been established successfully.');
+    console.log("Database authentication has been established successfully.");
   })
   .catch((err) => {
     console.error("Unable to connect to the database:", err);
