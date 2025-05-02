@@ -58,6 +58,10 @@ export class DocumentMapper implements IBaseMapper<Document, DocumentDto> {
         (destination) => destination.userId,
         mapFrom((source) => source.userId),
       ),
+      forMember(
+        (destination) => destination.createdOn,
+        mapFrom((source) => source.createdOn),
+      ),
     );
 
     // Create mapping between DocumentDto to Document
@@ -100,6 +104,10 @@ export class DocumentMapper implements IBaseMapper<Document, DocumentDto> {
       forMember(
         (destination) => destination.userId,
         mapFrom((source) => source.userId),
+      ),
+      forMember(
+        (destination) => destination.createdOn,
+        mapFrom((source) => source.createdOn),
       ),
     );
   }

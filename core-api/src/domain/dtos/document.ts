@@ -9,7 +9,7 @@ type DocumentDto = {
   url?: string;
   isActive: boolean;
   userId: number;
-  createdAt: Date;
+  createdOn: Date;
 };
 
 export default DocumentDto;
