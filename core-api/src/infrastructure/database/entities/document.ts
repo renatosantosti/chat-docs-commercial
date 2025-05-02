@@ -29,6 +29,8 @@ export default class DocumentEntity extends Model<Partial<DocumentEntity>> {
   content?: string;
   @Column(DataType.STRING)
   description?: string;
+  @Column(DataType.INTEGER)
+  numPages!: number; // set it here to avoid calculate column or view at this moment
   @Column(DataType.STRING)
   url?: string;
   @Column(DataType.STRING)

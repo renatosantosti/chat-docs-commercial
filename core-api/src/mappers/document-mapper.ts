@@ -43,6 +43,10 @@ export class DocumentMapper implements IBaseMapper<Document, DocumentDto> {
         mapFrom((source) => source.type),
       ),
       forMember(
+        (destination) => destination.numPages,
+        mapFrom((source) => source.numPages),
+      ),
+      forMember(
         (destination) => destination.content,
         mapFrom((source) => source.content),
       ),
@@ -76,6 +80,10 @@ export class DocumentMapper implements IBaseMapper<Document, DocumentDto> {
       forMember(
         (destination) => destination.description,
         mapFrom((source) => source.description),
+      ),
+      forMember(
+        (destination) => destination.numPages,
+        mapFrom((source) => source.numPages),
       ),
       forMember(
         (destination) => destination.type,

@@ -5,9 +5,11 @@ type DocumentDto = {
   description?: string;
   content?: string;
   type: string;
+  numPages: number;
   url?: string;
   isActive: boolean;
   userId: number;
+  createdAt: Date;
 };
 
 export default DocumentDto;

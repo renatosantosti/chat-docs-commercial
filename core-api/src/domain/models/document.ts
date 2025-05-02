@@ -8,6 +8,7 @@ export default interface Document {
   url?: string;
   description?: string;
   type?: string;
+  numPages: number; // set this column here to avoid calculate column or view at this moment
   pages: Page[];
   isActive: boolean;
 

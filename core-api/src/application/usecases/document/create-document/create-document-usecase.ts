@@ -82,6 +82,7 @@ export default class CreateDocumentUseCase implements ICreateDocumentUseCase {
       type: request.type,
       url: "",
       pages: [],
+      numPages: 0,
       userId: this.currentUser.id,
       isActive: true,
       createdOn: this.timeProvider.utcNow(),
@@ -102,6 +103,8 @@ export default class CreateDocumentUseCase implements ICreateDocumentUseCase {
           });
           pageNumber++;
         });
+
+        newDocument.numPages = pages.length; // set it here to avoid calculate column or view at this moment
       }
 
       const result = await this.repository.createOne(newDocument);
