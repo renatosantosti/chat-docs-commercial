@@ -14,7 +14,7 @@ const chatDocRouters = express.Router();
  * /chat-doc:
  *   post:
  *     summary: Creates a new chat based on a document and the latest filter
- *     tags: 
+ *     tags:
  *       - Chat with Document Pages
  *     requestBody:
  *       required: true
@@ -97,35 +97,39 @@ const chatDocRouters = express.Router();
  *                   type: string
  *                   example: Internal server error
  */
-chatDocRouters.post("/chat-doc/", onlyWithAccessAuthMiddleware, async (req:any, res:any) => {
-  try {
+chatDocRouters.post(
+  "/chat-doc/",
+  onlyWithAccessAuthMiddleware,
+  async (req: any, res: any) => {
+    try {
+      // Resolve the use case and controller from the container
+      const controller = container.resolve(
+        "ChatDocController",
+      ) as ChatDocController;
 
-    // Resolve the use case and controller from the container
-    const controller = container.resolve("ChatDocController") as ChatDocController;
-
-    // Build the new search object from the request body, ensuring undefined values are handled properly
-    const request: ChatDocRequest = {
+      // Build the new search object from the request body, ensuring undefined values are handled properly
+      const request: ChatDocRequest = {
         documentId: req.body?.documentId,
         question: req.body?.question,
         previousQuestion: req.body?.previousQuestion,
         previousResponse: req.body?.previousResponse,
-    };
+      };
 
-    // Execute the controller handler and pass the new search object as part of the request
-    const response = await controller.handler(req.currentUser!, request);
+      // Execute the controller handler and pass the new search object as part of the request
+      const response = await controller.handler(req.currentUser!, request);
 
-    // Return the response from the handler, including status code and content
-    return res
-      .status(response.statusCode)
-      .send(response);
+      // Return the response from the handler, including status code and content
+      return res.status(response.statusCode).send(response);
+    } catch (err: any) {
+      // Handle unknown errors and log them with additional context
+      console.error("Unknown Internal Error", {
+        details: { method: "POST", route: "/chat-doc/", error: { ...err } },
+      });
 
-  } catch (err: any) {
-    // Handle unknown errors and log them with additional context
-    console.error("Unknown Internal Error", { details: {method:"POST" ,route: "/chat-doc/", error: { ...err } } });
-
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError("Unknown Internal Error"));
-  }
-});
+      return res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .send(new InternalError("Unknown Internal Error"));
+    }
+  },
+);
 export default chatDocRouters;

@@ -9,10 +9,12 @@ import { inject, injectable } from "tsyringe";
 
 @Route("live")
 @injectable()
-export default class LiveController implements IBaseNonAuthenticadedController<any, LiveResponse | Error> {
+export default class LiveController
+  implements IBaseNonAuthenticadedController<any, LiveResponse | Error>
+{
   constructor(
-    @inject('ILiveUseCase') private readonly checkLive: ILiveUseCase
-  ) { }
+    @inject("ILiveUseCase") private readonly checkLive: ILiveUseCase,
+  ) {}
 
   @Get("/live")
   @SuccessResponse(HttpStatusCode.OK, "Is API live?")

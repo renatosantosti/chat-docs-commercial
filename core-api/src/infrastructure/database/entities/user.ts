@@ -1,9 +1,20 @@
-import { AutoIncrement, HasMany, Column, CreatedAt, DataType, DeletedAt, Model, PrimaryKey, Table, UpdatedAt, Unique } from "sequelize-typescript";
+import {
+  AutoIncrement,
+  HasMany,
+  Column,
+  CreatedAt,
+  DataType,
+  DeletedAt,
+  Model,
+  PrimaryKey,
+  Table,
+  UpdatedAt,
+  Unique,
+} from "sequelize-typescript";
 import DocumentEntity from "./document";
 
 @Table({ tableName: "User" })
 export default class UserEntity extends Model<Partial<UserEntity>> {
-
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.INTEGER)
@@ -26,11 +37,11 @@ export default class UserEntity extends Model<Partial<UserEntity>> {
   @CreatedAt
   createdOn!: Date;
   @Column(DataType.STRING)
-  createdBy!: string
+  createdBy!: string;
   @UpdatedAt
   modifiedOn?: Date;
   @Column(DataType.STRING)
-  modifiedBy!: string
+  modifiedBy!: string;
   @DeletedAt
   deletionDate?: Date;
   /* End blamed fields */

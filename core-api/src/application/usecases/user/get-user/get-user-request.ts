@@ -1,5 +1,5 @@
 type GetUserRequest = {
-  id: number
+  id: number;
 };
 
 export default GetUserRequest;

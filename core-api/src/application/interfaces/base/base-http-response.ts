@@ -1,11 +1,10 @@
 /**
  * Interface representing a standard HTTP response format.
  * This interface encapsulates the structure of an HTTP response, including status code, description, and response data.
- * 
+ *
  * @template IResponse - The type representing the response data that will be included in the HTTP response body.
  */
 export default interface IBaseHttpResponse<IResponse> {
-
   /**
    * A brief description of the HTTP response. This can be used to provide additional context or details
    * about the response, such as error messages or status descriptions. This field is optional and can be `null`.

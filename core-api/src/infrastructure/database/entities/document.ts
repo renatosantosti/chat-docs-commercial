@@ -1,4 +1,17 @@
-import { AutoIncrement, BelongsTo, Column, CreatedAt, DataType, DeletedAt, ForeignKey, HasMany, Model, PrimaryKey, Table, UpdatedAt } from "sequelize-typescript";
+import {
+  AutoIncrement,
+  BelongsTo,
+  Column,
+  CreatedAt,
+  DataType,
+  DeletedAt,
+  ForeignKey,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+  UpdatedAt,
+} from "sequelize-typescript";
 import UserEntity from "./user";
 import PageEntity from "./page";
 
@@ -27,11 +40,11 @@ export default class DocumentEntity extends Model<Partial<DocumentEntity>> {
   @CreatedAt
   createdOn!: Date;
   @Column(DataType.STRING)
-  createdBy!: string
+  createdBy!: string;
   @UpdatedAt
   modifiedOn?: Date;
   @Column(DataType.STRING)
-  modifiedBy!: string
+  modifiedBy!: string;
   @DeletedAt
   deletionDate?: Date;
   /* End blamed fields */
@@ -41,7 +54,7 @@ export default class DocumentEntity extends Model<Partial<DocumentEntity>> {
   @ForeignKey(() => UserEntity)
   userId!: number;
 
-    /* Relationships*/
+  /* Relationships*/
   @BelongsTo(() => UserEntity)
   user!: UserEntity;
 
@@ -49,4 +62,3 @@ export default class DocumentEntity extends Model<Partial<DocumentEntity>> {
   pages: PageEntity[] = [];
   /* End relationships*/
 }
-

@@ -1,4 +1,17 @@
+import * as path from "path";
 import "module-alias/register";
+
+const moduleAlias = require("module-alias");
+moduleAlias.addAliases({
+  "@": path.join(__dirname),
+});
+// if (process.env.NODE_ENV === "development") {
+//   const moduleAlias = require("module-alias");
+//   moduleAlias.addAliases({
+//     "@": path.join(__dirname),
+//   });
+// }
+
 import "reflect-metadata";
 import express, { Application } from "express";
 import cors from "cors";

@@ -8,7 +8,7 @@ import IBaseUseCaseResponse from "@/application/interfaces/base/base-usecase-res
 export default class GetDocumentResponse implements IBaseUseCaseResponse {
   /**
    * Constructs a new CreateDocumentResponse object.
-   * 
+   *
    * @param success - Indicates whether the document creation operation was successful.
    * @param message - Provides a message related to the operation result, typically used for conveying success or error information.
    * @param Document - The retrieved document data transfer object (DTO) document. This will be null if found any error.
@@ -16,6 +16,6 @@ export default class GetDocumentResponse implements IBaseUseCaseResponse {
   constructor(
     readonly success: boolean,
     readonly message: string,
-    readonly document?: DocumentDto | null
-  ) { }
+    readonly document?: DocumentDto | null,
+  ) {}
 }

@@ -9,7 +9,7 @@ import { injectable, singleton } from "tsyringe";
 export default class TimeProvider implements ITimeAdapter {
   /**
    * Returns the current UTC datetime.
-   * 
+   *
    * @returns {Date} The current date and time in UTC.
    */
   utcNow(): Date {

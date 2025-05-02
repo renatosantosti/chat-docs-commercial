@@ -14,7 +14,7 @@ const searchRouters = express.Router();
  * /search:
  *   post:
  *     summary: Creates a new search based on text term
- *     tags: 
+ *     tags:
  *       - Search
  *     requestBody:
  *       required: true
@@ -25,7 +25,7 @@ const searchRouters = express.Router();
  *             properties:
  *               mode:
  *                 type: string
- *                 enum: 
+ *                 enum:
  *                   - document
  *                   - page
  *                 description: The mode of the search. "document" searches the entire document, while "page" searches specific pages.
@@ -93,34 +93,38 @@ const searchRouters = express.Router();
  *                   type: string
  *                   example: Internal server error
  */
-searchRouters.post("/search/", onlyWithAccessAuthMiddleware, async (req:any, res:any) => {
-  try {
+searchRouters.post(
+  "/search/",
+  onlyWithAccessAuthMiddleware,
+  async (req: any, res: any) => {
+    try {
+      // Resolve the use case and controller from the container
+      const controller = container.resolve(
+        "SearchTermController",
+      ) as SearchTermController;
 
-    // Resolve the use case and controller from the container
-    const controller = container.resolve("SearchTermController") as SearchTermController;
-
-    // Build the new search object from the request body, ensuring undefined values are handled properly
-    const request: SearchTermRequest = {
+      // Build the new search object from the request body, ensuring undefined values are handled properly
+      const request: SearchTermRequest = {
         mode: req.body?.mode,
         term: req.body?.term,
         documentId: req.body?.documentId,
-    };
+      };
 
-    // Execute the controller handler and pass the new search object as part of the request
-    const response = await controller.handler(req.currentUser!, request);
+      // Execute the controller handler and pass the new search object as part of the request
+      const response = await controller.handler(req.currentUser!, request);
 
-    // Return the response from the handler, including status code and content
-    return res
-      .status(response.statusCode)
-      .send(response);
+      // Return the response from the handler, including status code and content
+      return res.status(response.statusCode).send(response);
+    } catch (err: any) {
+      // Handle unknown errors and log them with additional context
+      console.error("Unknown Internal Error", {
+        details: { method: "POST", route: "/search/", error: { ...err } },
+      });
 
-  } catch (err: any) {
-    // Handle unknown errors and log them with additional context
-    console.error("Unknown Internal Error", { details: {method:"POST" ,route: "/search/", error: { ...err } } });
-
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError("Unknown Internal Error"));
-  }
-});
+      return res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .send(new InternalError("Unknown Internal Error"));
+    }
+  },
+);
 export default searchRouters;

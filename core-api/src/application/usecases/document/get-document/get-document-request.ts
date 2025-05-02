@@ -1,6 +1,5 @@
-
 type GetDocumentRequest = {
-  id: number
+  id: number;
 };
 
 export default GetDocumentRequest;

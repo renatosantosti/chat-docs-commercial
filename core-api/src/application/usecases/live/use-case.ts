@@ -5,5 +5,5 @@ export default class LiveUseCase implements ILiveUseCase {
   async handler(): Promise<LiveResponse> {
     const liveStatus: LiveResponse = { live: true };
     return liveStatus;
-  };
+  }
 }

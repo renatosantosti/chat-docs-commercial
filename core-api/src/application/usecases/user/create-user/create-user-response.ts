@@ -8,7 +8,7 @@ import IBaseUseCaseResponse from "@/application/interfaces/base/base-usecase-res
 export default class CreateUserResponse implements IBaseUseCaseResponse {
   /**
    * Constructs a new CreateUserResponse object.
-   * 
+   *
    * @param success - Indicates whether the user creation operation was successful.
    * @param message - Provides a message related to the operation result, typically used for conveying success or error information.
    * @param user - The retrieved user data transfer object (DTO) user. This will be null if is found any error.
@@ -17,5 +17,5 @@ export default class CreateUserResponse implements IBaseUseCaseResponse {
     readonly success: boolean,
     readonly message: string,
     readonly user?: UserDto,
-  ) { }
+  ) {}
 }

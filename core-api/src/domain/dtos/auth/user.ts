@@ -1,6 +1,6 @@
 type AuthUserDto = {
-  id: number
-  uid: string,
+  id: number;
+  uid: string;
   name: string;
   email: string;
 };

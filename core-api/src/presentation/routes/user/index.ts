@@ -44,7 +44,7 @@ const userRouters = express.Router();
  *                     email:
  *                       type: string
  *                     image:
- *                       type: base64                      
+ *                       type: base64
  *       400:
  *         description: Bad Request - The request is invalid
  *         content:
@@ -111,31 +111,38 @@ const userRouters = express.Router();
  *                   type: string
  *                   example: "Internal Server Error"
  */
-userRouters.get("/users/:id", onlyWithAccessAuthMiddleware, async (req, res) => {
-  try {
-    // Resolve the use case and controller from the container
-    const controller = container.resolve("GetUserController") as GetUserController;
+userRouters.get(
+  "/users/:id",
+  onlyWithAccessAuthMiddleware,
+  async (req, res) => {
+    try {
+      // Resolve the use case and controller from the container
+      const controller = container.resolve(
+        "GetUserController",
+      ) as GetUserController;
 
-    // Validate the request parameters
-    if(req?.currentUser){
-      const response = await controller.handler(req?.currentUser, { id: Number(req.params?.id ?? 0) });
+      // Validate the request parameters
+      if (req?.currentUser) {
+        const response = await controller.handler(req?.currentUser, {
+          id: Number(req.params?.id ?? 0),
+        });
+
+        return res.status(response.statusCode).send(response);
+      }
 
       return res
-        .status(response.statusCode)
-        .send(response);
+        .status(HttpStatusCode.UNAUTHORIZED)
+        .send(new UnauthorizedError());
+    } catch (err: any) {
+      console.error("Unknown Internal Error", {
+        details: { method: "GET", route: "/users/:id", error: { ...err } },
+      });
+      return res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .send(new InternalError("Unknown Internal Error"));
     }
-
-    return res
-      .status(HttpStatusCode.UNAUTHORIZED)
-      .send(new UnauthorizedError());
-
-  } catch (err: any) {
-    console.error("Unknown Internal Error", { details: { method: "GET", route: "/users/:id", error: { ...err } } });
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError("Unknown Internal Error"));
-  }
-});
+  },
+);
 
 /**
  * @openapi
@@ -159,8 +166,6 @@ userRouters.get("/users/:id", onlyWithAccessAuthMiddleware, async (req, res) => 
  *             type: object
  *             properties:
  *               name:
- *                 type: string
- *               email:
  *                 type: string
  *               password:
  *                 type: string
@@ -256,39 +261,44 @@ userRouters.get("/users/:id", onlyWithAccessAuthMiddleware, async (req, res) => 
  *                   type: string
  *                   example: "Internal Server Error"
  */
-userRouters.put("/users/:id", onlyWithAccessAuthMiddleware, async (req, res) => {
-  try {
-    // Resolve the use case and controller from the container
-    const controller = container.resolve("UpdateUserController") as UpdateUserController;
+userRouters.put(
+  "/users/:id",
+  onlyWithAccessAuthMiddleware,
+  async (req, res) => {
+    try {
+      // Resolve the use case and controller from the container
+      const controller = container.resolve(
+        "UpdateUserController",
+      ) as UpdateUserController;
 
-    const user: UpdateUserRequest = {
-      id: Number(req.params?.id),
-      name: req.body.name,
-      password: req.body.password,
-      repeatedPassword: req.body.repeatedPassword,
-      image: req.body.image ?? undefined,
-    };
-    
-    if(req?.currentUser){
-      const response = await controller.handler(req?.currentUser!, user);
-          // Return the response from the handler, including status code and content
-        return res
-        .status(response.statusCode)
-        .send(response);
+      const user: UpdateUserRequest = {
+        id: Number(req.params?.id),
+        name: req.body.name,
+        password: req.body.password,
+        repeatedPassword: req.body.repeatedPassword,
+        image: req.body.image ?? undefined,
+      };
+
+      if (req?.currentUser) {
+        const response = await controller.handler(req?.currentUser!, user);
+        // Return the response from the handler, including status code and content
+        return res.status(response.statusCode).send(response);
+      }
+      return res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .send(new InternalError("User´token not found"));
+    } catch (err: any) {
+      // Handle unknown errors and log them with additional context
+      console.error("Unknown Internal Error", {
+        details: { method: "PUT", route: "/users/", error: { ...err } },
+      });
+
+      return res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .send(new InternalError("Unknown Internal Error"));
     }
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError("User´token not found"));
-      
-  } catch (err: any) {
-    // Handle unknown errors and log them with additional context
-    console.error("Unknown Internal Error", { details: { method: "PUT", route: "/users/", error: { ...err } } });
-
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError("Unknown Internal Error"));
-  }
-});
+  },
+);
 
 /**
  * @openapi
@@ -314,7 +324,7 @@ userRouters.put("/users/:id", onlyWithAccessAuthMiddleware, async (req, res) => 
  *                 type: string
  *               image:
  *                 type: string
-*     responses:
+ *     responses:
  *       200:
  *         description: User created successfully
  *         content:
@@ -391,27 +401,27 @@ userRouters.put("/users/:id", onlyWithAccessAuthMiddleware, async (req, res) => 
  */
 userRouters.post("/users/", async (req, res) => {
   try {
-
-    const controller = container.resolve("CreateUserController") as CreateUserController;
+    const controller = container.resolve(
+      "CreateUserController",
+    ) as CreateUserController;
 
     const user: CreateUserRequest = {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
       repeatedPassword: req.body.repeatedPassword,
-      image: req.body.image ?? undefined,
+      image: req.body.image ?? "",
     };
 
     const response = await controller.handler(user);
 
     // Return the response from the handler, including status code and content
-    return res
-    .status(response.statusCode)
-    .send(response);
-
+    return res.status(response.statusCode).send(response);
   } catch (err: any) {
     // Handle unknown errors and log them with additional context
-    console.error("Unknown Internal Error", { details: { method: "POST", route: "/users/", error: { ...err } } });
+    console.error("Unknown Internal Error", {
+      details: { method: "POST", route: "/users/", error: { ...err } },
+    });
 
     return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)

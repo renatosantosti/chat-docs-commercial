@@ -5,7 +5,14 @@ import IBaseHttpResponse from "@/application/interfaces/base/base-http-response"
 import UpdateUserRequest from "@/application/usecases/user/update-user/update-user-request";
 import UpdateUserResponse from "@/application/usecases/user/update-user/update-user-response";
 import { IUpdateUserUseCase } from "@/application/interfaces/use-cases/update-user-usecase-interface";
-import { badRequestHttpError, conflictRequestHttpError, forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "@/presentation/helpers/http-helper";
+import {
+  badRequestHttpError,
+  conflictRequestHttpError,
+  forbiddenHttpError,
+  internalHttpError,
+  notFoundHttpError,
+  ok,
+} from "@/presentation/helpers/http-helper";
 import { inject, injectable } from "tsyringe";
 import Joi from "joi";
 import { EmailInUseError, NotFoundError } from "@/shared/errors";
@@ -24,7 +31,7 @@ export default class UpdateUserController
    * @param useCase - The use case responsible for handling the user update logic.
    */
   constructor(
-    @inject('IUpdateUserUseCase') readonly useCase: IUpdateUserUseCase
+    @inject("IUpdateUserUseCase") readonly useCase: IUpdateUserUseCase,
   ) {}
 
   /**
@@ -35,45 +42,45 @@ export default class UpdateUserController
    */
   public async handler(
     currentUser: AuthUserDto,
-    request: UpdateUserRequest
+    request: UpdateUserRequest,
   ): Promise<IBaseHttpResponse<UpdateUserResponse | Error>> {
     this.currentUser = currentUser;
-    
+
     try {
-      // Define the validation requirements for the request
       const requestValidationSchema = Joi.object({
-        id: Joi.number().integer().min(1).required().label("id"), // Validates that the ID is a positive integer
-        name: Joi.string().min(3).max(50).required().label("name"), // Validates the name with a length between 3 and 50 characters
-        password: Joi.string().min(6).max(100).required().label("password"), // Validates the password with a length between 6 and 100 characters
+        id: Joi.number().greater(0).required().messages({
+          "any.required": "User's ID is required",
+          "number.greater": "User's ID must be greater than 0",
+        }),
+        name: Joi.string().required(),
+        password: Joi.string().min(4).required(),
         repeatedPassword: Joi.string()
           .valid(Joi.ref("password"))
           .required()
-          .label("repeatedPassword") // Ensures repeatedPassword matches password
-          .messages({ "any.only": "Passwords must match" }),
-        image: Joi.string()
-          .pattern(/^data:image\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$/)
-          .optional()
-          .label("image") // Validates the image as an optional base64 string
-          .messages({ "string.pattern.base": "Photo must be a valid base64 string" }),
-      }).unknown(true);
+          .messages({ "any.only": "Passwords do not match" }),
+        image: Joi.string().base64().optional(),
+      });
 
       // Perform request validation
       const { error } = requestValidationSchema.validate(request);
 
       if (error) {
         // If validation fails, return an HTTP 400 (Bad Request) error
-        console.error("Validation error:", error.details);
+        console.error("Validation error:", { request, error: error.details });
         return badRequestHttpError(error);
       }
 
       // Trigger the use case handler to update the user
-      const response: UpdateUserResponse | Error = await this.useCase.handler(this.currentUser, request);
+      const response: UpdateUserResponse | Error = await this.useCase.handler(
+        this.currentUser,
+        request,
+      );
 
       //If Success
       if (isNotError<UpdateUserResponse>(response)) {
         return ok(response); // Return an HTTP 200 (OK) response with the updated user
       }
-      
+
       // Othewise
       // Handle specific error types
       let responseError: IBaseHttpResponse<Error>;
@@ -101,7 +108,7 @@ export default class UpdateUserController
         name: error.name,
       });
 
-      return  internalHttpError(error as Error);
+      return internalHttpError(error as Error);
     }
   }
 }

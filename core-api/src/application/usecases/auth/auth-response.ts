@@ -32,12 +32,18 @@ export class AuthResponse implements IBaseUseCaseResponse {
 
   /**
    * Constructs a new AuthResponse object.
-   * 
+   *
    * @param success - Indicates whether the use case operation was successful.
    * @param message - Provides a message related to the operation result.
    * @param token - The authentication token generated upon successful login.
    */
-  constructor(success: boolean, message: string, token: string, userId: number, userFullName: string) {
+  constructor(
+    success: boolean,
+    message: string,
+    token: string,
+    userId: number,
+    userFullName: string,
+  ) {
     this.success = success;
     this.message = message;
     this.token = token;

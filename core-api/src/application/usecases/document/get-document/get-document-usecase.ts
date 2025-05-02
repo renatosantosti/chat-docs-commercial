@@ -21,7 +21,7 @@ export default class GetDocumentUseCase implements IGetDocumentUseCase {
 
   /**
    * Constructs a new GetDocumentUseCase.
-   * 
+   *
    * @param timeProvider - The time provider used for obtaining the current UTC datetime.
    * @param repository - The document repository used for data access.
    * @param mapper - Helper to map document model to DTO.
@@ -29,7 +29,8 @@ export default class GetDocumentUseCase implements IGetDocumentUseCase {
   constructor(
     readonly timeProvider: ITimeAdapter,
     readonly repository: IDocumentRepository,
-    readonly mapper: IBaseMapper<Document, DocumentDto>) { }
+    readonly mapper: IBaseMapper<Document, DocumentDto>,
+  ) {}
 
   /**
    * Handles the get document request.
@@ -38,7 +39,10 @@ export default class GetDocumentUseCase implements IGetDocumentUseCase {
    * @param request - The request object containing the data needed to get a new document.
    * @returns A promise that resolves to a GetDocumentResponse object containing the result of the document creation process.
    */
-  async handler(currentUser: AuthUserDto, request: GetDocumentRequest): Promise<GetDocumentResponse | Error> {
+  async handler(
+    currentUser: AuthUserDto,
+    request: GetDocumentRequest,
+  ): Promise<GetDocumentResponse | Error> {
     this.currentUser = currentUser;
 
     let document = null;
@@ -46,7 +50,7 @@ export default class GetDocumentUseCase implements IGetDocumentUseCase {
       // Fetch the document by ID
       document = await this.repository.getOneById(request.id);
     } catch (error) {
-      console.error('Error fetching document:', error);
+      console.error("Error fetching document:", error);
       new InternalError("An error occurred while fetching the document.");
     }
 
@@ -57,15 +61,13 @@ export default class GetDocumentUseCase implements IGetDocumentUseCase {
 
     // Check if user can access this document
     if (document.userId !== this.currentUser.id) {
-      return new AccessForbiddenError()
+      return new AccessForbiddenError();
     }
-    
+
     return {
       success: true,
-      message:"Document get successfully.",
-      document: document 
-        ? this.mapper.map(document) 
-        : null
+      message: "Document get successfully.",
+      document: document ? this.mapper.map(document) : null,
     };
   }
 }

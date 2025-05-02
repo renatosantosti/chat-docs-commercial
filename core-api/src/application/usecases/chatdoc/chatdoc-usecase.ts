@@ -1,8 +1,8 @@
 import AuthUserDto from "@/domain/dtos/auth/user";
-import  ChatDocRequest from "./chatdoc-request";
+import ChatDocRequest from "./chatdoc-request";
 import { InternalError } from "@/shared/errors/internal-error";
 import { BadRequestError } from "@/shared/errors/bad-request-error";
-import {  ChatDocResponse } from "./chatdoc-response";
+import { ChatDocResponse } from "./chatdoc-response";
 import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
 import IDocumentRepository from "@/application/interfaces/repositories/document";
 import { IChatDocUseCase } from "@/application/interfaces/use-cases/chatdoc-usecase-interface";
@@ -12,7 +12,7 @@ import { SearchEmbeddedDocumentDto } from "@/domain/dtos/search-dtos";
 import { elasticSearchConfig } from "@/config";
 import { IIndexerAdapter } from "@/application/interfaces/adapters/indexer-adapter";
 
-export default class  ChatDocUseCase implements IChatDocUseCase{
+export default class ChatDocUseCase implements IChatDocUseCase {
   public currentUser?: AuthUserDto;
 
   constructor(
@@ -24,17 +24,19 @@ export default class  ChatDocUseCase implements IChatDocUseCase{
 
   /**
    * Handles the create document request.
-   * 
+   *
    * @param currentUser - The currently authenticated user. This parameter is required to ensure that the use case is executed in the context of the authenticated user.
    *                      It is typically used for authorization checks or to associate the operation with the user.
    * @param request - The request object containing search term and mode.
    * @returns A promise that resolves chat with document pages result.
    */
 
-  async handler(currentUser: AuthUserDto, request:  ChatDocRequest): Promise< ChatDocResponse | Error> {
-
-   this.currentUser = currentUser;
-    // Validations    
+  async handler(
+    currentUser: AuthUserDto,
+    request: ChatDocRequest,
+  ): Promise<ChatDocResponse | Error> {
+    this.currentUser = currentUser;
+    // Validations
     if (!request.question || request.question.length === 0) {
       return new BadRequestError("Your question is required for chatting.");
     }
@@ -45,10 +47,13 @@ export default class  ChatDocUseCase implements IChatDocUseCase{
 
     const semanticFilter: SearchEmbeddedDocumentDto = {
       documentId: request.documentId,
-      embedding: await this.gptAdapter.getEmbedding(request.question)
-    } 
+      embedding: await this.gptAdapter.getEmbedding(request.question),
+    };
 
-    const fragments =  await this.indexerAdapter.searchBySemantic(elasticSearchConfig.indexName, semanticFilter);
+    const fragments = await this.indexerAdapter.searchBySemantic(
+      elasticSearchConfig.indexName,
+      semanticFilter,
+    );
 
     let indexFragment = 0;
     const messages: ChatCompletatioDto[] = [
@@ -65,12 +70,10 @@ export default class  ChatDocUseCase implements IChatDocUseCase{
       {
         role: "user",
         content: `Based on the following document fragments:    
-            ${
-              fragments.map(highlightText => {
-                indexFragment++;
-                return `${indexFragment} -  ${highlightText.content} \n`
-              })
-            }     
+            ${fragments.map((highlightText) => {
+              indexFragment++;
+              return `${indexFragment} -  ${highlightText.content} \n`;
+            })}     
             
             Can you explain the main findings? Only response user question, avoid to start saying document..., 
             you should go direct to your response. Whenever you has no answer, ask about more details about document. 
@@ -80,29 +83,31 @@ export default class  ChatDocUseCase implements IChatDocUseCase{
       },
     ];
 
-    try{
+    try {
       // Runs Gpt Adapter on conversation mode
       const response = await this.gptAdapter.getResponse(messages);
       return {
-                success: !!response
-                                ? true 
-                                :false,
-                message: !!response ?  'Response got successfully.' :  'Found error to get text.',
-                result: {
-                    documentId: request.documentId,
-                    response: !!response 
-                              ? [response] 
-                              : ["Nothing to say, try to say something different."],
-                    pages:  fragments.map(highlightText => ({
-                      documentId:request.documentId,
-                      pageNumber:highlightText.pageNumber,
-                      content:highlightText.content,
-                    }))
-                },
+        success: !!response ? true : false,
+        message: !!response
+          ? "Response got successfully."
+          : "Found error to get text.",
+        result: {
+          documentId: request.documentId,
+          response: !!response
+            ? [response]
+            : ["Nothing to say, try to say something different."],
+          pages: fragments.map((highlightText) => ({
+            documentId: request.documentId,
+            pageNumber: highlightText.pageNumber,
+            content: highlightText.content,
+          })),
+        },
       };
     } catch (error: any) {
-      console.error('Unknow error while generating chatting response:', error);
-      return new InternalError("Uknow error occurred while generating chatting response.");  
+      console.error("Unknow error while generating chatting response:", error);
+      return new InternalError(
+        "Uknow error occurred while generating chatting response.",
+      );
     }
-  } 
+  }
 }

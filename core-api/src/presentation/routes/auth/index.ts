@@ -1,12 +1,12 @@
-import IPasswordHashAdapter from '@/application/interfaces/adapters/password-hashing';
-import { authConfig } from '@/config';
-import AuthUserDto from '@/domain/dtos/auth/user';
-import AuthController from '@/presentation/controllers/auth';
-import { unauthorizedHttpError } from '@/presentation/helpers/http-helper';
-import HttpStatusCode from '@/presentation/helpers/http-status';
-import { InternalError, UnauthorizedError } from '@/shared/errors';
-import express from 'express';
-import { container } from 'tsyringe';
+import IPasswordHashAdapter from "@/application/interfaces/adapters/password-hashing";
+import { authConfig } from "@/config";
+import AuthUserDto from "@/domain/dtos/auth/user";
+import AuthController from "@/presentation/controllers/auth";
+import { unauthorizedHttpError } from "@/presentation/helpers/http-helper";
+import HttpStatusCode from "@/presentation/helpers/http-status";
+import { InternalError, UnauthorizedError } from "@/shared/errors";
+import express from "express";
+import { container } from "tsyringe";
 
 const authRouter = express.Router();
 
@@ -44,7 +44,7 @@ const authRouter = express.Router();
  *                     token:
  *                       type: string
  */
-authRouter.post('/auth/token', async (req, res) => {
+authRouter.post("/auth/token", async (req, res) => {
   try {
     const controller = container.resolve(AuthController);
     const response = await controller.handler(req.body);
@@ -55,12 +55,12 @@ authRouter.post('/auth/token', async (req, res) => {
 
     return res.send(response);
   } catch (err: any) {
-    console.error('Unknow Internal Error', {
-      details: { route: '/auth/token', error: { ...err } },
+    console.error("Unknow Internal Error", {
+      details: { route: "/auth/token", error: { ...err } },
     });
     return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError('Unknow Internal Error'));
+      .send(new InternalError("Unknow Internal Error"));
   }
 });
 
@@ -136,7 +136,7 @@ authRouter.post('/auth/token', async (req, res) => {
  *                   type: string
  *                   example: Unknown Internal Error
  */
-authRouter.post('/auth/login', async (req, res) => {
+authRouter.post("/auth/login", async (req, res) => {
   try {
     const controller = container.resolve(AuthController);
     const response = await controller.handler(req.body);
@@ -152,10 +152,10 @@ authRouter.post('/auth/login', async (req, res) => {
     const { token, userId, userFullName } = (response as any)?.data;
     if (token && userId && userFullName) {
       return res
-        .cookie('token', token, {
+        .cookie("token", token, {
           httpOnly: true,
           secure: true,
-          sameSite: 'strict',
+          sameSite: "strict",
           maxAge: 2 * 60 * 60 * 1000, //15 min - change it to get from .env
         })
         .json({ user: { id: userId, name: userFullName } });
@@ -163,14 +163,14 @@ authRouter.post('/auth/login', async (req, res) => {
 
     return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError('Unknow during login'));
+      .send(new InternalError("Unknow during login"));
   } catch (err: any) {
-    console.error('Unknow Internal Error', {
-      details: { route: '/auth/login', error: { ...err } },
+    console.error("Unknow Internal Error", {
+      details: { route: "/auth/login", error: { ...err } },
     });
     return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError('Unknow Internal Error'));
+      .send(new InternalError("Unknow Internal Error"));
   }
 });
 
@@ -203,14 +203,14 @@ authRouter.post('/auth/login', async (req, res) => {
  *                   type: string
  *                   example: Unknown Internal Error
  */
-authRouter.post('/auth/logout', (req, res) => {
-  res.clearCookie('token', {
+authRouter.post("/auth/logout", (req, res) => {
+  res.clearCookie("token", {
     httpOnly: true,
     secure: true,
-    sameSite: 'strict',
+    sameSite: "strict",
   });
 
-  return res.status(200).json({ message: 'Logged out successfully.' });
+  return res.status(200).json({ message: "Logged out successfully." });
 });
 
 /**
@@ -260,16 +260,16 @@ authRouter.post('/auth/logout', (req, res) => {
  *                   type: string
  *                   example: Unknown Internal Error
  */
-authRouter.get('/auth/check', async (req, res) => {
+authRouter.get("/auth/check", async (req, res) => {
   const token = req.cookies.token;
 
   if (!token) {
-    return res.status(401).json({ message: 'Not authenticated' });
+    return res.status(401).json({ message: "Not authenticated" });
   }
 
   try {
     const passwordHashAdapter: IPasswordHashAdapter = container.resolve(
-      'IPasswordHashAdapter',
+      "IPasswordHashAdapter",
     );
     // Verify the token
     const validToekn = passwordHashAdapter.validateToken(
@@ -289,10 +289,10 @@ authRouter.get('/auth/check', async (req, res) => {
 
     const user = await passwordHashAdapter.decodeToken<AuthUserDto>(token);
     return res
-      .cookie('token', token, {
+      .cookie("token", token, {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
+        sameSite: "strict",
         maxAge: 2 * 60 * 60 * 1000, //15 min - change it to get from .env
       })
       .json({ user: { id: user?.id, name: user?.name } });

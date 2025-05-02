@@ -8,7 +8,7 @@ import DocumentDto from "../../../../domain/dtos/document";
 export default class GetAllDocumentResponse implements IBaseUseCaseResponse {
   /**
    * Constructs a new CreateDocumentResponse object.
-   * 
+   *
    * @param success - Indicates whether the document creation operation was successful.
    * @param message - Provides a message related to the operation result, typically used for conveying success or error information.
    * @param documents - An array of DocumentDto objects representing the created document(s).
@@ -17,6 +17,6 @@ export default class GetAllDocumentResponse implements IBaseUseCaseResponse {
   constructor(
     readonly success: boolean,
     readonly message: string,
-    readonly documents: DocumentDto[] | null
-  ) { }
+    readonly documents: DocumentDto[] | null,
+  ) {}
 }

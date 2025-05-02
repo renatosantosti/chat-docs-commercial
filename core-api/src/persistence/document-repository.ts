@@ -5,8 +5,9 @@ import DocumentEntity from "@/infrastructure/database/entities/document";
 import IBaseMapper from "@/application/interfaces/base/base-mapper";
 
 export default class DocumentRepository implements IDocumentRepository {
-    
-  constructor(readonly mapper: IBaseMapper<Document, Partial<DocumentEntity>>) {}
+  constructor(
+    readonly mapper: IBaseMapper<Document, Partial<DocumentEntity>>,
+  ) {}
 
   async deleteOneById(id: number): Promise<boolean> {
     const doc = await DbContext.Documents.destroy({ where: { id: id } });
@@ -24,40 +25,42 @@ export default class DocumentRepository implements IDocumentRepository {
     return this.mapper.mapArrayReverse(result);
   }
 
-  async createOne(document: Document): Promise<Document|null> {
+  async createOne(document: Document): Promise<Document | null> {
     let result: DocumentEntity;
-    const  transaction =  await DbContext.dbConnection.transaction();
-    try{
-        result = await DbContext.Documents.create(document as Omit<Document, "pages">, {transaction});
-        const pageNumber = 1;
-        const pages =  document.pages.map(page => {
-          page.documentId =  result.id;
-          return page;
-        })
+    const transaction = await DbContext.dbConnection.transaction();
+    try {
+      result = await DbContext.Documents.create(
+        document as Omit<Document, "pages">,
+        { transaction },
+      );
+      const pageNumber = 1;
+      const pages = document.pages.map((page) => {
+        page.documentId = result.id;
+        return page;
+      });
 
-        await DbContext.Pages.bulkCreate(pages, {transaction});    
-        transaction.commit();
-        return result 
-        ? this.mapper.mapReverse(result)
-        : null;
-    } catch(error){
+      await DbContext.Pages.bulkCreate(pages, { transaction });
+      transaction.commit();
+      return result ? this.mapper.mapReverse(result) : null;
+    } catch (error) {
       transaction.rollback();
-      console.error("Error to save document and pages.", {Details: error})
-      throw new Error("Error to save document and pages.")
+      console.error("Error to save document and pages.", { Details: error });
+      throw new Error("Error to save document and pages.");
     }
   }
 
   async getOneById(documentId: number): Promise<Document | null> {
-    const result = await DbContext.Documents.findOne({ where: { id: documentId } });
-    return result 
-      ? this.mapper.mapReverse(result)
-      : null;
+    const result = await DbContext.Documents.findOne({
+      where: { id: documentId },
+    });
+    return result ? this.mapper.mapReverse(result) : null;
   }
-  
+
   async updateOne(document: Document): Promise<Document | null> {
-    const [affectedRows]  = await DbContext.Documents.update(document as Omit<Document,"pages">, { where: { id: document.id } });
-    return affectedRows > 0
-      ? document
-      : null;
+    const [affectedRows] = await DbContext.Documents.update(
+      document as Omit<Document, "pages">,
+      { where: { id: document.id } },
+    );
+    return affectedRows > 0 ? document : null;
   }
 }

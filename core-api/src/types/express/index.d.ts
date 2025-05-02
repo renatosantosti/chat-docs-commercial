@@ -6,7 +6,7 @@ import AuthUserDto from "@/domain/dtos/auth/user";
 declare global {
   namespace Express {
     interface Request {
-      currentUser?: AuthUserDto
+      currentUser?: AuthUserDto;
     }
   }
 }

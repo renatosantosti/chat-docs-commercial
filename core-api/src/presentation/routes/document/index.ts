@@ -92,26 +92,32 @@ const documentRouters = express.Router();
  *                   type: string
  *                   example: Internal server error
  */
-documentRouters.get("/documents/:id", onlyWithAccessAuthMiddleware, async (req, res) => {
-  try {
+documentRouters.get(
+  "/documents/:id",
+  onlyWithAccessAuthMiddleware,
+  async (req, res) => {
+    try {
+      // Resolve the use case and controller from the container
+      const controller = container.resolve(
+        GetDocumentController,
+      ) as GetDocumentController;
 
-    // Resolve the use case and controller from the container
-    const controller =   container.resolve(GetDocumentController) as GetDocumentController;
+      const documentId = Number(req.params?.id ?? 0);
+      const response = await controller.handler(req.currentUser!, {
+        id: documentId,
+      });
 
-    const documentId = Number(req.params?.id ?? 0);
-    const response = await controller.handler(req.currentUser!, {id:documentId});
-
-    return res
-      .status(response.statusCode)
-      .send(response);
-  }
-  catch (err: any) {
-    console.error("Unknown Internal Error", { details: { method: "GET", route: "/documents/:id", error: { ...err } } });
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError("Unknown Internal Error"));
-  }
-});
+      return res.status(response.statusCode).send(response);
+    } catch (err: any) {
+      console.error("Unknown Internal Error", {
+        details: { method: "GET", route: "/documents/:id", error: { ...err } },
+      });
+      return res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .send(new InternalError("Unknown Internal Error"));
+    }
+  },
+);
 
 /**
  * @openapi
@@ -174,33 +180,37 @@ documentRouters.get("/documents/:id", onlyWithAccessAuthMiddleware, async (req, 
  *                   type: string
  *                   example: "Internal server error"
  */
-documentRouters.get("/documents/", onlyWithAccessAuthMiddleware, async (req, res) => {
-  try {
+documentRouters.get(
+  "/documents/",
+  onlyWithAccessAuthMiddleware,
+  async (req, res) => {
+    try {
+      // Resolve the use case and controller from the container
+      const controller = container.resolve(
+        "GetAllDocumentController",
+      ) as GetAllDocumentController;
 
-    // Resolve the use case and controller from the container
-    const controller = container.resolve("GetAllDocumentController") as GetAllDocumentController;
-    
-    // Fires controller handler
-    const response = await controller.handler(req.currentUser! );
+      // Fires controller handler
+      const response = await controller.handler(req.currentUser!);
 
-    return res
-      .status(response.statusCode)
-      .send(response);
-  }
-  catch (err: any) {
-    console.error("Unknow Internal Error", { details: {method:"GET", route: "/documents/:id", error: { ...err } } })
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError("Unknow Internal Error"));
-  }
-});
+      return res.status(response.statusCode).send(response);
+    } catch (err: any) {
+      console.error("Unknow Internal Error", {
+        details: { method: "GET", route: "/documents/:id", error: { ...err } },
+      });
+      return res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .send(new InternalError("Unknow Internal Error"));
+    }
+  },
+);
 
 /**
  * @openapi
  * /documents:
  *   post:
  *     summary: Creates a new document
- *     tags: 
+ *     tags:
  *       - Documents
  *     requestBody:
  *       required: true
@@ -270,63 +280,69 @@ documentRouters.get("/documents/", onlyWithAccessAuthMiddleware, async (req, res
  *                   type: string
  *                   example: Internal server error
  */
-documentRouters.post("/documents/", [onlyWithAccessAuthMiddleware, uploadMiddleware.single('content')], async (req:any, res:any) => {
-  try {
+documentRouters.post(
+  "/documents/",
+  [onlyWithAccessAuthMiddleware, uploadMiddleware.single("content")],
+  async (req: any, res: any) => {
+    try {
+      // Resolve the use case and controller from the container
+      const controller = container.resolve(
+        "CreateDocumentController",
+      ) as CreateDocumentController;
 
-    // Resolve the use case and controller from the container
-    const controller = container.resolve("CreateDocumentController") as CreateDocumentController;
+      // Catch file uploaded
+      const file = req.file;
+      const fileName = req.file.originalname;
 
-    // Catch file uploaded
-    const file = req.file;
-    const fileName = req.file.originalname;
-  
-    if (!file) {
-      return res
-      .status(HttpStatusCode.BAD_REQUEST)
-      .send(new BadRequestError("File is required."));
-    }
-  
-    const isPDF = await isValidPDF(file.buffer);
-    if (!isPDF) {
-      return res
-        .status(HttpStatusCode.BAD_REQUEST)
-        .send(new BadRequestError("Invalid file type. Only PDFs are allowed."));
-    }
-  
-    const base64Content = file.buffer.toString('base64');
+      if (!file) {
+        return res
+          .status(HttpStatusCode.BAD_REQUEST)
+          .send(new BadRequestError("File is required."));
+      }
 
-    // Build the new document object from the request body, ensuring undefined values are handled properly
-    const newDocument: CreateDocumentRequest = {
+      const isPDF = await isValidPDF(file.buffer);
+      if (!isPDF) {
+        return res
+          .status(HttpStatusCode.BAD_REQUEST)
+          .send(
+            new BadRequestError("Invalid file type. Only PDFs are allowed."),
+          );
+      }
+
+      const base64Content = file.buffer.toString("base64");
+
+      // Build the new document object from the request body, ensuring undefined values are handled properly
+      const newDocument: CreateDocumentRequest = {
         name: fileName,
         title: req.body?.title,
         description: req.body?.description,
         content: base64Content,
-        type: "application/pdf"
-    };
+        type: "application/pdf",
+      };
 
-    // Execute the controller handler and pass the new document object as part of the request
-    const response = await controller.handler(req.currentUser!, newDocument);
-    // Return the response from the handler, including status code and content
-    return res
-      .status(response.statusCode)
-      .send(response);
+      // Execute the controller handler and pass the new document object as part of the request
+      const response = await controller.handler(req.currentUser!, newDocument);
+      // Return the response from the handler, including status code and content
+      return res.status(response.statusCode).send(response);
+    } catch (err: any) {
+      // Handle unknown errors and log them with additional context
+      console.error("Unknown Internal Error", {
+        details: { method: "POST", route: "/documents/", error: { ...err } },
+      });
 
-  } catch (err: any) {
-    // Handle unknown errors and log them with additional context
-    console.error("Unknown Internal Error", { details: {method:"POST" ,route: "/documents/", error: { ...err } } });
-
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError("Unknown Internal Error"));
-  }
-});
+      return res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .send(new InternalError("Unknown Internal Error"));
+    }
+  },
+);
 
 /**
  * @openapi
  * /documents/{id}:
  *   delete:
  *     summary: Deletes a document by its ID
- *     tags: 
+ *     tags:
  *       - Documents
  *     parameters:
  *       - name: id
@@ -383,28 +399,35 @@ documentRouters.post("/documents/", [onlyWithAccessAuthMiddleware, uploadMiddlew
  *                   type: string
  *                   example: Internal server error
  */
-documentRouters.delete("/documents/:id", onlyWithAccessAuthMiddleware, async (req, res) => {
-  try {
+documentRouters.delete(
+  "/documents/:id",
+  onlyWithAccessAuthMiddleware,
+  async (req, res) => {
+    try {
+      // Resolve the use case and controller from the container
+      const controller = container.resolve(
+        "DeleteDocumentController",
+      ) as DeleteDocumentController;
 
-    // Resolve the use case and controller from the container
-    const controller = container.resolve("DeleteDocumentController") as DeleteDocumentController;
+      // Execute the controller handler and pass the new document object as part of the request
+      const response = await controller.handler(req.currentUser!, {
+        id: Number(req.params.id),
+      });
 
-    // Execute the controller handler and pass the new document object as part of the request
-    const response = await controller.handler(req.currentUser!, {id: Number(req.params.id)});
+      // Return the response from the handler, including status code and content
+      return res.status(response.statusCode).send(response);
+    } catch (err: any) {
+      // Handle unknown errors and log them with additional context
+      console.error("Unknown Internal Error", {
+        details: { method: "DELETE", route: "/documents/", error: { ...err } },
+      });
 
-    // Return the response from the handler, including status code and content
-    return res
-      .status(response.statusCode)
-      .send(response);
-  } catch (err: any) {
-    // Handle unknown errors and log them with additional context
-    console.error("Unknown Internal Error", { details: {method:"DELETE", route: "/documents/", error: { ...err } } });
-    
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError("Unknown Internal Error"));
-  }
-});
+      return res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .send(new InternalError("Unknown Internal Error"));
+    }
+  },
+);
 
 /**
  * @openapi
@@ -502,34 +525,39 @@ documentRouters.delete("/documents/:id", onlyWithAccessAuthMiddleware, async (re
  *                   type: string
  *                   example: Internal server error
  */
-documentRouters.put("/documents/:id", onlyWithAccessAuthMiddleware, async (req, res) => {
-  try {
+documentRouters.put(
+  "/documents/:id",
+  onlyWithAccessAuthMiddleware,
+  async (req, res) => {
+    try {
+      // Resolve the use case and controller from the container
+      const controller = container.resolve(
+        "UpdateDocumentController",
+      ) as UpdateDocumentController;
 
-    // Resolve the use case and controller from the container
-    const controller = container.resolve("UpdateDocumentController") as UpdateDocumentController;
+      // Create request to be passed to controller
+      const document: UpdateDocumentRequest = {
+        id: Number(req.params.id),
+        title: req.body?.title,
+        description: req.body?.description,
+        userId: req.currentUser?.id!,
+      };
 
-    // Create request to be passed to controller
-    const document: UpdateDocumentRequest = {
-      id: Number(req.params.id),
-      title: req.body?.title,
-      description: req.body?.description,
-      userId: req.currentUser?.id!,
-    };
-    
-    const response = await controller.handler(req.currentUser!, document);
+      const response = await controller.handler(req.currentUser!, document);
 
-    // Return the response from the handler, including status code and content
-    return res
-      .status(response.statusCode)
-      .send(response);
-  } catch (err: any) {
-    // Handle unknown errors and log them with additional context
-    console.error("Unknown Internal Error", { details: {method:"PUT", route: "/documents/", error: { ...err } } });
-    
-    return res
-      .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .send(new InternalError("Unknown Internal Error"));
-  }
-});
+      // Return the response from the handler, including status code and content
+      return res.status(response.statusCode).send(response);
+    } catch (err: any) {
+      // Handle unknown errors and log them with additional context
+      console.error("Unknown Internal Error", {
+        details: { method: "PUT", route: "/documents/", error: { ...err } },
+      });
+
+      return res
+        .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+        .send(new InternalError("Unknown Internal Error"));
+    }
+  },
+);
 
 export default documentRouters;

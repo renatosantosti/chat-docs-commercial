@@ -4,22 +4,22 @@ import User from "@/domain/models/user";
 import IBaseMapper from "@/application/interfaces/base/base-mapper";
 import UserEntity from "@/infrastructure/database/entities/user";
 
-export default class UserRepository implements IUserRepository { 
+export default class UserRepository implements IUserRepository {
   constructor(readonly mapper: IBaseMapper<User, Partial<UserEntity>>) {}
 
   async getOneById(userId: number): Promise<User | null> {
     const user = await DbContext.Users.findOne({ where: { id: userId } });
-    return user as (User | null);
+    return user as User | null;
   }
 
   async getOneByEmail(email: string): Promise<User | null> {
-    const user = await DbContext.Users.findOne({ where: { email },});
-    return user as (User | null);
+    const user = await DbContext.Users.findOne({ where: { email } });
+    return user as User | null;
   }
 
   async getAll(): Promise<User[] | null> {
     const users = await DbContext.Users.findAll({ where: { isActive: true } });
-    return users as (User[] | null);
+    return users as User[] | null;
   }
 
   async createOne(user: User): Promise<User> {
@@ -30,10 +30,10 @@ export default class UserRepository implements IUserRepository {
 
   async updateOne(user: User): Promise<User | null> {
     const updatedUser = this.mapper.map(user);
-    const [affectedCount] = await DbContext.Users.update( updatedUser, { where: { id: updatedUser.id} });
-    return affectedCount > 0
-      ? user
-      : null;
+    const [affectedCount] = await DbContext.Users.update(updatedUser, {
+      where: { id: updatedUser.id },
+    });
+    return affectedCount > 0 ? user : null;
   }
 
   async deleteOneById(id: number): Promise<boolean> {

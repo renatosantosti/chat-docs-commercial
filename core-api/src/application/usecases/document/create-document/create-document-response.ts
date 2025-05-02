@@ -8,7 +8,7 @@ import DocumentDto from "@/domain/dtos/document";
 export class CreateDocumentResponse implements IBaseUseCaseResponse {
   /**
    * Constructs a new CreateDocumentResponse object.
-   * 
+   *
    * @param success - Indicates whether the document creation operation was successful.
    * @param message - Provides a message related to the operation result, typically used for conveying success or error information.
    * @param document - The retrieved document data transfer object (DTO) document. This will be null if found any error.
@@ -16,6 +16,6 @@ export class CreateDocumentResponse implements IBaseUseCaseResponse {
   constructor(
     readonly success: boolean,
     readonly message: string,
-    readonly document?: DocumentDto
-  ) { }
+    readonly document?: DocumentDto,
+  ) {}
 }

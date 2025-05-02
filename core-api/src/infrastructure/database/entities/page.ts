@@ -1,4 +1,17 @@
-import { AutoIncrement, BelongsTo, BelongsToMany, Column, CreatedAt, DataType, DeletedAt, ForeignKey, Model, PrimaryKey, Table, UpdatedAt } from "sequelize-typescript";
+import {
+  AutoIncrement,
+  BelongsTo,
+  BelongsToMany,
+  Column,
+  CreatedAt,
+  DataType,
+  DeletedAt,
+  ForeignKey,
+  Model,
+  PrimaryKey,
+  Table,
+  UpdatedAt,
+} from "sequelize-typescript";
 import DocumentEntity from "./document";
 
 @Table({ tableName: "Page" })
@@ -18,11 +31,11 @@ export default class PageEntity extends Model<Partial<PageEntity>> {
   @CreatedAt
   createdOn!: Date;
   @Column(DataType.STRING)
-  createdBy!: string
+  createdBy!: string;
   @UpdatedAt
   modifiedOn?: Date;
   @Column(DataType.STRING)
-  modifiedBy!: string
+  modifiedBy!: string;
   @DeletedAt
   deletionDate?: Date;
   /* End blamed fields */
@@ -35,4 +48,3 @@ export default class PageEntity extends Model<Partial<PageEntity>> {
   @BelongsTo(() => DocumentEntity)
   document!: DocumentEntity;
 }
-

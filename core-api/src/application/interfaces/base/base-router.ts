@@ -1,4 +1,4 @@
 export interface BaseRouter {
-    setup(): void;
-    getRoutes(): any;
+  setup(): void;
+  getRoutes(): any;
 }

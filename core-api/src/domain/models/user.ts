@@ -1,7 +1,6 @@
 import Document from "./document";
 
 export default interface User {
-  
   id?: number;
   name: string;
   password: string;
