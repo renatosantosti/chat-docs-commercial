@@ -97,7 +97,9 @@ export default class ChatDocUseCase implements IChatDocUseCase {
             ? [response]
             : ["Nothing to say, try to say something different."],
           pages: fragments.map((highlightText) => ({
-            documentId: request.documentId,
+            pageId: highlightText.pageNumber,
+            documentId: highlightText.documentId,
+            documentName: highlightText.documentName,
             pageNumber: highlightText.pageNumber,
             content: highlightText.content,
           })),

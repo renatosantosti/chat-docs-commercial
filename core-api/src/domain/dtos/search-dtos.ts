@@ -38,8 +38,10 @@ export type SearchEmbeddedDocumentDto = {
 };
 
 export type SearchTermResponseDto = {
-  documentId?: number;
-  pageNumber?: number;
+  pageId: number
+  documentId: number;
+  documentName: string;
+  pageNumber: number;
   content: string;
 };
 

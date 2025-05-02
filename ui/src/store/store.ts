@@ -3,6 +3,7 @@ import createSagaMiddleware from "redux-saga";
 import authReducer from "./auth/slices";
 import documentReducer from "./document/slices";
 import rootSagas from "./RootSaga";
+import chatReducer from "./chat/slices";
 
 // Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -12,10 +13,11 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
     document: documentReducer,
+    chat: chatReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware), // Disable thunk and add saga middleware
-    devTools: process.env.NODE_ENV !== 'production',
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 // Run the root saga

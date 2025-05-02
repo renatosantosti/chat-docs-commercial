@@ -4,6 +4,8 @@ import { Typewriter } from "react-simple-typewriter";
 import { Search, Download, Bot } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { ChatState, setActivated } from "@/store/chat/slices";
 
 const mockResults = [
   {
@@ -25,7 +27,9 @@ const mockResults = [
 ];
 
 const ChatDoc = () => {
-  const [mode, setMode] = useState("search");
+  const dispatch = useDispatch();
+  const state = useSelector((store: { chat: ChatState }) => store.chat);
+  const [mode, setMode] = useState("chat");
   const [searchTerm, setSearchTerm] = useState("");
   const [typedText, setTypedText] = useState(
     `Hi guys, I will leverage this moment to speak a little bit about me...well as you know I am Renato Santos. 
@@ -33,21 +37,33 @@ const ChatDoc = () => {
     I feel free to explore new things and jump to another new technology whenever it is needed or I will explore it.
     I THINK SOLUTION IS MORE THAN TECHNOLOGIES - SO TECH IS TOOLS TO BE USED AND COMBINED TO ACHIEVE A SMART SOLUTION.
     Be an expert is good, I am an expert whenever I have been working for a long time with certain stuff, but I am always ready to explore new things, that´s my spirit. Sorry to stop your flow! 
-    Go ahead, ask something to the doc!`
+    Go ahead, ask something to the doc!`,
   );
 
   const documentName = "My Resume.pdf";
 
-  const notImplemented =  () =>{
-    alert('It was not integrated on UI yet, please see it working on REST API by Swagger.')
+  const notImplemented = () => {
+    alert(
+      "It was not integrated on UI yet, please see it working on REST API by Swagger.",
+    );
   };
+
+  // after 60 seconds -  close demo
+  if (!state.wasActivated) {
+    setTimeout(() => {
+      dispatch(setActivated());
+      setTypedText("Thanks! Waiting for questions.");
+    }, 2 * 1000);
+  }
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold gradient-text">
-          {mode === "chat" ? "Chatting with" : "Search in"}: <b>{documentName}</b>
+          {mode === "chat" ? "Chatting with" : "Search in"}:{" "}
+          <b>{documentName}</b>
+          {"Thanks! Waiting for questions."}
         </h1>
       </div>
 
@@ -56,22 +72,33 @@ const ChatDoc = () => {
         <Search className="w-5 h-5 text-gray-500 mr-3" />
         <input
           type="text"
-          placeholder={mode === "chat" ? "Ask something" : "Search term on all pages..."}
+          placeholder={
+            mode === "chat" ? "Ask something" : "Search term on all pages..."
+          }
           className="w-full outline-none text-gray-700 placeholder:text-gray-400"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setTypedText("");
+          }}
         />
       </div>
 
       {/* Mode Toggle & Button */}
       <div className="flex items-center justify-between">
-        <RadioGroup.Root className="flex gap-6" value={mode} onValueChange={setMode}>
+        <RadioGroup.Root
+          className="flex gap-6"
+          value={mode}
+          onValueChange={setMode}
+        >
           <label className="flex items-center gap-2 cursor-pointer">
             <RadioGroup.Item
               value="chat"
               className="w-4 h-4 rounded-full border border-black flex items-center justify-center"
             >
-              {mode === "chat" && <div className="w-2 h-2 bg-black rounded-full" />}
+              {mode === "chat" && (
+                <div className="w-2 h-2 bg-black rounded-full" />
+              )}
             </RadioGroup.Item>
             <span className="text-sm text-gray-800">AI Chat Doc</span>
           </label>
@@ -80,7 +107,9 @@ const ChatDoc = () => {
               value="search"
               className="w-4 h-4 rounded-full border border-black flex items-center justify-center"
             >
-              {mode === "search" && <div className="w-2 h-2 bg-black rounded-full" />}
+              {mode === "search" && (
+                <div className="w-2 h-2 bg-black rounded-full" />
+              )}
             </RadioGroup.Item>
             <span className="text-sm text-gray-800">Search Term</span>
           </label>
@@ -118,18 +147,24 @@ const ChatDoc = () => {
           <div className="col-span-2"></div>
         </div>
         {mockResults.map((res, index) => (
-          <div key={index} className="grid grid-cols-12 items-center px-4 py-3 border-t text-sm">
+          <div
+            key={index}
+            className="grid grid-cols-12 items-center px-4 py-3 border-t text-sm"
+          >
             <div className="col-span-2 text-gray-700">{res.page}</div>
             <div className="col-span-8 text-gray-600">
               <Highlighter
-                    highlightClassName="YourHighlightClass"
-                    searchWords={[...searchTerm.split(" ")]}
-                    autoEscape={true}
-                    textToHighlight={res.text}
-                />
+                highlightClassName="YourHighlightClass"
+                searchWords={[...searchTerm.split(" ")]}
+                autoEscape={true}
+                textToHighlight={res.text}
+              />
             </div>
             <div className="col-span-2 text-right">
-              <Button className="flex items-center gap-2 px-3 py-1 text-sm border rounded  hover:opacity-90 transition" onClick={()=> notImplemented()}>
+              <Button
+                className="flex items-center gap-2 px-3 py-1 text-sm border rounded  hover:opacity-90 transition"
+                onClick={() => notImplemented()}
+              >
                 <Download className="w-4 h-4" />
                 Download page
               </Button>
@@ -140,7 +175,10 @@ const ChatDoc = () => {
 
       {/* Full Document Download */}
       <div className="text-right">
-        <Button className="Button-gradient inline-flex items-center gap-2 px-5 py-2 rounded hover:opacity-90 transition" onClick={()=> notImplemented()}>
+        <Button
+          className="Button-gradient inline-flex items-center gap-2 px-5 py-2 rounded hover:opacity-90 transition"
+          onClick={() => notImplemented()}
+        >
           <Download className="w-4 h-4" />
           Download Full Document
         </Button>

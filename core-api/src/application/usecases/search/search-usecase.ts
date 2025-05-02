@@ -40,13 +40,13 @@ export default class SearchTermUseCase implements ISearchTermUseCase {
 
     if (
       request.documentId &&
-      request.mode == "page" &&
+      request.mode == "pages" &&
       request.documentId <= 0
     ) {
       return new BadRequestError("Document id is required.");
     }
 
-    if (request.documentId && request.mode == "document") {
+    if (request.documentId && request.mode == "documents") {
       return new BadRequestError(
         "Document is not required when mode is 'document' due all document will be searched.",
       );
@@ -54,7 +54,7 @@ export default class SearchTermUseCase implements ISearchTermUseCase {
 
     let result: SearchResultDto[] = [];
     const filter: SearchTermDto = {
-      documentId: request.mode == "page" ? request.documentId : undefined,
+      documentId: request.mode == "pages" ? request.documentId : undefined,
       term: request.term,
     };
 
@@ -62,7 +62,7 @@ export default class SearchTermUseCase implements ISearchTermUseCase {
       result = await this.indexerAdapter.searchByTerm(this.indexName, filter);
     } catch (error) {
       const errorMsg = `Error to search ${
-        request.mode == "document"
+        request.mode == "documents"
           ? "term on pages from"
           : "term on all documents."
       }`;

@@ -26,15 +26,15 @@ const searchRouters = express.Router();
  *               mode:
  *                 type: string
  *                 enum:
- *                   - document
- *                   - page
- *                 description: The mode of the search. "document" searches the entire document, while "page" searches specific pages.
+ *                   - documents
+ *                   - pages
+ *                 description: The mode of the search. "documents" searches pages from all documents, while "pages" searches specific document.
  *               term:
  *                 type: string
  *                 description: The search term to look for.
  *               documentId:
  *                 type: number
- *                 description: The ID of the document. Required when mode is "page".
+ *                 description: The ID of the document. Required when mode is "pages".
  *             required:
  *               - mode
  *               - term

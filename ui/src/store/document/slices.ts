@@ -129,4 +129,5 @@ export const {
   documentResetSearch,
 } = documentSlice.actions;
 
-export default documentSlice.reducer;
+const documentReducer = documentSlice.reducer;
+export default documentReducer;
