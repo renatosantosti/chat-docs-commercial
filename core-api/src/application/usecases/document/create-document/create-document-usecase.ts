@@ -1,18 +1,18 @@
-import AuthUserDto from "domain/dtos/auth/user";
+import AuthUserDto from "@/domain/dtos/auth/user";
 import { ICreateDocumentUseCase } from "../../../interfaces/use-cases/create-document-usecase-interface";
-import ITimeAdapter from "application/interfaces/adapters/time-provider";
-import IDocumentRepository from "application/interfaces/repositories/document";
-import IBaseMapper from "application/interfaces/base/base-mapper";
-import DocumentDto from "domain/dtos/document";
-import Document from "domain/models/document";
+import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
+import IDocumentRepository from "@/application/interfaces/repositories/document";
+import IBaseMapper from "@/application/interfaces/base/base-mapper";
+import DocumentDto from "@/domain/dtos/document";
+import Document from "@/domain/models/document";
 import CreateDocumentRequest from "./create-document-request";
 import { CreateDocumentResponse } from "./create-document-response";
-import { InternalError } from "shared/errors/internal-error";
-import { BadRequestError } from "shared/errors/bad-request-error";
-import { isNotError } from "shared/utils/dto-is-error-type-guard ";
-import { ExtractDocumentTextPagesService } from "application/services/extract-document-text-pages-service";
-import { ISearchIndexerService } from "application/interfaces/services/semantic-indexer-service-interface";
-import { DocumentTextPageDto } from "domain/dtos/search-dtos";
+import { InternalError } from "@/shared/errors/internal-error";
+import { BadRequestError } from "@/shared/errors/bad-request-error";
+import { isNotError } from "@/shared/utils/dto-is-error-type-guard ";
+import { ExtractDocumentTextPagesService } from "@/application/services/extract-document-text-pages-service";
+import { ISearchIndexerService } from "@/application/interfaces/services/semantic-indexer-service-interface";
+import { DocumentTextPageDto } from "@/domain/dtos/search-dtos";
 
 /**
  * Use case for creating a new document.

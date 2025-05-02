@@ -1,5 +1,5 @@
 
-import IBaseHttpResponse from "application/interfaces/base/base-http-response";
+import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
 import { InternalError } from "../../shared/errors/internal-error";
 import { UnauthorizedError } from "../../shared/errors/unauthorized-error";
 import HttpStatusCode from "./http-status";

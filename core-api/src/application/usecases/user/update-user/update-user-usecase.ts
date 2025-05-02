@@ -1,17 +1,17 @@
 
-import AuthUserDto from "domain/dtos/auth/user";
+import AuthUserDto from "@/domain/dtos/auth/user";
 import UpdateUserRequest from "./update-user-request"; 
 import UpdateUserResponse from "./update-user-response";
 import { IUpdateUserUseCase } from "../../../interfaces/use-cases/update-user-usecase-interface";
-import ITimeAdapter from "application/interfaces/adapters/time-provider";
-import IUserRepository from "application/interfaces/repositories/user";
-import { NotFoundError } from "shared/errors/not-found-error";
-import { InternalError } from "shared/errors/internal-error";
-import IBaseMapper from "application/interfaces/base/base-mapper";
-import User from "domain/models/user";
-import UserDto from "domain/dtos/user";
-import { AccessForbiddenError } from "shared/errors/access-forbidden-error";
-import IPasswordHashAdapter from "application/interfaces/adapters/password-hashing";
+import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
+import IUserRepository from "@/application/interfaces/repositories/user";
+import { NotFoundError } from "@/shared/errors/not-found-error";
+import { InternalError } from "@/shared/errors/internal-error";
+import IBaseMapper from "@/application/interfaces/base/base-mapper";
+import User from "@/domain/models/user";
+import UserDto from "@/domain/dtos/user";
+import { AccessForbiddenError } from "@/shared/errors/access-forbidden-error";
+import IPasswordHashAdapter from "@/application/interfaces/adapters/password-hashing";
 
 export default class UpdateUserUseCase implements IUpdateUserUseCase {
   public currentUser?: AuthUserDto;

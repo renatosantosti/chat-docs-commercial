@@ -1,8 +1,8 @@
-import DbContext from "infrastructure/database/sequelize";
-import IUserRepository from "application/interfaces/repositories/user";
-import User from "domain/models/user";
-import IBaseMapper from "application/interfaces/base/base-mapper";
-import UserEntity from "infrastructure/database/entities/user";
+import DbContext from "@/infrastructure/database/sequelize";
+import IUserRepository from "@/application/interfaces/repositories/user";
+import User from "@/domain/models/user";
+import IBaseMapper from "@/application/interfaces/base/base-mapper";
+import UserEntity from "@/infrastructure/database/entities/user";
 
 export default class UserRepository implements IUserRepository { 
   constructor(readonly mapper: IBaseMapper<User, Partial<UserEntity>>) {}

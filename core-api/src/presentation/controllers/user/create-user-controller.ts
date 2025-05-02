@@ -1,13 +1,13 @@
 import { inject, injectable } from "tsyringe";
 import Joi from "joi";
-import IBaseHttpResponse from "application/interfaces/base/base-http-response";
-import IBaseNonAuthenticadedController from "application/interfaces/base/base-non-authenticated-controller";
-import { badRequestHttpError, internalHttpError, ok,} from "presentation/helpers/http-helper";
-import CreateUserRequest from "application/usecases/user/create-user/create-user-request";
-import CreateUserResponse from "application/usecases/user/create-user/create-user-response";
-import { ICreateUserUseCase } from "application/interfaces/use-cases/create-user-usecase-interface";
-import { isNotError } from "shared/utils/dto-is-error-type-guard ";
-import { ErrorTypes } from "shared/errors/error-types";
+import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
+import IBaseNonAuthenticadedController from "@/application/interfaces/base/base-non-authenticated-controller";
+import { badRequestHttpError, internalHttpError, ok,} from "@/presentation/helpers/http-helper";
+import CreateUserRequest from "@/application/usecases/user/create-user/create-user-request";
+import CreateUserResponse from "@/application/usecases/user/create-user/create-user-response";
+import { ICreateUserUseCase } from "@/application/interfaces/use-cases/create-user-usecase-interface";
+import { isNotError } from "@/shared/utils/dto-is-error-type-guard ";
+import { ErrorTypes } from "@/shared/errors/error-types";
 
 @injectable()
 export default class CreateUserController implements IBaseNonAuthenticadedController<CreateUserRequest, CreateUserResponse> {

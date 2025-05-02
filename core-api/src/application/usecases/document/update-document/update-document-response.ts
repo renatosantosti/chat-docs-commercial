@@ -1,5 +1,5 @@
-import DocumentDto from "domain/dtos/document";
-import IBaseUseCaseResponse from "application/interfaces/base/base-usecase-response";
+import DocumentDto from "@/domain/dtos/document";
+import IBaseUseCaseResponse from "@/application/interfaces/base/base-usecase-response";
 
 export class UpdateDocumentResponse implements IBaseUseCaseResponse {
   /**

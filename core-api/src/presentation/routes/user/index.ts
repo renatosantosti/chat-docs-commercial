@@ -1,12 +1,12 @@
-import CreateUserRequest from "application/usecases/user/create-user/create-user-request";
-import UpdateUserRequest from "application/usecases/user/update-user/update-user-request";
+import CreateUserRequest from "@/application/usecases/user/create-user/create-user-request";
+import UpdateUserRequest from "@/application/usecases/user/update-user/update-user-request";
 import express from "express";
-import CreateUserController from "presentation/controllers/user/create-user-controller";
-import GetUserController from "presentation/controllers/user/get-user-controller";
-import UpdateUserController from "presentation/controllers/user/update-user-controller";
-import HttpStatusCode from "presentation/helpers/http-status";
-import onlyWithAccessAuthMiddleware from "presentation/http-middlewares/only-access-auth";
-import { InternalError, UnauthorizedError } from "shared/errors";
+import CreateUserController from "@/presentation/controllers/user/create-user-controller";
+import GetUserController from "@/presentation/controllers/user/get-user-controller";
+import UpdateUserController from "@/presentation/controllers/user/update-user-controller";
+import HttpStatusCode from "@/presentation/helpers/http-status";
+import onlyWithAccessAuthMiddleware from "@/presentation/http-middlewares/only-access-auth";
+import { InternalError, UnauthorizedError } from "@/shared/errors";
 import { container } from "tsyringe";
 const userRouters = express.Router();
 

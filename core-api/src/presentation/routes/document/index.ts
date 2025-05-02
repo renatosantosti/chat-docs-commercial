@@ -1,17 +1,17 @@
 import express from "express";
-import onlyWithAccessAuthMiddleware from "presentation/http-middlewares/only-access-auth";
+import onlyWithAccessAuthMiddleware from "@/presentation/http-middlewares/only-access-auth";
 import { container } from "tsyringe";
-import GetDocumentController from "presentation/controllers/document/get-document-controller";
-import HttpStatusCode from "presentation/helpers/http-status";
-import GetAllDocumentController from "presentation/controllers/document/get-all-document-controller";
-import CreateDocumentController from "presentation/controllers/document/create-document-controller";
-import CreateDocumentRequest from "application/usecases/document/create-document/create-document-request";
-import DeleteDocumentController from "presentation/controllers/document/delete-document-controller";
-import UpdateDocumentController from "presentation/controllers/document/update-document-controller";
-import UpdateDocumentRequest from "application/usecases/document/update-document/update-document-request";
-import { isValidPDF } from "shared/utils/validateFile";
-import { uploadMiddleware } from "presentation/http-middlewares/upload-middleware";
-import { BadRequestError, InternalError } from "shared/errors";
+import GetDocumentController from "@/presentation/controllers/document/get-document-controller";
+import HttpStatusCode from "@/presentation/helpers/http-status";
+import GetAllDocumentController from "@/presentation/controllers/document/get-all-document-controller";
+import CreateDocumentController from "@/presentation/controllers/document/create-document-controller";
+import CreateDocumentRequest from "@/application/usecases/document/create-document/create-document-request";
+import DeleteDocumentController from "@/presentation/controllers/document/delete-document-controller";
+import UpdateDocumentController from "@/presentation/controllers/document/update-document-controller";
+import UpdateDocumentRequest from "@/application/usecases/document/update-document/update-document-request";
+import { isValidPDF } from "@/shared/utils/validateFile";
+import { uploadMiddleware } from "@/presentation/http-middlewares/upload-middleware";
+import { BadRequestError, InternalError } from "@/shared/errors";
 
 // Create route
 const documentRouters = express.Router();

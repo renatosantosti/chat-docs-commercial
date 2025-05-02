@@ -1,15 +1,15 @@
-import AuthUserDto from "domain/dtos/auth/user";
+import AuthUserDto from "@/domain/dtos/auth/user";
 import { IGetUserUseCase } from "../../../interfaces/use-cases/get-user-usecase-interface";
-import ITimeAdapter from "application/interfaces/adapters/time-provider";
-import IUserRepository from "application/interfaces/repositories/user";
-import IBaseMapper from "application/interfaces/base/base-mapper";
-import User from "domain/models/user";
-import UserDto from "domain/dtos/user";
+import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
+import IUserRepository from "@/application/interfaces/repositories/user";
+import IBaseMapper from "@/application/interfaces/base/base-mapper";
+import User from "@/domain/models/user";
+import UserDto from "@/domain/dtos/user";
 import GetUserRequest from "./get-user-request";
 import GetUserResponse from "./get-user-response";
-import { AccessForbiddenError } from "shared/errors/access-forbidden-error";
-import { NotFoundError } from "shared/errors/not-found-error";
-import { InternalError } from "shared/errors/internal-error";
+import { AccessForbiddenError } from "@/shared/errors/access-forbidden-error";
+import { NotFoundError } from "@/shared/errors/not-found-error";
+import { InternalError } from "@/shared/errors/internal-error";
 
 /**
  * Use case for fetching a user by ID.

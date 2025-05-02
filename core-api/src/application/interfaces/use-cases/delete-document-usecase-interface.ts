@@ -1,7 +1,7 @@
-import IBaseUseCaseRequestHandler from "application/interfaces/base/base-usecase-handler";
+import IBaseUseCaseRequestHandler from "@/application/interfaces/base/base-usecase-handler";
 import DeleteDocumentResponse from "../../usecases/document/delete-document/delete-document-reponse";
 import DeleteDocumentRequest from "../../usecases/document/delete-document/delete-document-request";
-import AuthUserDto from "domain/dtos/auth/user";
+import AuthUserDto from "@/domain/dtos/auth/user";
 
 /**
  * Interface representing a generic use case request handler.

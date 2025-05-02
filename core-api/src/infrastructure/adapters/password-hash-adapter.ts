@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { injectable, singleton } from 'tsyringe';
-import IPasswordHashAdapter from 'application/interfaces/adapters/password-hashing';
-import { authConfig } from 'config';
+import IPasswordHashAdapter from '@/application/interfaces/adapters/password-hashing';
+import { authConfig } from '@/config';
 
 /**
  * @description PasswordHashAdapter class

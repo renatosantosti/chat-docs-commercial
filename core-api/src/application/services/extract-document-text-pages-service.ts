@@ -1,6 +1,6 @@
-import { IPDFDocumentAdapter } from "application/interfaces/adapters/pdf-document";
-import { IExtractDocumentTextPagesService } from "application/interfaces/services/extract-document-text-pages-service-interface";
-import { InternalError } from "shared/errors";
+import { IPDFDocumentAdapter } from "@/application/interfaces/adapters/pdf-document";
+import { IExtractDocumentTextPagesService } from "@/application/interfaces/services/extract-document-text-pages-service-interface";
+import { InternalError } from "@/shared/errors";
 
 
 // Implement the ExtractDocumentTextPagesService

@@ -1,12 +1,12 @@
-import ITimeAdapter from "application/interfaces/adapters/time-provider";
-import IUserRepository from "application/interfaces/repositories/user";
-import IPasswordHashAdapter from "application/interfaces/adapters/password-hashing";
+import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
+import IUserRepository from "@/application/interfaces/repositories/user";
+import IPasswordHashAdapter from "@/application/interfaces/adapters/password-hashing";
 import AuthRequest from "./auth-request";
 import AuthResponse from "./auth-response";
-import { BadRequestError, InternalError, MissingParamError, UnauthorizedError } from "shared/errors";
-import AuthUserDto from "domain/dtos/auth/user";
-import User from "domain/models/user";
-import IAuthUseCase from "application/interfaces/use-cases/auth-usecase-interface";
+import { BadRequestError, InternalError, MissingParamError, UnauthorizedError } from "@/shared/errors";
+import AuthUserDto from "@/domain/dtos/auth/user";
+import User from "@/domain/models/user";
+import IAuthUseCase from "@/application/interfaces/use-cases/auth-usecase-interface";
 
 /**
  * Implementation of the `IAuthUseCase` interface for handling authentication.

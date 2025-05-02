@@ -1,12 +1,12 @@
-import AuthUserDto from "domain/dtos/auth/user";
-import DocumentDto from "domain/dtos/document";
-import Document from "domain/models/document";
+import AuthUserDto from "@/domain/dtos/auth/user";
+import DocumentDto from "@/domain/dtos/document";
+import Document from "@/domain/models/document";
 import { IGetAllDocumentUseCase } from "../../../interfaces/use-cases/get-all-document-usecase-interface";
-import ITimeAdapter from "application/interfaces/adapters/time-provider";
-import IDocumentRepository from "application/interfaces/repositories/document";
-import IBaseMapper from "application/interfaces/base/base-mapper";
+import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
+import IDocumentRepository from "@/application/interfaces/repositories/document";
+import IBaseMapper from "@/application/interfaces/base/base-mapper";
 import GetAllDocumentResponse from "./get-all-document-response";
-import { InternalError } from "shared/errors/internal-error";
+import { InternalError } from "@/shared/errors/internal-error";
 
 /**
  * Use case for creating a new document.

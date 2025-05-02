@@ -1,5 +1,5 @@
-import IBaseUseCaseResponse from "application/interfaces/base/base-usecase-response";
-import { SearchResultDto } from "domain/dtos/search-dtos";
+import IBaseUseCaseResponse from "@/application/interfaces/base/base-usecase-response";
+import { SearchResultDto } from "@/domain/dtos/search-dtos";
 
 export class SearchTermResponse implements IBaseUseCaseResponse {
   /**

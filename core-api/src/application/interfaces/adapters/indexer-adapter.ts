@@ -1,4 +1,4 @@
-import { IndexedDocumentDto, SearchEmbeddedDocumentDto, SearchTermDto, SearchResultDto } from "domain/dtos/search-dtos";
+import { IndexedDocumentDto, SearchEmbeddedDocumentDto, SearchTermDto, SearchResultDto } from "@/domain/dtos/search-dtos";
 
 export interface IIndexerAdapter{
     /**

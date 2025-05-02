@@ -1,15 +1,15 @@
-import AuthUserDto from "domain/dtos/auth/user";
-import { ErrorTypes } from "shared/errors/error-types";
-import IBaseController from "application/interfaces/base/base-controller";
-import IBaseHttpResponse from "application/interfaces/base/base-http-response";
-import UpdateUserRequest from "application/usecases/user/update-user/update-user-request";
-import UpdateUserResponse from "application/usecases/user/update-user/update-user-response";
-import { IUpdateUserUseCase } from "application/interfaces/use-cases/update-user-usecase-interface";
-import { badRequestHttpError, conflictRequestHttpError, forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "presentation/helpers/http-helper";
+import AuthUserDto from "@/domain/dtos/auth/user";
+import { ErrorTypes } from "@/shared/errors/error-types";
+import IBaseController from "@/application/interfaces/base/base-controller";
+import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
+import UpdateUserRequest from "@/application/usecases/user/update-user/update-user-request";
+import UpdateUserResponse from "@/application/usecases/user/update-user/update-user-response";
+import { IUpdateUserUseCase } from "@/application/interfaces/use-cases/update-user-usecase-interface";
+import { badRequestHttpError, conflictRequestHttpError, forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "@/presentation/helpers/http-helper";
 import { inject, injectable } from "tsyringe";
 import Joi from "joi";
-import { EmailInUseError, NotFoundError } from "shared/errors";
-import { isNotError } from "shared/utils/dto-is-error-type-guard ";
+import { EmailInUseError, NotFoundError } from "@/shared/errors";
+import { isNotError } from "@/shared/utils/dto-is-error-type-guard ";
 
 @injectable()
 export default class UpdateUserController

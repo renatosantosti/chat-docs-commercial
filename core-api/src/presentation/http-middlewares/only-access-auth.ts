@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import {internalHttpError, missingParamHttpError, unauthorizedHttpError } from "../helpers/http-helper";
-import IBaseHttpResponse from 'application/interfaces/base/base-http-response';
-import { MissingParamError, UnauthorizedError } from 'shared/errors';
-import { authConfig } from 'config';
+import IBaseHttpResponse from '@/application/interfaces/base/base-http-response';
+import { MissingParamError, UnauthorizedError } from '@/shared/errors';
+import { authConfig } from '@/config';
 
-import PasswordHashAdapter from 'infrastructure/adapters/password-hash-adapter';
+import PasswordHashAdapter from '@/infrastructure/adapters/password-hash-adapter';
 import { container } from 'tsyringe';
-import AuthUserDto from 'domain/dtos/auth/user';
-import IPasswordHashAdapter from 'application/interfaces/adapters/password-hashing';
-import { InternalError } from 'shared/errors/internal-error';
+import AuthUserDto from '@/domain/dtos/auth/user';
+import IPasswordHashAdapter from '@/application/interfaces/adapters/password-hashing';
+import { InternalError } from '@/shared/errors/internal-error';
 
 const onlyWithAccessAuthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 

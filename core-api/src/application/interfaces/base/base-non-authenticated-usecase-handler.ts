@@ -1,4 +1,4 @@
-import ITimeAdapter from "application/interfaces/adapters/time-provider";
+import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
 
 /**
  * Base interface for use case handlers that do not require user authentication.

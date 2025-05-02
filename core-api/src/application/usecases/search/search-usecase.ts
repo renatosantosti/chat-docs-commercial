@@ -1,13 +1,13 @@
-import AuthUserDto from "domain/dtos/auth/user";
+import AuthUserDto from "@/domain/dtos/auth/user";
 import SearchTermRequest from "./search-request";
-import { InternalError } from "shared/errors/internal-error";
-import { BadRequestError } from "shared/errors/bad-request-error";
-import { ISearchTermUseCase } from "application/interfaces/use-cases/search-usecase-interface";
-import { IIndexerAdapter } from "application/interfaces/adapters/indexer-adapter";
+import { InternalError } from "@/shared/errors/internal-error";
+import { BadRequestError } from "@/shared/errors/bad-request-error";
+import { ISearchTermUseCase } from "@/application/interfaces/use-cases/search-usecase-interface";
+import { IIndexerAdapter } from "@/application/interfaces/adapters/indexer-adapter";
 import { SearchTermResponse } from "./search-response";
-import ITimeAdapter from "application/interfaces/adapters/time-provider";
-import IDocumentRepository from "application/interfaces/repositories/document";
-import { SearchResultDto, SearchTermDto } from "domain/dtos/search-dtos";
+import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
+import IDocumentRepository from "@/application/interfaces/repositories/document";
+import { SearchResultDto, SearchTermDto } from "@/domain/dtos/search-dtos";
 
 export default class SearchTermUseCase implements ISearchTermUseCase{
   public currentUser?: AuthUserDto;

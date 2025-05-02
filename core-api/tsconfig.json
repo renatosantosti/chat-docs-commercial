@@ -3,7 +3,7 @@
     "target": "es6",
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": "./src",
+    // "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -14,15 +14,6 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    // "paths": {
-    //   "application/*": ["./src/application/*"],
-    //   "domain/*": ["./src/domain/*"],
-    //   "infrastructure/*": ["./src/infrastructure/*"],
-    //   "presentation/*": ["./src/presentation/*"],
-    //   "shared/*": ["./src/shared/*"],
-    //   "types/*": ["./src/types/*"],
-    //   "config/*": ["./src/config/*"]
-    // },
     "typeRoots": ["./src/types", "./node_modules/@types"],
     "resolveJsonModule": true,
     "moduleResolution": "node",

@@ -1,4 +1,4 @@
-import IBaseUseCaseResponse from "application/interfaces/base/base-usecase-response";
+import IBaseUseCaseResponse from "@/application/interfaces/base/base-usecase-response";
 
 /**
  * Response object for the create document operation.

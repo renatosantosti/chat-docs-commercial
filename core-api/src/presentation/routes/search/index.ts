@@ -1,10 +1,10 @@
 import express from "express";
-import onlyWithAccessAuthMiddleware from "presentation/http-middlewares/only-access-auth";
+import onlyWithAccessAuthMiddleware from "@/presentation/http-middlewares/only-access-auth";
 import { container } from "tsyringe";
-import HttpStatusCode from "presentation/helpers/http-status";
-import SearchTermController from "presentation/controllers/search/search-term-controller";
-import SearchTermRequest from "application/usecases/search/search-request";
-import { InternalError } from "shared/errors";
+import HttpStatusCode from "@/presentation/helpers/http-status";
+import SearchTermController from "@/presentation/controllers/search/search-term-controller";
+import SearchTermRequest from "@/application/usecases/search/search-request";
+import { InternalError } from "@/shared/errors";
 
 // Create route
 const searchRouters = express.Router();

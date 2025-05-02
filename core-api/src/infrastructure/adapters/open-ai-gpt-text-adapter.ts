@@ -1,8 +1,8 @@
-import { IGptTextAdapter } from "application/interfaces/adapters/gpt-adapter";
+import { IGptTextAdapter } from "@/application/interfaces/adapters/gpt-adapter";
 import { injectable, singleton } from "tsyringe";
 import OpenAI from 'openai';
-import { OpenAIChatEnumModels, OpenAIEmbeddingEnumModels, OpenAIEmbeddingModels } from "presentation/helpers/openai-embedding-models";
-import { ChatCompletatioDto } from "domain/dtos/chat-completation";
+import { OpenAIChatEnumModels, OpenAIEmbeddingEnumModels, OpenAIEmbeddingModels } from "@/presentation/helpers/openai-embedding-models";
+import { ChatCompletatioDto } from "@/domain/dtos/chat-completation";
 /**
  * Class that implements the IGptTextAdapter interface to provide generative ai resource.
  */

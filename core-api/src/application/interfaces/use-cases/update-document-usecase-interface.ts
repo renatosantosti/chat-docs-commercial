@@ -1,7 +1,7 @@
-import IBaseUseCaseRequestHandler from "application/interfaces/base/base-usecase-handler";
+import IBaseUseCaseRequestHandler from "@/application/interfaces/base/base-usecase-handler";
 import UpdateDocumentRequest from "../../usecases/document/update-document/update-document-request";
 import { UpdateDocumentResponse } from "../../usecases/document/update-document/update-document-response";
-import AuthUserDto from "domain/dtos/auth/user";
+import AuthUserDto from "@/domain/dtos/auth/user";
 
 /**
  * Interface representing a generic use case request handler.

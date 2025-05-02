@@ -1,20 +1,21 @@
+import 'module-alias/register';
 import express, { Application } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
-// import liveCheckRouter from "presentation/routes/live-check";
-import liveCheckRouter from "presentation/routes/live";
-import authRouter from "presentation/routes/auth";
+// import liveCheckRouter from "@/presentation/routes/live-check";
+import liveCheckRouter from "@/presentation/routes/live";
+import authRouter from "@/presentation/routes/auth";
 import { serverConfig } from "./config";
-import dbContext from "infrastructure/database/sequelize";
-import userRouters from "presentation/routes/user";
-import documentRouters from "presentation/routes/document";
-import "infrastructure/container/config";
-import chatDocRouters from "presentation/routes/chat-doc";
-import searchRouters from "presentation/routes/search";
-import swaggerRouter from "presentation/routes/swagger";
+import dbContext from "@/infrastructure/database/sequelize";
+import userRouters from "@/presentation/routes/user";
+import documentRouters from "@/presentation/routes/document";
+import "@/infrastructure/container/config";
+import chatDocRouters from "@/presentation/routes/chat-doc";
+import searchRouters from "@/presentation/routes/search";
+import swaggerRouter from "@/presentation/routes/swagger";
 
 
 const PORT = serverConfig.apiPort || 8000;

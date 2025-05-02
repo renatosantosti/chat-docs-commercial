@@ -1,15 +1,15 @@
 
-import AuthUserDto from "domain/dtos/auth/user";
-import { ErrorTypes } from "shared/errors/error-types";
-import IBaseController from "application/interfaces/base/base-controller";
-import IBaseHttpResponse from "application/interfaces/base/base-http-response";
-import DeleteDocumentResponse from "application/usecases/document/delete-document/delete-document-reponse";
-import DeleteDocumentRequest from "application/usecases/document/delete-document/delete-document-request";
-import { IDeleteDocumentUseCase } from "application/interfaces/use-cases/delete-document-usecase-interface";
+import AuthUserDto from "@/domain/dtos/auth/user";
+import { ErrorTypes } from "@/shared/errors/error-types";
+import IBaseController from "@/application/interfaces/base/base-controller";
+import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
+import DeleteDocumentResponse from "@/application/usecases/document/delete-document/delete-document-reponse";
+import DeleteDocumentRequest from "@/application/usecases/document/delete-document/delete-document-request";
+import { IDeleteDocumentUseCase } from "@/application/interfaces/use-cases/delete-document-usecase-interface";
 import Joi from "joi";
-import { badRequestHttpError, forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "presentation/helpers/http-helper";
+import { badRequestHttpError, forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "@/presentation/helpers/http-helper";
 import { inject, injectable } from "tsyringe";
-import { isNotError } from "shared/utils/dto-is-error-type-guard ";
+import { isNotError } from "@/shared/utils/dto-is-error-type-guard ";
 
 @injectable()
 export default class DeleteDocumentController implements IBaseController<DeleteDocumentRequest, DeleteDocumentResponse> {

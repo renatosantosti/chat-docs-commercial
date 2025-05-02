@@ -1,8 +1,8 @@
-import IDocumentRepository from "application/interfaces/repositories/document";
-import DbContext from "infrastructure/database/sequelize";
-import Document from "domain/models/document";
-import DocumentEntity from "infrastructure/database/entities/document";
-import IBaseMapper from "application/interfaces/base/base-mapper";
+import IDocumentRepository from "@/application/interfaces/repositories/document";
+import DbContext from "@/infrastructure/database/sequelize";
+import Document from "@/domain/models/document";
+import DocumentEntity from "@/infrastructure/database/entities/document";
+import IBaseMapper from "@/application/interfaces/base/base-mapper";
 
 export default class DocumentRepository implements IDocumentRepository {
     

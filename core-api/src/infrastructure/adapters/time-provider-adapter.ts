@@ -1,4 +1,4 @@
-import ITimeAdapter from "application/interfaces/adapters/time-provider";
+import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
 import { injectable, singleton } from "tsyringe";
 
 /**

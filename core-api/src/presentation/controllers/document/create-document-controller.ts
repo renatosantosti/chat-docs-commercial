@@ -1,14 +1,14 @@
-import AuthUserDto from "domain/dtos/auth/user";
-import { ErrorTypes } from "shared/errors/error-types";
-import IBaseController from "application/interfaces/base/base-controller";
-import IBaseHttpResponse from "application/interfaces/base/base-http-response";
-import CreateDocumentRequest from "application/usecases/document/create-document/create-document-request";
-import { CreateDocumentResponse } from "application/usecases/document/create-document/create-document-response";
-import { ICreateDocumentUseCase } from "application/interfaces/use-cases/create-document-usecase-interface";
+import AuthUserDto from "@/domain/dtos/auth/user";
+import { ErrorTypes } from "@/shared/errors/error-types";
+import IBaseController from "@/application/interfaces/base/base-controller";
+import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
+import CreateDocumentRequest from "@/application/usecases/document/create-document/create-document-request";
+import { CreateDocumentResponse } from "@/application/usecases/document/create-document/create-document-response";
+import { ICreateDocumentUseCase } from "@/application/interfaces/use-cases/create-document-usecase-interface";
 import Joi from "joi";
-import { badRequestHttpError, forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "presentation/helpers/http-helper";
+import { badRequestHttpError, forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "@/presentation/helpers/http-helper";
 import { inject, injectable } from "tsyringe";
-import { isNotError } from "shared/utils/dto-is-error-type-guard ";
+import { isNotError } from "@/shared/utils/dto-is-error-type-guard ";
 
 
 @injectable()

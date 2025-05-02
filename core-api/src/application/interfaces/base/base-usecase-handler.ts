@@ -1,4 +1,4 @@
-import AuthUserDto from "domain/dtos/auth/user";
+import AuthUserDto from "@/domain/dtos/auth/user";
 import ITimeAdapter from "../adapters/time-provider";
 import IBaseRepository from "./base-repository";
 

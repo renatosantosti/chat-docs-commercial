@@ -1,7 +1,7 @@
-import IBaseUseCaseRequestHandler from "application/interfaces/base/base-usecase-handler";
-import ChatDocRequest from "application/usecases/chatdoc/chatdoc-request";
-import { ChatDocResponse } from "application/usecases/chatdoc/chatdoc-response";
-import AuthUserDto from "domain/dtos/auth/user";
+import IBaseUseCaseRequestHandler from "@/application/interfaces/base/base-usecase-handler";
+import ChatDocRequest from "@/application/usecases/chatdoc/chatdoc-request";
+import { ChatDocResponse } from "@/application/usecases/chatdoc/chatdoc-response";
+import AuthUserDto from "@/domain/dtos/auth/user";
 
 /**
  * Interface representing a generic use case request handler.

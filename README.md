@@ -162,6 +162,10 @@ To run locally you can start each service using (you must be within service´s f
 ```sh 
 npm run dev
 ```
+ATTENTION:
+ -  if you´re running services manually without docker compose you need to refer all domain as localhost, e.g: http://localhost:9200 
+    otherwise that name wont work due those name exist only docker netword called chatdocsnetwork
+- For example: switch http://elasticsearch:9200 to http://localhost:9200 if you´re local instance of Elastic Search out of containers(docker-compose has domain names for each sercices, e.g: elasticsearch exists only on docker's network)
 
 ## Starting all services at same time using Docker
 

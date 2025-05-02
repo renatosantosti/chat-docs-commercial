@@ -1,5 +1,5 @@
-import IBaseUseCaseResponse from "application/interfaces/base/base-usecase-response";
-import UserDto from "domain/dtos/user";
+import IBaseUseCaseResponse from "@/application/interfaces/base/base-usecase-response";
+import UserDto from "@/domain/dtos/user";
 
 /**
  * Response object for the create user operation.

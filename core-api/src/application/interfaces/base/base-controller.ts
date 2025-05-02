@@ -1,4 +1,4 @@
-import AuthUserDto from "domain/dtos/auth/user";
+import AuthUserDto from "@/domain/dtos/auth/user";
 import IBaseHttpResponse from "./base-http-response";
 import IBaseUseCaseRequestHandler from "./base-usecase-handler";
 

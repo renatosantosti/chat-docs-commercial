@@ -1,6 +1,6 @@
 import CreateUserResponse from "../../usecases/user/create-user/create-user-response";
 import CreateUserRequest from "../../usecases/user/create-user/create-user-request";
-import IBaseNonAuthenticadedUseCaseRequestHandler from "application/interfaces/base/base-non-authenticated-usecase-handler";
+import IBaseNonAuthenticadedUseCaseRequestHandler from "@/application/interfaces/base/base-non-authenticated-usecase-handler";
 
 /**
  * Interface representing a use case for creating a user.

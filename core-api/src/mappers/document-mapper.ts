@@ -1,8 +1,8 @@
 import { createMap, createMapper, forMember, mapFrom, Mapper } from '@automapper/core';
 import { pojos } from '@automapper/pojos';
-import IBaseMapper from 'application/interfaces/base/base-mapper';
-import DocumentDto from 'domain/dtos/document';
-import Document from 'domain/models/document';
+import IBaseMapper from '@/application/interfaces/base/base-mapper';
+import DocumentDto from '@/domain/dtos/document';
+import Document from '@/domain/models/document';
 
 export class DocumentMapper implements IBaseMapper<Document, DocumentDto> {
     private readonly mapper: Mapper;

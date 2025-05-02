@@ -1,6 +1,6 @@
-import IBaseMapper from 'application/interfaces/base/base-mapper';
+import IBaseMapper from '@/application/interfaces/base/base-mapper';
 import DocumentEntity from '../entities/document';
-import Document from 'domain/models/document';
+import Document from '@/domain/models/document';
 
 export class DocumentEntityMapper implements IBaseMapper<Document, Partial<DocumentEntity>> {
  

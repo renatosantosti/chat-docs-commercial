@@ -1,15 +1,15 @@
-import AuthUserDto from "domain/dtos/auth/user";
+import AuthUserDto from "@/domain/dtos/auth/user";
 import { IGetDocumentUseCase } from "../../../interfaces/use-cases/get-document-usecase-interface";
-import ITimeAdapter from "application/interfaces/adapters/time-provider";
-import IDocumentRepository from "application/interfaces/repositories/document";
-import IBaseMapper from "application/interfaces/base/base-mapper";
-import DocumentDto from "domain/dtos/document";
-import Document from "domain/models/document";
+import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
+import IDocumentRepository from "@/application/interfaces/repositories/document";
+import IBaseMapper from "@/application/interfaces/base/base-mapper";
+import DocumentDto from "@/domain/dtos/document";
+import Document from "@/domain/models/document";
 import GetDocumentRequest from "./get-document-request";
 import GetDocumentResponse from "./get-document-response";
-import { InternalError } from "shared/errors/internal-error";
-import { AccessForbiddenError } from "shared/errors/access-forbidden-error";
-import { NotFoundError } from "shared/errors/not-found-error";
+import { InternalError } from "@/shared/errors/internal-error";
+import { AccessForbiddenError } from "@/shared/errors/access-forbidden-error";
+import { NotFoundError } from "@/shared/errors/not-found-error";
 
 /**
  * Use case for creating a new document.

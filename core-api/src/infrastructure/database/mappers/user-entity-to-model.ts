@@ -1,6 +1,6 @@
-import IBaseMapper from 'application/interfaces/base/base-mapper';
+import IBaseMapper from '@/application/interfaces/base/base-mapper';
 import UserEntity from '../entities/user';
-import User from 'domain/models/user';
+import User from '@/domain/models/user';
 
 export class UserEntityMapper implements IBaseMapper<User, Partial<UserEntity>> {
  

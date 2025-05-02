@@ -1,14 +1,14 @@
 import Joi from "joi";
 import { inject, injectable } from "tsyringe";
-import AuthUserDto from "domain/dtos/auth/user";
-import { ErrorTypes } from "shared/errors/error-types";
-import IBaseController from "application/interfaces/base/base-controller";
-import IBaseHttpResponse from "application/interfaces/base/base-http-response";
-import { badRequestHttpError, forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "presentation/helpers/http-helper";
-import { isNotError } from "shared/utils/dto-is-error-type-guard ";
-import { SearchTermResponse } from "application/usecases/search/search-response";
-import SearchTermRequest from "application/usecases/search/search-request";
-import { ISearchTermUseCase } from "application/interfaces/use-cases/search-usecase-interface";
+import AuthUserDto from "@/domain/dtos/auth/user";
+import { ErrorTypes } from "@/shared/errors/error-types";
+import IBaseController from "@/application/interfaces/base/base-controller";
+import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
+import { badRequestHttpError, forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "@/presentation/helpers/http-helper";
+import { isNotError } from "@/shared/utils/dto-is-error-type-guard ";
+import { SearchTermResponse } from "@/application/usecases/search/search-response";
+import SearchTermRequest from "@/application/usecases/search/search-request";
+import { ISearchTermUseCase } from "@/application/interfaces/use-cases/search-usecase-interface";
 
 
 @injectable()

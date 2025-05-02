@@ -1,10 +1,10 @@
 import { Get, Route, SuccessResponse } from "tsoa";
 import { ok } from "../../helpers/http-helper";
 import HttpStatusCode from "../../helpers/http-status";
-import LiveResponse from "application/usecases/live/live-response";
-import ILiveUseCase from "application/interfaces/use-cases/live-usecase-interface";
-import IBaseNonAuthenticadedController from "application/interfaces/base/base-non-authenticated-controller";
-import IBaseHttpResponse from "application/interfaces/base/base-http-response";
+import LiveResponse from "@/application/usecases/live/live-response";
+import ILiveUseCase from "@/application/interfaces/use-cases/live-usecase-interface";
+import IBaseNonAuthenticadedController from "@/application/interfaces/base/base-non-authenticated-controller";
+import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
 import { inject, injectable } from "tsyringe";
 
 @Route("live")

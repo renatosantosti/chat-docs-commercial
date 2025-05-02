@@ -1,4 +1,4 @@
-import AuthUserDto from "domain/dtos/auth/user";
+import AuthUserDto from "@/domain/dtos/auth/user";
 
 /**
  * This file extends the Express Request interface to include a currentUser property.

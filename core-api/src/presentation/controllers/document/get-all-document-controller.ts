@@ -1,13 +1,13 @@
 
-import AuthUserDto from "domain/dtos/auth/user";
-import { ErrorTypes } from "shared/errors/error-types";
-import IBaseController from "application/interfaces/base/base-controller";
-import IBaseHttpResponse from "application/interfaces/base/base-http-response";
-import GetAllDocumentResponse from "application/usecases/document/get-all-document/get-all-document-response";
-import { IGetAllDocumentUseCase } from "application/interfaces/use-cases/get-all-document-usecase-interface";
-import { forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "presentation/helpers/http-helper";
+import AuthUserDto from "@/domain/dtos/auth/user";
+import { ErrorTypes } from "@/shared/errors/error-types";
+import IBaseController from "@/application/interfaces/base/base-controller";
+import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
+import GetAllDocumentResponse from "@/application/usecases/document/get-all-document/get-all-document-response";
+import { IGetAllDocumentUseCase } from "@/application/interfaces/use-cases/get-all-document-usecase-interface";
+import { forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "@/presentation/helpers/http-helper";
 import { inject, injectable } from "tsyringe";
-import { isNotError } from "shared/utils/dto-is-error-type-guard ";
+import { isNotError } from "@/shared/utils/dto-is-error-type-guard ";
 
 
 @injectable()

@@ -1,16 +1,16 @@
-import AuthUserDto from "domain/dtos/auth/user";
+import AuthUserDto from "@/domain/dtos/auth/user";
 import  ChatDocRequest from "./chatdoc-request";
-import { InternalError } from "shared/errors/internal-error";
-import { BadRequestError } from "shared/errors/bad-request-error";
+import { InternalError } from "@/shared/errors/internal-error";
+import { BadRequestError } from "@/shared/errors/bad-request-error";
 import {  ChatDocResponse } from "./chatdoc-response";
-import ITimeAdapter from "application/interfaces/adapters/time-provider";
-import IDocumentRepository from "application/interfaces/repositories/document";
-import { IChatDocUseCase } from "application/interfaces/use-cases/chatdoc-usecase-interface";
-import { IGptTextAdapter } from "application/interfaces/adapters/gpt-adapter";
-import { ChatCompletatioDto } from "domain/dtos/chat-completation";
-import { SearchEmbeddedDocumentDto } from "domain/dtos/search-dtos";
-import { elasticSearchConfig } from "config";
-import { IIndexerAdapter } from "application/interfaces/adapters/indexer-adapter";
+import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
+import IDocumentRepository from "@/application/interfaces/repositories/document";
+import { IChatDocUseCase } from "@/application/interfaces/use-cases/chatdoc-usecase-interface";
+import { IGptTextAdapter } from "@/application/interfaces/adapters/gpt-adapter";
+import { ChatCompletatioDto } from "@/domain/dtos/chat-completation";
+import { SearchEmbeddedDocumentDto } from "@/domain/dtos/search-dtos";
+import { elasticSearchConfig } from "@/config";
+import { IIndexerAdapter } from "@/application/interfaces/adapters/indexer-adapter";
 
 export default class  ChatDocUseCase implements IChatDocUseCase{
   public currentUser?: AuthUserDto;

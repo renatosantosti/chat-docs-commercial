@@ -8,5 +8,9 @@ RUN npm run build
 FROM nginx:alpine AS production
 WORKDIR /usr/share/nginx/html
 COPY --from=builder /app/dist .
-EXPOSE 3000
+
+# Copy the custom nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]

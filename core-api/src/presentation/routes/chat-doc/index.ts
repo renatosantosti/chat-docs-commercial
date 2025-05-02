@@ -1,10 +1,10 @@
 import express from "express";
-import onlyWithAccessAuthMiddleware from "presentation/http-middlewares/only-access-auth";
+import onlyWithAccessAuthMiddleware from "@/presentation/http-middlewares/only-access-auth";
 import { container } from "tsyringe";
-import HttpStatusCode from "presentation/helpers/http-status";
-import { InternalError } from "shared/errors";
-import ChatDocController from "presentation/controllers/chat-doc/chat-doc-controller";
-import ChatDocRequest from "application/usecases/chatdoc/chatdoc-request";
+import HttpStatusCode from "@/presentation/helpers/http-status";
+import { InternalError } from "@/shared/errors";
+import ChatDocController from "@/presentation/controllers/chat-doc/chat-doc-controller";
+import ChatDocRequest from "@/application/usecases/chatdoc/chatdoc-request";
 
 // Create route
 const chatDocRouters = express.Router();

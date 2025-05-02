@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { pojos } from '@automapper/pojos';
 import { createMapper, Mapper, mapFrom, createMap, forMember } from '@automapper/core';
-import IBaseMapper from 'application/interfaces/base/base-mapper';
-import UserDto from 'domain/dtos/user';
-import User from 'domain/models/user';
+import IBaseMapper from '@/application/interfaces/base/base-mapper';
+import UserDto from '@/domain/dtos/user';
+import User from '@/domain/models/user';
 
 export class UserMapper implements IBaseMapper<User, UserDto> {
     private readonly mapper: Mapper;

@@ -1,7 +1,7 @@
 
 
 
-import { IPDFDocumentAdapter } from 'application/interfaces/adapters/pdf-document';
+import { IPDFDocumentAdapter } from '@/application/interfaces/adapters/pdf-document';
 import { Buffer } from 'buffer';
 import PDFParser from 'pdf2json'; 
   

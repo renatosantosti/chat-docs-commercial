@@ -1,6 +1,6 @@
 import { Client } from "@elastic/elasticsearch";
-import { IIndexerAdapter } from "application/interfaces/adapters/indexer-adapter";
-import { IndexedDocumentDto, SearchTermDto, SearchResultDto, SearchEmbeddedDocumentDto } from "domain/dtos/search-dtos";
+import { IIndexerAdapter } from "@/application/interfaces/adapters/indexer-adapter";
+import { IndexedDocumentDto, SearchTermDto, SearchResultDto, SearchEmbeddedDocumentDto } from "@/domain/dtos/search-dtos";
 
 export class SlasticSearchIndexer implements IIndexerAdapter {
     private client: Client;

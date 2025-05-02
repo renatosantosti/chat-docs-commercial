@@ -1,8 +1,8 @@
-import { DocumentTextPageDto, IndexedDocumentDto,} from 'domain/dtos/search-dtos';
-import { ISearchIndexerService } from 'application/interfaces/services/semantic-indexer-service-interface';
-import { isNotError } from 'shared/utils/dto-is-error-type-guard ';
-import { IGptTextAdapter } from 'application/interfaces/adapters/gpt-adapter';
-import { IIndexerAdapter } from 'application/interfaces/adapters/indexer-adapter';
+import { DocumentTextPageDto, IndexedDocumentDto,} from '@/domain/dtos/search-dtos';
+import { ISearchIndexerService } from '@/application/interfaces/services/semantic-indexer-service-interface';
+import { isNotError } from '@/shared/utils/dto-is-error-type-guard ';
+import { IGptTextAdapter } from '@/application/interfaces/adapters/gpt-adapter';
+import { IIndexerAdapter } from '@/application/interfaces/adapters/indexer-adapter';
 
 export class SearchIndexerService implements  ISearchIndexerService{
   constructor(

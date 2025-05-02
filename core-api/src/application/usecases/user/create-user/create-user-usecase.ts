@@ -1,15 +1,15 @@
 import { ICreateUserUseCase } from "../../../interfaces/use-cases/create-user-usecase-interface";
-import ITimeAdapter from "application/interfaces/adapters/time-provider";
-import IUserRepository from "application/interfaces/repositories/user";
-import IBaseMapper from "application/interfaces/base/base-mapper";
+import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
+import IUserRepository from "@/application/interfaces/repositories/user";
+import IBaseMapper from "@/application/interfaces/base/base-mapper";
 import CreateUserRequest from "./create-user-request";
 import CreateUserResponse from "./create-user-response";
-import IPasswordHashAdapter from "application/interfaces/adapters/password-hashing";
-import User from "domain/models/user";
-import UserDto from "domain/dtos/user";
-import { InternalError } from "shared/errors/internal-error";
-import { BadRequestError } from "shared/errors/bad-request-error";
-import { EmailInUseError, MissingParamError } from "shared/errors";
+import IPasswordHashAdapter from "@/application/interfaces/adapters/password-hashing";
+import User from "@/domain/models/user";
+import UserDto from "@/domain/dtos/user";
+import { InternalError } from "@/shared/errors/internal-error";
+import { BadRequestError } from "@/shared/errors/bad-request-error";
+import { EmailInUseError, MissingParamError } from "@/shared/errors";
 
 /**
  * Implementation of the `ICreateUserUseCase` interface for handling authentication.

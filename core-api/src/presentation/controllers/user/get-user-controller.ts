@@ -1,15 +1,15 @@
 
-import AuthUserDto from "domain/dtos/auth/user";
-import { ErrorTypes } from "shared/errors/error-types";
-import IBaseController from "application/interfaces/base/base-controller";
-import IBaseHttpResponse from "application/interfaces/base/base-http-response";
-import { badRequestHttpError, conflictRequestHttpError, forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "presentation/helpers/http-helper";
-import GetUserRequest from "application/usecases/user/get-user/get-user-request";
-import GetUserResponse from "application/usecases/user/get-user/get-user-response";
-import { IGetUserUseCase } from "application/interfaces/use-cases/get-user-usecase-interface";
+import AuthUserDto from "@/domain/dtos/auth/user";
+import { ErrorTypes } from "@/shared/errors/error-types";
+import IBaseController from "@/application/interfaces/base/base-controller";
+import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
+import { badRequestHttpError, conflictRequestHttpError, forbiddenHttpError, internalHttpError, notFoundHttpError, ok } from "@/presentation/helpers/http-helper";
+import GetUserRequest from "@/application/usecases/user/get-user/get-user-request";
+import GetUserResponse from "@/application/usecases/user/get-user/get-user-response";
+import { IGetUserUseCase } from "@/application/interfaces/use-cases/get-user-usecase-interface";
 import { inject, injectable } from "tsyringe";
 import Joi from "joi";
-import { isNotError } from "shared/utils/dto-is-error-type-guard ";
+import { isNotError } from "@/shared/utils/dto-is-error-type-guard ";
 
 /**
  * Controller for handling user retrieval requests.
