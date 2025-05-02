@@ -78,7 +78,18 @@ export default class SearchTermUseCase implements ISearchTermUseCase {
         result.length > 0
           ? `${result.length} record(s) found.`
           : "Empty result.",
-      result,
+      result: result.map((r) => {
+        /* TODO: force type as SearchResultDto without embedding */
+        //r as Omit<SearchResultDto, "embedding">
+        // Hard code until todo above is done
+        const { documentId, documentName, pageNumber, content } = r;
+        return {
+          documentId,
+          documentName,
+          pageNumber,
+          content,
+        } as SearchResultDto;
+      }),
     };
   }
   catch(error: any) {
