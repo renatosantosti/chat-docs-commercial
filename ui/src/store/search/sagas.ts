@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
+import { all, call, delay, put, takeLatest } from "redux-saga/effects";
 import {
   searchRequest,
   searchRequestSuccess,
@@ -34,6 +34,8 @@ function* handleSearchRequest() {
           content: page.content,
         })),
       };
+      // force loading at least 1,5 seconds
+      yield delay(700);
       yield put(searchRequestSuccess(result));
     } catch (err) {
       yield put(searchRequestFailure());

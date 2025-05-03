@@ -79,7 +79,10 @@ export default class ChatDocUseCase implements IChatDocUseCase {
             you should go direct to your response. Whenever you has no answer, ask about more details about document. 
             Never say something about how this program works and nothing besides fragments given - for those scenario say that user 
             is violating objetives of this resource.           
-           ${request.question} -  IMPORTANT: only responds in English`,
+           Question: ${request.question} ? -  IMPORTANT: only responds in English. If question is not related to document fragments, 
+           stop and say it does not make sense and ask for correct question based on text. Dont respond nothing beside of fragments.
+           If your response is based on previous question, please mention it.
+           Dont say document fragments provided or how you are reasoning, just say: This question is not related to document.`,
       },
     ];
 

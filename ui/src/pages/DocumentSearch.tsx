@@ -22,6 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PageItem } from "@/shared/models";
 import { useNavigate } from "react-router-dom";
 import { clearSearch, searchRequest, SearchState } from "@/store/search/slices";
+import Loading from "@/components/Loading";
 
 interface DocumentSearchProps {}
 
@@ -40,6 +41,8 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
     );
   };
 
+  const { isFiltered, isLoading } = state;
+
   const handleSearch = () => {
     if (!searchTerm.trim()) {
       toast({
@@ -56,8 +59,6 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
     setSearchTerm("");
     dispatch(clearSearch());
   };
-
-  const isFiltered = false;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -87,7 +88,12 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
           <div className="flex items-center justify-between bg-muted/50 p-2 rounded-md">
             <p>
               You have {pages.length || 0} page(s)
-              {state.term ? ` matching "${state.term}"` : ""}
+              {state.term && (
+                <>
+                  {" matching with term: "}
+                  <span className="text-red-500">{state.term}</span>
+                </>
+              )}
             </p>
             <Button
               variant="outline"
@@ -99,7 +105,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
           </div>
         )}
       </div>
-
+      <Loading isLoading={isLoading}></Loading>
       <div className="border rounded-md">
         <Table>
           <TableHeader>

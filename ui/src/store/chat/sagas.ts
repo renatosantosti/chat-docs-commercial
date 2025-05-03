@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
+import { all, call, delay, put, takeLatest } from "redux-saga/effects";
 import {
   chatRequest,
   chatRequestSuccess,
@@ -69,6 +69,8 @@ function* handleChatRequest() {
         })),
         response: undefined,
       };
+      // force loading at least 1,5 seconds - because this filter is so fast actually
+      yield delay(700);
       yield put(chatRequestSuccess(result));
     } catch (err) {
       yield put(chatRequestFailure());

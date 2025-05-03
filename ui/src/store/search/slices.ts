@@ -15,6 +15,7 @@ export interface SearchRequest {
 export interface SearchState {
   term: string;
   result: SearchResult;
+  isFiltered: boolean;
   isLoading: boolean;
 }
 
@@ -22,6 +23,7 @@ const initialState: SearchState = {
   term: "",
   result: null,
   isLoading: false,
+  isFiltered: false,
 };
 
 const searchSlice = createSlice({
@@ -34,6 +36,7 @@ const searchSlice = createSlice({
     ) => {
       state.term = action.payload.term;
       state.isLoading = true;
+      state.isFiltered = false;
     },
 
     searchRequestSuccess: (
@@ -42,14 +45,17 @@ const searchSlice = createSlice({
     ) => {
       state.result = action.payload;
       state.isLoading = false;
+      state.isFiltered = true;
     },
 
     searchRequestFailure: (state: SearchState) => {
       state.isLoading = false;
+      state.isFiltered = false;
     },
 
     clearSearch: (state: SearchState) => {
       state.isLoading = false;
+      state.isFiltered = false;
       state.result = null;
       state.term = "";
     },

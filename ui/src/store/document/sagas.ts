@@ -57,7 +57,8 @@ function* handleDocumentList() {
         type: "PDF",
       }));
 
-      yield delay(1000);
+      // force loading at least 1,5 seconds
+      yield delay(700);
       yield put(documentListSuccess(docs));
     } catch (err) {
       console.error("Get all documents -  failed", err);

@@ -24,6 +24,7 @@ const ChatDoc = () => {
   const documentId = parseInt(id || "0");
 
   const [pages, setPages] = useState([]);
+  const [priviousTerm, setPriviousTerm] = useState("");
   const [mode, setMode] = useState<ChatMode>("chat");
   const [searchTerm, setSearchTerm] = useState("");
   const [showTermHistory, setShowTermHistory] = useState(true);
@@ -35,6 +36,8 @@ const ChatDoc = () => {
   useEffect(() => {
     if (hasResults) {
       setPages(result[0].pages);
+      setPriviousTerm(result[0].term);
+
       if (searchTerm === "" && showTermHistory) setSearchTerm(result[0].term);
     }
   }, [hasResults, result]);
@@ -159,6 +162,22 @@ const ChatDoc = () => {
         </div>
       )}
       <Loading isLoading={isLoading}></Loading>
+
+      {pages.length > 0 && (
+        <div className="flex items-center justify-between bg-muted/50 p-2 rounded-md">
+          <p>
+            You have {pages.length || 0} page(s)
+            {priviousTerm && (
+              <>
+                {mode === "chat"
+                  ? " related to question: "
+                  : " matching with term: "}
+                <span className="text-red-500">{priviousTerm}</span>
+              </>
+            )}
+          </p>
+        </div>
+      )}
       {/* Grid View */}
       {pages.length > 0 && (
         <div className="rounded-md border border-gray-200 overflow-hidden shadow-sm">
