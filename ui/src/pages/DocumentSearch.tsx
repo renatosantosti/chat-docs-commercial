@@ -18,16 +18,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  documentListRequest,
-  documentResetSearch,
-  documentSearchRequest,
-  DocumentState,
-} from "@/store/document/slices";
 import { useToast } from "@/hooks/use-toast";
-import { DocumentItem } from "@/shared/models";
+import { PageItem } from "@/shared/models";
 import { useNavigate } from "react-router-dom";
-import { searchRequest, SearchState } from "@/store/search/slices";
+import { clearSearch, searchRequest, SearchState } from "@/store/search/slices";
 
 interface DocumentSearchProps {}
 
@@ -35,21 +29,12 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const state = useSelector((store: { search: SearchState }) => store.search);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(state.term);
+  console.log(">>>>>>>>>>>>>>>> ", { state });
 
   const { toast } = useToast();
-  //   const { documents, filtered, isFiltered } = useSelector((state: DocumentState) => state.documents);
 
-  const documents: DocumentItem[] = Array.from({ length: 30 }, (_, i) => ({
-    id: 15,
-    title: `Document ${i + 1}`,
-    description: "xyz...",
-    date: new Date(
-      Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000,
-    ).toISOString(),
-    pages: Math.floor(Math.random() * 50) + 1,
-    type: "pdf",
-  }));
+  const pages: PageItem[] = state.result ? state.result.pages : [];
 
   const notImplemented = () => {
     alert(
@@ -66,19 +51,15 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
       });
       return;
     }
-    dispatch(
-      searchRequest({ documentId: null, term: searchTerm, mode: "documents" }),
-    );
+    dispatch(searchRequest({ term: searchTerm, mode: "documents" }));
   };
 
   const handleClearSearch = () => {
     setSearchTerm("");
-    dispatch(documentResetSearch());
+    dispatch(clearSearch());
   };
 
-  const displayedDocuments = documents; //isFiltered ? filtered?.documents : documents;
   const isFiltered = false;
-  const filtered = { term: "agile", documents: [] };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -107,8 +88,8 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
         {isFiltered && (
           <div className="flex items-center justify-between bg-muted/50 p-2 rounded-md">
             <p>
-              You have {filtered?.documents.length || 0} document(s)
-              {filtered?.term ? ` matching "${filtered?.term}"` : ""}
+              You have {pages.length || 0} page(s)
+              {state.term ? ` matching "${state.term}"` : ""}
             </p>
             <Button
               variant="outline"
@@ -125,8 +106,8 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[150px]">Upload at</TableHead>
-              <TableHead>Document</TableHead>
+              <TableHead className="w-[150px]">Id</TableHead>
+              <TableHead>Name</TableHead>
               <TableHead>Page</TableHead>
               <TableHead>Text</TableHead>
               <TableHead className="w-[120px]">Chat</TableHead>
@@ -134,20 +115,18 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {displayedDocuments && displayedDocuments.length > 0 ? (
-              displayedDocuments.map((doc: any) => (
-                <TableRow key={doc.id}>
-                  <TableCell>
-                    {new Date(doc.date || Date.now()).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>{doc.title}</TableCell>
-                  <TableCell>1</TableCell>
+            {pages && pages.length > 0 ? (
+              pages.map((doc: PageItem) => (
+                <TableRow key={doc.documentId}>
+                  <TableCell>{doc.documentId}</TableCell>
+                  <TableCell>{doc.documentName}</TableCell>
+                  <TableCell>{doc.pageNumber}</TableCell>
                   <TableCell>
                     <Highlighter
                       highlightClassName="YourHighlightClass"
                       searchWords={[...searchTerm.split(" ")]}
                       autoEscape={true}
-                      textToHighlight="The dog is chasing the cat. Or perhaps they're just playing?"
+                      textToHighlight={doc.content}
                     />
                   </TableCell>
                   <TableCell>
@@ -155,7 +134,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
                       variant="outline"
                       size="sm"
                       className="w-full"
-                      onClick={() => navigate("/chatdoc/56")}
+                      onClick={() => navigate(`/chatdoc/${doc.documentId}`)}
                     >
                       <BotMessageSquare className="mr-2 h-4 w-4" />
                       Chat this doc!

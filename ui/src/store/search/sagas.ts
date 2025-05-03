@@ -13,17 +13,9 @@ function* handleSearchRequest() {
       return;
     }
     try {
-      if (action.payload.mode === "documents") {
-        const res = yield call(http.post, "/search", {});
-        yield put(searchRequestSuccess(res.data.data.result));
-        return;
-      }
-
-      // When mode is search
       const res = yield call(http.post, "/search", {
         mode: action.payload.mode,
         term: action.payload.term,
-        documentId: action.payload.documentId,
       });
 
       if (res.status != 200 || !res.data.data.success) {
@@ -33,7 +25,6 @@ function* handleSearchRequest() {
 
       const data = res.data.data;
       const result: SearchResult = {
-        documentId: action.payload.documentId,
         term: action.payload.term,
         pages: data.result.map((page: any) => ({
           pageId: page.pageNumber,
@@ -42,7 +33,6 @@ function* handleSearchRequest() {
           pageNumber: page.pageNumber,
           content: page.content,
         })),
-        response: undefined,
       };
       yield put(searchRequestSuccess(result));
     } catch (err) {

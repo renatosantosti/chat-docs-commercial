@@ -3,29 +3,24 @@ import { SearchMode } from "@/shared/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface SearchResult {
-  documentId: Number;
   term: string;
   pages: PageItem[];
-  response?: string;
 }
 
 export interface SearchRequest {
-  documentId: number;
   term: string;
   mode: SearchMode;
 }
 
 export interface SearchState {
   term: string;
-  results: SearchResult[];
-  wasActivated: boolean;
+  result: SearchResult;
   isLoading: boolean;
 }
 
 const initialState: SearchState = {
   term: "",
-  results: [],
-  wasActivated: false,
+  result: null,
   isLoading: false,
 };
 
@@ -37,7 +32,7 @@ const searchSlice = createSlice({
       state: SearchState,
       action: PayloadAction<SearchRequest>,
     ) => {
-      state.wasActivated = true;
+      state.term = action.payload.term;
       state.isLoading = true;
     },
 
@@ -45,13 +40,7 @@ const searchSlice = createSlice({
       state: SearchState,
       action: PayloadAction<SearchResult>,
     ) => {
-      state.results = [
-        ...state.results.filter(
-          (r) => r.documentId !== action.payload.documentId,
-        ),
-        action.payload,
-      ];
-
+      state.result = action.payload;
       state.isLoading = false;
     },
 
@@ -59,8 +48,10 @@ const searchSlice = createSlice({
       state.isLoading = false;
     },
 
-    setActivated: (state: SearchState) => {
-      state.wasActivated = true;
+    clearSearch: (state: SearchState) => {
+      state.isLoading = false;
+      state.result = null;
+      state.term = "";
     },
   },
 });
@@ -69,7 +60,7 @@ export const {
   searchRequest,
   searchRequestSuccess,
   searchRequestFailure,
-  setActivated,
+  clearSearch,
 } = searchSlice.actions;
 
 const searchReducer = searchSlice.reducer;
