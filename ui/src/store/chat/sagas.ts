@@ -14,8 +14,33 @@ function* handleChatRequest() {
     }
     try {
       if (action.payload.mode === "chat") {
-        const res = yield call(http.post, "/chat", {});
-        yield put(chatRequestSuccess(res.data.data.result));
+        const res = yield call(http.post, "/chat-doc", {
+          documentId: action.payload.documentId,
+          question: action.payload.term,
+          previousQuestion: "",
+          previousResponse: "",
+        });
+
+        if (res.status != 200 || !res.data.data.success) {
+          yield put(chatRequestFailure());
+          return;
+        }
+
+        const data = res.data.data;
+        const result: ChatResult = {
+          documentId: action.payload.documentId,
+          term: action.payload.term,
+          pages: data.result.pages.map((page: any) => ({
+            pageId: page.pageNumber,
+            documentId: page.documentId,
+            documentName: page.documentName,
+            pageNumber: page.pageNumber,
+            content: page.content,
+          })),
+          response: data.result.response,
+        };
+
+        yield put(chatRequestSuccess(result));
         return;
       }
 

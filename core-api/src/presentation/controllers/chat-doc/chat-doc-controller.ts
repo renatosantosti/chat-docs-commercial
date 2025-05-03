@@ -35,8 +35,8 @@ export default class ChatDocController
         documentId: Joi.number().greater(0).required(),
         question: Joi.string().required(),
         fragments: Joi.array<string>().min(1),
-        previousQuestion: Joi.string().optional(),
-        previousResponse: Joi.string().optional(),
+        previousQuestion: Joi.string().allow("").optional(),
+        previousResponse: Joi.string().allow("").optional(),
       });
 
       // Do a request validation

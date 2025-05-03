@@ -5,7 +5,7 @@ import { Search, Download, Bot } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { chatRequest, ChatState, setActivated } from "@/store/chat/slices";
+import { askQuestion, chatRequest, ChatState } from "@/store/chat/slices";
 import { ChatMode } from "@/shared/types";
 import { DocumentState } from "@/store/document/slices";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,6 +19,7 @@ const ChatDoc = () => {
     (store: { document: DocumentState }) => store.document,
   );
   const limitText = 1130;
+
   const { id } = useParams<{ id: string }>();
   const documentId = parseInt(id || "0");
 
@@ -26,23 +27,17 @@ const ChatDoc = () => {
   const [mode, setMode] = useState<ChatMode>("chat");
   const [searchTerm, setSearchTerm] = useState("");
   const [showTermHistory, setShowTermHistory] = useState(true);
-  const [typedText, setTypedText] = useState(
-    `Hi guys, I will leverage this moment to speak a little bit about me...well as you know I am Renato Santos. 
-    During my career, I worked in different industries and with different approaches to solving problems. So, I am flexible, innovative, and fast-paced to learn new things. 
-    I feel free to explore new things and jump to another new technology whenever it is needed or I will explore it.
-    I THINK SOLUTION IS MORE THAN TECHNOLOGIES - SO TECH IS TOOLS TO BE USED AND COMBINED TO ACHIEVE A SMART SOLUTION.
-    Be an expert is good, I am an expert whenever I have been working for a long time with certain stuff, but I am always ready to explore new things, that´s my spirit. Sorry to stop your flow! 
-    Go ahead, ask something to the doc!`,
-  );
 
-  const { isLoading } = state;
+  const { isLoading, response } = state;
   const result = state.results.filter((r) => r.documentId == documentId);
+  const hasResults = result.length > 0;
+
   useEffect(() => {
-    if (result.length > 0) {
+    if (hasResults) {
       setPages(result[0].pages);
       if (searchTerm === "" && showTermHistory) setSearchTerm(result[0].term);
     }
-  }, [result]);
+  }, [hasResults, result]);
 
   useEffect(() => {
     // Redireciona para "/documents" se o ID não for válido
@@ -63,12 +58,6 @@ const ChatDoc = () => {
       "It was not integrated on UI yet, please see it working on REST API by Swagger.",
     );
   };
-
-  // after 60 seconds -  close demo
-  setTimeout(() => {
-    dispatch(setActivated());
-    setTypedText("Thanks! Waiting for questions.");
-  }, 2 * 1000);
 
   const handleChatSearchClick = () => {
     dispatch(
@@ -102,8 +91,8 @@ const ChatDoc = () => {
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
-            setTypedText("");
             setShowTermHistory(false);
+            dispatch(askQuestion());
           }}
         />
       </div>
@@ -113,7 +102,10 @@ const ChatDoc = () => {
         <RadioGroup.Root
           className="flex gap-6"
           value={mode}
-          onValueChange={(val) => setMode(val as ChatMode)}
+          onValueChange={(val) => {
+            setMode(val as ChatMode);
+            dispatch(askQuestion());
+          }}
         >
           <label className="flex items-center gap-2 cursor-pointer">
             <RadioGroup.Item
@@ -155,12 +147,13 @@ const ChatDoc = () => {
           </div>
           <p className="text-sm text-gray-800">
             <Typewriter
-              words={[typedText]}
+              key={response}
+              words={[response]}
               loop={1}
               typeSpeed={25}
               cursor
               cursorStyle="_"
-              onLoopDone={() => setTypedText("")}
+              onLoopDone={() => {}}
             />
           </p>
         </div>

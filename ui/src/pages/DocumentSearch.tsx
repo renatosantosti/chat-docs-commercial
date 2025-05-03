@@ -30,8 +30,6 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
   const dispatch = useDispatch();
   const state = useSelector((store: { search: SearchState }) => store.search);
   const [searchTerm, setSearchTerm] = useState(state.term);
-  console.log(">>>>>>>>>>>>>>>> ", { state });
-
   const { toast } = useToast();
 
   const pages: PageItem[] = state.result ? state.result.pages : [];
