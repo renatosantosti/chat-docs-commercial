@@ -18,9 +18,9 @@ const ChatDoc = () => {
   const docState = useSelector(
     (store: { document: DocumentState }) => store.document,
   );
-  const limitText = 1130;
-
   const { id } = useParams<{ id: string }>();
+  const { isLoading, wasActivated, filtered, response } = state;
+  const limitText = 1130;
   const documentId = parseInt(id || "0");
 
   const [pages, setPages] = useState([]);
@@ -29,7 +29,6 @@ const ChatDoc = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showTermHistory, setShowTermHistory] = useState(true);
 
-  const { isLoading, response } = state;
   const result = state.results.filter((r) => r.documentId == documentId);
   const hasResults = result.length > 0;
 
@@ -43,7 +42,6 @@ const ChatDoc = () => {
   }, [hasResults, result]);
 
   useEffect(() => {
-    // Redireciona para "/documents" se o ID não for válido
     if (
       !id ||
       isNaN(parseInt(id, 10)) ||
@@ -99,7 +97,7 @@ const ChatDoc = () => {
           }}
         />
       </div>
-
+      <h1>---{wasActivated}</h1>
       {/* Mode Toggle & Button */}
       <div className="flex items-center justify-between">
         <RadioGroup.Root
@@ -179,7 +177,7 @@ const ChatDoc = () => {
         </div>
       )}
       {/* Grid View */}
-      {pages.length > 0 && (
+      {pages.length > 0 ? (
         <div className="rounded-md border border-gray-200 overflow-hidden shadow-sm">
           <div className="grid grid-cols-12 bg-gray-100 text-sm font-medium text-gray-700 px-4 py-3">
             <div className="col-span-2">Page Number</div>
@@ -216,6 +214,14 @@ const ChatDoc = () => {
             </div>
           ))}
         </div>
+      ) : (
+        mode === "pages" &&
+        filtered &&
+        pages.length === 0 && (
+          <div className="relative justify-center bg-gray-50 border border-gray-200 p-6 rounded-md shadow-sm">
+            <p className="text-sm text-gray-800">Empty Result.</p>
+          </div>
+        )
       )}
 
       {/* Full Document Download */}

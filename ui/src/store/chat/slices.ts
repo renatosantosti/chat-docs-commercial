@@ -19,6 +19,7 @@ export interface ChatState {
   results: ChatResult[];
   wasActivated: boolean;
   isLoading: boolean;
+  filtered: boolean;
   response?: string;
 }
 
@@ -26,6 +27,7 @@ const initialState: ChatState = {
   results: [],
   wasActivated: false,
   isLoading: false,
+  filtered: false,
   response: `Hi guys, I will leverage this moment to speak a little bit about me...well as you know I am Renato Santos. 
     During my career, I worked in different industries and with different approaches to solving problems. So, I am flexible, innovative, and fast-paced to learn new things. 
     I feel free to explore new things and jump to another new technology whenever it is needed or I will explore it.
@@ -39,8 +41,9 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     chatRequest: (state: ChatState, action: PayloadAction<ChatRequest>) => {
+      state.isLoading = true;
       state.wasActivated = true;
-      // state.isLoading = true;
+      state.filtered = false;
       if (action.payload.mode === "chat") state.response = "thinking...";
     },
 
@@ -56,8 +59,12 @@ const chatSlice = createSlice({
       ];
 
       state.isLoading = false;
-      if (action.payload.response && action.payload.response.length > 0)
+      state.filtered = true;
+      if (action.payload.response && action.payload.response.length > 0) {
         state.response = action.payload.response[0];
+        return;
+      }
+      state.response = "";
     },
 
     chatRequestFailure: (state: ChatState) => {
@@ -69,8 +76,9 @@ const chatSlice = createSlice({
     },
 
     clearResult: (state: ChatState) => {
-      state.wasActivated = true;
+      state.wasActivated = false;
       state.isLoading = false;
+      state.filtered = false;
       state.results = [];
     },
   },
