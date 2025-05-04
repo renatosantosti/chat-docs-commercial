@@ -1,4 +1,6 @@
-
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { scroller } from "react-scroll";
 const HowItWorks = () => {
   const steps = [
     {
@@ -18,13 +20,39 @@ const HowItWorks = () => {
     },
   ];
 
+  const location = useLocation();
+
+  // Get the hash from url
+  const hash = location.hash;
+
+  if (hash.includes("how-it-works")) {
+    scroller.scrollTo("hash", {
+      duration: 500,
+      smooth: true,
+      offset: -70,
+    });
+  }
+
+  // Apply effect ever has ide
+  useEffect(() => {
+    if (hash) {
+      scroller.scrollTo(hash.replace("#", ""), {
+        duration: 500,
+        smooth: true,
+        offset: -70,
+      });
+    }
+  }, [hash]);
+
   return (
     <section id="how-it-works" className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold gradient-text">How It Works</h2>
+          <h2 className="text-3xl font-extrabold gradient-text">
+            How It Works
+          </h2>
           <p className="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
-            Get started with PDFMindConnect in three simple steps
+            Get started with Chat Docs! in three simple steps
           </p>
         </div>
 

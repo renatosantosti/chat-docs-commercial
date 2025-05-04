@@ -19,7 +19,7 @@ const ChatDoc = () => {
     (store: { document: DocumentState }) => store.document,
   );
   const { id } = useParams<{ id: string }>();
-  const { isLoading, wasActivated, filtered, response } = state;
+  const { isLoading, filtered, response } = state;
   const limitText = 1130;
   const documentId = parseInt(id || "0");
 
