@@ -22,7 +22,6 @@ import { useToast } from "@/hooks/use-toast";
 import { PageItem } from "@/shared/models";
 import { useNavigate } from "react-router-dom";
 import { clearSearch, searchRequest, SearchState } from "@/store/search/slices";
-import Loading from "@/components/Loading";
 
 interface DocumentSearchProps {}
 
@@ -44,14 +43,6 @@ const DocumentSearch: React.FC<DocumentSearchProps> = () => {
   const { isFiltered, isLoading } = state;
 
   const handleSearch = () => {
-    if (!searchTerm.trim()) {
-      toast({
-        title: "Please enter a search term",
-        description: "You need to enter a term to search for documents",
-        variant: "destructive",
-      });
-      return;
-    }
     dispatch(searchRequest({ term: searchTerm, mode: "documents" }));
   };
 

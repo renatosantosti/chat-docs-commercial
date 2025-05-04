@@ -6,6 +6,7 @@ import {
   SearchResult,
 } from "./slices";
 import http from "@/shared/api/http";
+import { addToast } from "../toast/slices";
 
 function* handleSearchRequest() {
   yield takeLatest(searchRequest, function* (action) {
@@ -13,6 +14,17 @@ function* handleSearchRequest() {
       return;
     }
     try {
+      if (action.payload.term === "") {
+        yield put(
+          addToast({
+            id: Date.now().toString(),
+            title: "Error",
+            description: `Please enter the term to search.`,
+            type: "error",
+          }),
+        );
+        return;
+      }
       const res = yield call(http.post, "/search", {
         mode: action.payload.mode,
         term: action.payload.term,
@@ -38,6 +50,21 @@ function* handleSearchRequest() {
       yield delay(700);
       yield put(searchRequestSuccess(result));
     } catch (err) {
+      // Extract detailed error message from HTTP response
+      const errorMessage =
+        err.response?.data?.data?.message ||
+        err.message ||
+        "An unexpected error occurred.";
+
+      console.error("HTTP Error:", err);
+      yield put(
+        addToast({
+          id: Date.now().toString(),
+          title: "Error",
+          description: errorMessage,
+          type: "error",
+        }),
+      );
       yield put(searchRequestFailure());
     }
   });

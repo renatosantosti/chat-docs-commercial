@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -73,7 +72,9 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
 }
 
@@ -81,16 +82,47 @@
   .gradient-text {
     @apply bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent;
   }
-  
+
   .hero-gradient {
     @apply bg-gradient-to-br from-purple-600/90 via-indigo-600/90 to-blue-600/90;
   }
-  
+
   .card-hover {
     @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
   }
-  
+
   .button-gradient {
     @apply bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white;
   }
+}
+/* Toast animations */
+@keyframes slideRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRightOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Apply animations based on Radix UI's data-state attribute */
+[data-state="open"] {
+  animation: slideRight 100ms ease-out;
+}
+
+[data-state="closed"] {
+  animation: slideRightOut 100ms ease-in;
 }

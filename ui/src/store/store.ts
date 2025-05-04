@@ -5,6 +5,7 @@ import documentReducer from "./document/slices";
 import rootSagas from "./RootSaga";
 import chatReducer from "./chat/slices";
 import searchReducer from "./search/slices";
+import toastReducer from "./toast/slices";
 
 // Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -16,6 +17,7 @@ const store = configureStore({
     document: documentReducer,
     chat: chatReducer,
     search: searchReducer,
+    toast: toastReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware), // Disable thunk and add saga middleware

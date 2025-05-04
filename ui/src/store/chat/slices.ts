@@ -40,7 +40,7 @@ const chatSlice = createSlice({
   reducers: {
     chatRequest: (state: ChatState, action: PayloadAction<ChatRequest>) => {
       state.wasActivated = true;
-      state.isLoading = true;
+      // state.isLoading = true;
       if (action.payload.mode === "chat") state.response = "thinking...";
     },
 

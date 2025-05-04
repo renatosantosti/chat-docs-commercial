@@ -17,6 +17,7 @@ import {
 } from "./slices";
 import http from "@/shared/api/http";
 import { DocumentItem } from "@/shared/models";
+import { addToast } from "../toast/slices";
 
 function* handleCreateDocument() {
   yield takeLatest(
@@ -29,6 +30,21 @@ function* handleCreateDocument() {
         const res = yield call(http.post, "/documents", action.payload);
         yield put(documentCreateSuccess(res.data.document));
       } catch (err) {
+        // Extract detailed error message from HTTP response
+        const errorMessage =
+          err.response?.data?.data?.message ||
+          err.message ||
+          "An unexpected error occurred.";
+
+        console.error("HTTP Error:", err);
+        yield put(
+          addToast({
+            id: Date.now().toString(),
+            title: "Error",
+            description: errorMessage,
+            type: "error",
+          }),
+        );
         yield put(documentCreateFailure());
       }
     },
@@ -61,7 +77,21 @@ function* handleDocumentList() {
       yield delay(700);
       yield put(documentListSuccess(docs));
     } catch (err) {
-      console.error("Get all documents -  failed", err);
+      // Extract detailed error message from HTTP response
+      const errorMessage =
+        err.response?.data?.data?.message ||
+        err.message ||
+        "An unexpected error occurred.";
+
+      console.error("HTTP Error:", err);
+      yield put(
+        addToast({
+          id: Date.now().toString(),
+          title: "Error",
+          description: errorMessage,
+          type: "error",
+        }),
+      );
       yield put(documentListFailure());
     }
   });
@@ -86,6 +116,21 @@ function* handleDocumentSearch() {
           }),
         );
       } catch (err) {
+        // Extract detailed error message from HTTP response
+        const errorMessage =
+          err.response?.data?.data?.message ||
+          err.message ||
+          "An unexpected error occurred.";
+
+        console.error("HTTP Error:", err);
+        yield put(
+          addToast({
+            id: Date.now().toString(),
+            title: "Error",
+            description: errorMessage,
+            type: "error",
+          }),
+        );
         yield put(documentSearchFailure());
       }
     },

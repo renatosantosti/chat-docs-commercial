@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { checkAuthRequest } from "./store/auth/slices";
 import DocumentSearch from "./pages/DocumentSearch";
+import ToastContainer from "./components/ToastContainer";
 
 const queryClient = new QueryClient();
 
@@ -43,31 +43,54 @@ const App = () => {
     dispatch(checkAuthRequest()); // Check authentication on app load
   }, [dispatch]);
 
-  return <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <BrowserRouter>
-        <Toaster />
-        <Sonner />
-        <Routes>
-          {/* Public routes with standard navbar */}
-          <Route path="/" element={<PublicRoute element={<Index />} />} />
-          <Route path="/login" element={<PublicRoute element={<Login />} />} />
-          <Route path="/signup" element={<PublicRoute element={<Signup />} />} />
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <BrowserRouter>
+          <Toaster />
+          <ToastContainer />
+          <Sonner />
+          <Routes>
+            {/* Public routes with standard navbar */}
+            <Route path="/" element={<PublicRoute element={<Index />} />} />
+            <Route
+              path="/login"
+              element={<PublicRoute element={<Login />} />}
+            />
+            <Route
+              path="/signup"
+              element={<PublicRoute element={<Signup />} />}
+            />
 
-          
-          {/* Authenticated routes with auth navbar */}
-          <Route path="/documents" element={<AuthenticatedRoute element={<Documents />} />} />
-          <Route path="/upload-document" element={<AuthenticatedRoute element={<UploadDocument />} />} />
-          <Route path="/upload-document" element={<AuthenticatedRoute element={<UploadDocument />} />} />
-          <Route path="/chatdoc/:id" element={<AuthenticatedRoute element={<ChatDoc />} />} />
-          <Route path="/search" element={<AuthenticatedRoute element={<DocumentSearch />} />} />
-          
-          {/* Catch-all route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+            {/* Authenticated routes with auth navbar */}
+            <Route
+              path="/documents"
+              element={<AuthenticatedRoute element={<Documents />} />}
+            />
+            <Route
+              path="/upload-document"
+              element={<AuthenticatedRoute element={<UploadDocument />} />}
+            />
+            <Route
+              path="/upload-document"
+              element={<AuthenticatedRoute element={<UploadDocument />} />}
+            />
+            <Route
+              path="/chatdoc/:id"
+              element={<AuthenticatedRoute element={<ChatDoc />} />}
+            />
+            <Route
+              path="/search"
+              element={<AuthenticatedRoute element={<DocumentSearch />} />}
+            />
+
+            {/* Catch-all route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
 };
 
 export default App;

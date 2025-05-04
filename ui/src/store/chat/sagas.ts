@@ -6,14 +6,29 @@ import {
   ChatResult,
 } from "./slices";
 import http from "@/shared/api/http";
+import { addToast } from "../toast/slices";
 
 function* handleChatRequest() {
   yield takeLatest(chatRequest, function* (action) {
     if (!chatRequest.match(action)) {
       return;
     }
+
     try {
-      if (action.payload.mode === "chat") {
+      const mode = action.payload.mode;
+      if (action.payload.term === "") {
+        yield put(
+          addToast({
+            id: Date.now().toString(),
+            title: "Error",
+            description: `Please enter the ${mode === "chat" ? "question" : "term to search"}.`,
+            type: "error",
+          }),
+        );
+        return;
+      }
+
+      if (mode === "chat") {
         const res = yield call(http.post, "/chat-doc", {
           documentId: action.payload.documentId,
           question: action.payload.term,
@@ -22,6 +37,14 @@ function* handleChatRequest() {
         });
 
         if (res.status != 200 || !res.data.data.success) {
+          yield put(
+            addToast({
+              id: Date.now().toString(),
+              title: "Error",
+              description: res.data.data.message,
+              type: "error",
+            }),
+          );
           yield put(chatRequestFailure());
           return;
         }
@@ -46,13 +69,14 @@ function* handleChatRequest() {
 
       // When mode is search
       const res = yield call(http.post, "/search", {
-        mode: action.payload.mode,
+        mode,
         term: action.payload.term,
         documentId: action.payload.documentId,
       });
 
       if (res.status != 200 || !res.data.data.success) {
         yield put(chatRequestFailure());
+
         return;
       }
 
@@ -73,7 +97,23 @@ function* handleChatRequest() {
       yield delay(700);
       yield put(chatRequestSuccess(result));
     } catch (err) {
+      // Extract detailed error message from HTTP response
+      const errorMessage =
+        err.response?.data?.data?.message ||
+        err.message ||
+        "An unexpected error occurred.";
+
+      console.error("HTTP Error:", err);
+      yield put(
+        addToast({
+          id: Date.now().toString(),
+          title: "Error",
+          description: errorMessage,
+          type: "error",
+        }),
+      );
       yield put(chatRequestFailure());
+      return;
     }
   });
 }
