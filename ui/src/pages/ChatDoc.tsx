@@ -97,7 +97,6 @@ const ChatDoc = () => {
           }}
         />
       </div>
-      <h1>---{wasActivated}</h1>
       {/* Mode Toggle & Button */}
       <div className="flex items-center justify-between">
         <RadioGroup.Root
