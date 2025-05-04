@@ -22,6 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PageItem } from "@/shared/models";
 import { useNavigate } from "react-router-dom";
 import { clearSearch, searchRequest, SearchState } from "@/store/search/slices";
+import Loading from "@/components/Loading";
 
 interface DocumentSearchProps {}
 
