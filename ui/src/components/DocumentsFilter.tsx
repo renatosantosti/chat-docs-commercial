@@ -1,4 +1,3 @@
-
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, FilterIcon } from "lucide-react";
@@ -27,15 +26,16 @@ const DocumentsFilter = ({
             className="pl-10"
           />
         </div>
-        
-      
-        <Button
-          variant="outline"
-          onClick={resetFilters}
-          className="whitespace-nowrap"
-        >
-          Reset Filters
-        </Button>
+
+        {searchTerm && (
+          <Button
+            variant="outline"
+            onClick={resetFilters}
+            className="whitespace-nowrap"
+          >
+            Reset Filters
+          </Button>
+        )}
       </div>
     </div>
   );
