@@ -7,6 +7,12 @@ export interface DocumentItem {
   type: string;
 }
 
+export interface UserItem {
+  id: number;
+  name: string;
+  email: string;
+}
+
 export interface PageItem {
   pageId: number;
   documentId: number;

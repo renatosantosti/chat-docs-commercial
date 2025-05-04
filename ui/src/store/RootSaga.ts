@@ -4,6 +4,7 @@ import documentSagas from "./document/sagas";
 import chatSagas from "./chat/sagas";
 import searchSagas from "./search/sagas";
 import uploadSagas from "./upload/sagas";
+import userSagas from "./user/sagas";
 
 export default function* rootSagas() {
   yield all([
@@ -12,5 +13,6 @@ export default function* rootSagas() {
     chatSagas(),
     searchSagas(),
     uploadSagas(),
+    userSagas(),
   ]);
 }
