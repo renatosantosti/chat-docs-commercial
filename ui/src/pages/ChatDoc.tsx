@@ -74,9 +74,9 @@ const ChatDoc = () => {
     <div className="p-6 max-w-6xl mx-auto space-y-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold gradient-text">
-          {mode === "chat" ? "Chatting with" : "Search in"}:{" "}
-          <b>{documentName}</b>
+        <h1 className="text-2xl font-bold gradient-text">
+          <b>{mode === "chat" ? "Chatting with:" : "Search in:"} </b>
+          {documentName}
         </h1>
       </div>
 

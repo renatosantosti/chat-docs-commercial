@@ -1,12 +1,6 @@
 import { DocumentItem } from "@/shared/models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface CreateDocument {
-  title: string;
-  description: string;
-  content: string;
-}
-
 export interface SearchResult {
   term: string;
   documents: DocumentItem[];
@@ -30,18 +24,11 @@ const documentSlice = createSlice({
   name: "document",
   initialState,
   reducers: {
-    documentCreateRequest: (_, action: PayloadAction<CreateDocument>) => {},
-
-    documentCreateSuccess: (
+    addNewDocumentSuccess: (
       state: DocumentState,
       action: PayloadAction<DocumentItem>,
     ) => {
-      state.isFiltered = false;
       state.documents = [...state.documents, action.payload];
-    },
-
-    documentCreateFailure: (state: DocumentState) => {
-      state.isLoading = false;
     },
 
     documentListRequest: (state: DocumentState) => {
@@ -114,9 +101,7 @@ const documentSlice = createSlice({
 });
 
 export const {
-  documentCreateRequest,
-  documentCreateSuccess,
-  documentCreateFailure,
+  addNewDocumentSuccess,
   documentListRequest,
   documentListSuccess,
   documentListFailure,

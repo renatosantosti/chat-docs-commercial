@@ -17,16 +17,26 @@ import { useForm } from "react-hook-form";
 import {
   CheckCircle,
   Upload,
+  MessageSquareText,
   ChevronRight,
   ArrowRight,
   Wand2,
 } from "lucide-react";
 import { toast as notification } from "sonner";
 import { useToast } from "@/hooks/use-toast";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  documentCreateRequest,
+  resetUploadInfo,
+  UploadState,
+} from "@/store/upload/slices";
 
 const UploadDocument = () => {
+  const state = useSelector((store: { upload: UploadState }) => store.upload);
+  const dispatch = useDispatch();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { document: documentItem, hasError } = state;
   const [currentTab, setCurrentTab] = useState("upload");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -49,12 +59,12 @@ const UploadDocument = () => {
         return;
       }
 
-      // Simulate file upload
       setIsUploading(true);
       setTimeout(() => {
+        dispatch(resetUploadInfo());
         setUploadedFile(file);
         setIsUploading(false);
-        setCurrentTab("details");
+        // setCurrentTab("details");
       }, 1500);
     }
   };
@@ -72,13 +82,13 @@ const UploadDocument = () => {
         return;
       }
 
-      // Simulate file upload
       setIsUploading(true);
       setTimeout(() => {
+        dispatch(resetUploadInfo());
         setUploadedFile(file);
         setIsUploading(false);
         notification.success("File upload loaded, not saved yet!");
-        setCurrentTab("details");
+        // setCurrentTab("details");
       }, 1500);
     }
   };
@@ -98,10 +108,13 @@ const UploadDocument = () => {
       });
       return;
     } else {
-      // In a real app, you'd save this to a database
-      setCurrentTab("complete");
-      notification.success(
-        "File upload & document details saved successfully.",
+      // Dispatch the upload action
+      dispatch(
+        documentCreateRequest({
+          content: uploadedFile,
+          title: form.getValues("title"),
+          description: form.getValues("summary"),
+        }),
       );
     }
   };
@@ -128,8 +141,13 @@ const UploadDocument = () => {
   // Handle completion and navigation
   const handleComplete = () => {
     notification.success("Document uploaded and ready for chat!");
-    navigate("/documents");
+    navigate(`/chatdoc/${documentItem?.id ?? 0}`);
   };
+
+  if (documentItem) {
+    setCurrentTab("complete");
+    notification.success("File upload & document details saved successfully.");
+  }
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -218,7 +236,7 @@ const UploadDocument = () => {
             <div className="mb-6 flex items-center">
               <CheckCircle className="text-green-500 mr-2" />
               <div>
-                <p className="font-medium">Document uploaded successfully!</p>
+                <p className="font-medium">Document attached!</p>
                 <p className="text-sm text-gray-500">
                   Now complete document's details.
                 </p>
@@ -313,6 +331,7 @@ const UploadDocument = () => {
             <p className="mb-2 text-sm text-gray-500">{uploadedFile?.name}</p>
             <div className="mt-8 flex items-center justify-center">
               <Button className="px-6" onClick={handleComplete}>
+                <MessageSquareText className="mr-2" />
                 Chat With Document <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>

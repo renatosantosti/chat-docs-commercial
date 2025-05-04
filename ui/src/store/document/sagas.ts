@@ -1,9 +1,6 @@
 import { all, call, delay, put, takeLatest } from "redux-saga/effects";
 import { PayloadAction } from "@reduxjs/toolkit";
 import {
-  documentCreateRequest,
-  documentCreateSuccess,
-  documentCreateFailure,
   documentListRequest,
   documentListSuccess,
   documentListFailure,
@@ -13,43 +10,10 @@ import {
   documentDeletionRequest,
   documentDeletionSuccess,
   documentDeletionFailure,
-  CreateDocument,
 } from "./slices";
 import http from "@/shared/api/http";
 import { DocumentItem } from "@/shared/models";
 import { addToast } from "../toast/slices";
-
-function* handleCreateDocument() {
-  yield takeLatest(
-    [documentCreateRequest],
-    function* (action: PayloadAction<CreateDocument>) {
-      if (!documentCreateRequest.match(action)) {
-        return;
-      }
-      try {
-        const res = yield call(http.post, "/documents", action.payload);
-        yield put(documentCreateSuccess(res.data.document));
-      } catch (err) {
-        // Extract detailed error message from HTTP response
-        const errorMessage =
-          err.response?.data?.data?.message ||
-          err.message ||
-          "An unexpected error occurred.";
-
-        console.error("HTTP Error:", err);
-        yield put(
-          addToast({
-            id: Date.now().toString(),
-            title: "Error",
-            description: errorMessage,
-            type: "error",
-          }),
-        );
-        yield put(documentCreateFailure());
-      }
-    },
-  );
-}
 
 function* handleDocumentList() {
   yield takeLatest([documentListRequest], function* (action: PayloadAction) {
@@ -156,7 +120,6 @@ function* handleDeletionDocument() {
 
 export default function* documentSagas() {
   yield all([
-    handleCreateDocument(),
     handleDocumentList(),
     handleDocumentSearch(),
     handleDeletionDocument(),

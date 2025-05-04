@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FileTextIcon, ChevronRight } from "lucide-react";
+import { FileTextIcon, ChevronRight, MessageSquareText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Pagination,
@@ -152,6 +152,7 @@ const DocumentGrid = ({
                     className="w-full text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
                     onClick={() => navigate(`/chatdoc/${doc.id}`)}
                   >
+                    <MessageSquareText className="mr-2" />
                     Chat this Doc!
                     <ChevronRight className="h-4 w-4 ml-2" />
                   </Button>
