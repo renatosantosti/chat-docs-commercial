@@ -222,23 +222,31 @@ Here main resouces implemented and integrated to core rest api:
 
 #### Start page
 
-![alt text](image.png)
+![alt text](documentation/index-page.png)
 
 #### Login page
 
-![alt text](image.png)
+![alt text](documentation/login-page.png)
 
 #### Create account page
 
-![alt text](image-2.png)
+![alt text](documentation/create-account-page.png)
 
 #### My Documents - first authenticaded page
 
-![alt text](image-4.png)
+![alt text](documentation/my-documents-page.png)
 
 #### Chatting with document - ask anything related to document´s content.
 
-![alt text](image-5.png)
+![alt text](documentation/chatting-page.png)
+
+#### Searching term - in specific document
+
+![alt text](documentation/searc-specific-doc.png)
+
+#### Searching term on all documents
+
+![alt text](documentation/search-all.png)
 
 ATTENTION: please run all services and get access web app to vibe a live experience, you will enjoy it.
 
