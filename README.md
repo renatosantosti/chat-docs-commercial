@@ -198,6 +198,13 @@ Contains all tests spec.
 - [Full Core API Documentation](core-api/README.md)
 - For a full end-point documentation, please start Rest API and read OpenAPI documentation made over Swagger.
 
+Attention: only POST: /auth and POST:/user don´t require token.
+To generate token, use POST: /auth next apply your new token on Swagger Autorize Botton
+![alt text](documentation/swagger-authorize.png)
+
+Swagger Preview
+![alt text](documentation/swagger-image.png)
+
 ## UI Resources
 
 App frontend was implemented as beatyfull and friendly user interfaces. When user get access web site welcome pages(index) is presented showing all mains resouces this app and call user to action - create new account and sign in.
