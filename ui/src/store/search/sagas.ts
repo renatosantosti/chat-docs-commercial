@@ -23,6 +23,7 @@ function* handleSearchRequest() {
             type: "error",
           }),
         );
+        yield put(searchRequestFailure());
         return;
       }
       const res = yield call(http.post, "/search", {

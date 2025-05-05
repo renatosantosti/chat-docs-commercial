@@ -13,7 +13,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["jest"],
+    /* "types": ["jest"],  - enabled if jest get failed */
     "typeRoots": ["./src/types", "./node_modules/@types"],
     "resolveJsonModule": true,
     "moduleResolution": "node",

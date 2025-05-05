@@ -21,6 +21,7 @@ Stack applied on this project:
 - DotEnv
 - Docker
 - Sqlite - mocked database
+- Jest
 
 AI Driven Stack:
 
@@ -30,9 +31,39 @@ AI Driven Stack:
 
 ## MVC
 
+For more information about MVC proposal, please read the README.md on root path of mono repo - [click here](../README.md)
+
 ## Features
 
-## Other features
+- Manage Users
+- Manage Auth & JWT Token generate - exception refresh token yet
+- Manage documents & pages
+- Index Document on Elastic by text´s terms and semantically via Vector Embeddings
+- Search by terms
+- Search semantincally
+- Chat with document - AI Driven Resource
+- Avoid chatting something out of document´s context
+
+## Low coupling and high cohesion
+
+- Applied S.O.L.I.D principles and Clean Archicteture
+- Any dependencies could be replaced by another implementations
+- External resources could be replaced easily
+- Services and adapter can be moved out this solution as microservice since interface had been implemented and resource injected.
+- Inversion of control was archive by container injection, so all resouce are injected on container and shared with app to injected/resolved when it is required;
+- Singleton: some resource had a singleton instance to be injected as required
+- Cohension: all application flow from domain & core application, also single responsability principle was followed to assure high cohension and easy manuntenability
+
+## Tests and test converage
+
+- All application is ready to 100% test coverage
+- Some unit test was implementes as proof of abilities
+
+## Docker and Containerization
+
+- All services are ready to be containerized and deployed on one click
+- State less principle was implemented on each rest end-point
+- API and UI are ready to be scalable horizontally once app do not depends on disk, memory state or any else.
 
 ## Getting Started
 
