@@ -53,10 +53,7 @@ export default class CreateUserUseCase implements ICreateUserUseCase {
 
     if (!request.email || request.email.length === 0) {
       console.error("User´s name is required.");
-      return {
-        success: false,
-        message: "User´s email is required.",
-      };
+      return new BadRequestError("User´s email is required.");
     }
 
     if (!request.password || request.password.length === 0) {
@@ -70,13 +67,20 @@ export default class CreateUserUseCase implements ICreateUserUseCase {
       return new MissingParamError("User´s repeat password is required.");
     }
 
-    const exists = await this.repository.getOneByEmail(
-      request.email.toLocaleLowerCase(),
-    );
-    if (exists) {
-      console.error("Email already exists.");
-      return new EmailInUseError();
+    try{
+      const exists = await this.repository.getOneByEmail(
+        request.email.toLocaleLowerCase(),
+      );
+  
+      if (exists) {
+        console.error("Email already exists.");
+        return new EmailInUseError();
+      }
     }
+    catch(error){
+      return new InternalError("Error to create user.");
+    }
+
 
     try {
       const result = await this.repository.createOne({
@@ -99,10 +103,7 @@ export default class CreateUserUseCase implements ICreateUserUseCase {
       return new InternalError("Error to create user");
     } catch (err: any) {
       console.error("Error to create user:", { err });
-      return {
-        success: false,
-        message: "Error to create user.",
-      };
+      return new InternalError("Error to create user.");
     }
   }
 }

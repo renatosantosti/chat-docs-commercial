@@ -12,11 +12,11 @@ export class PDFDocumentAdapter implements IPDFDocumentAdapter<any> {
       });
 
       pdfParser.on("pdfParser_dataError", (err: any) => {
-        console.error("Erro ao processar o PDF:", err);
+        console.error("Failed to process pdf content:", err);
         reject(err);
       });
 
-      // Carrega o conteúdo em formato base64
+      // cast to base64 format
       const binaryData = Buffer.from(content, "base64");
       pdfParser.parseBuffer(binaryData);
     });

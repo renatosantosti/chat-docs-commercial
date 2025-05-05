@@ -13,11 +13,12 @@
     "paths": {
       "@/*": ["src/*"]
     },
+    "types": ["jest"],
     "typeRoots": ["./src/types", "./node_modules/@types"],
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "tests/**/*"],
   "exclude": ["node_modules", "dist"]
 }

@@ -2,7 +2,6 @@ import { IPDFDocumentAdapter } from "@/application/interfaces/adapters/pdf-docum
 import { IExtractDocumentTextPagesService } from "@/application/interfaces/services/extract-document-text-pages-service-interface";
 import { InternalError } from "@/shared/errors";
 
-// Implement the ExtractDocumentTextPagesService
 export class ExtractDocumentTextPagesService
   implements IExtractDocumentTextPagesService
 {
