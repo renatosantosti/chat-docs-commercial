@@ -3,3 +3,7 @@ npm - debug.log
 Dockerfile
 dist
   .dockerignore
+
+# Sqlite databases
+*.sqlite
+temp
