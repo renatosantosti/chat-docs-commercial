@@ -17,4 +17,4 @@ COPY --from=builder /app/dist ./dist
 
 EXPOSE 8000
 
-CMD ["npm", "start"]
+CMD ["sh", "-c", "echo 'starting app...'; npm start; sleep 1000"]

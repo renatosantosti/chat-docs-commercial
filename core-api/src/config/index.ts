@@ -50,7 +50,9 @@ export const openAiApiConfig = {
   apiKey: process.env.OPENAI_API_KEY ?? "",
   chatModel: process.env.OPENAI_CHAT_MODEL ?? OpenAIChatEnumModels.GPT4Turbo,
   embeddingModel,
-  embeddingDims: OpenAIEmbeddingModels[embeddingModel].dims,
+  embeddingDims: process.env.OPENAI_EMBEDDING_DIMS
+    ? Number(process.env.OPENAI_EMBEDDING_DIMS)
+    : 1536,
   maxTokens: process.env.OPENAI_EMBEDDING_MAX_TOKEN
     ? Number(process.env.OPENAI_EMBEDDING_MAX_TOKEN)
     : 1000,
