@@ -1,5 +1,5 @@
 import IPasswordHashAdapter from "@/application/interfaces/adapters/password-hashing";
-import { authConfig } from "@/config";
+import { authConfig, serverConfig } from "@/config";
 import AuthUserDto from "@/domain/dtos/auth/user";
 import AuthController from "@/presentation/controllers/auth";
 import { unauthorizedHttpError } from "@/presentation/helpers/http-helper";
@@ -151,11 +151,12 @@ authRouter.post("/auth/login", async (req, res) => {
      */
     const { token, userId, userFullName } = (response as any)?.data;
     if (token && userId && userFullName) {
+      console.log("passando");
       return res
         .cookie("token", token, {
           httpOnly: true,
-          secure: true,
-          sameSite: "strict",
+          secure: serverConfig.cookieSecurity,
+          sameSite: serverConfig.cookieSameSite,
           maxAge: 2 * 60 * 60 * 1000, //15 min - change it to get from .env
         })
         .json({ user: { id: userId, name: userFullName } });
@@ -206,8 +207,8 @@ authRouter.post("/auth/login", async (req, res) => {
 authRouter.post("/auth/logout", (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: true,
-    sameSite: "strict",
+    secure: serverConfig.cookieSecurity,
+    sameSite: serverConfig.cookieSameSite,
   });
 
   return res.status(200).json({ message: "Logged out successfully." });
@@ -291,8 +292,8 @@ authRouter.get("/auth/check", async (req, res) => {
     return res
       .cookie("token", token, {
         httpOnly: true,
-        secure: true,
-        sameSite: "strict",
+        secure: serverConfig.cookieSecurity,
+        sameSite: serverConfig.cookieSameSite,
         maxAge: 2 * 60 * 60 * 1000, //15 min - change it to get from .env
       })
       .json({ user: { id: user?.id, name: user?.name } });

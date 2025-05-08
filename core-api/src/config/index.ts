@@ -3,7 +3,6 @@ import path from "path";
 import {
   OpenAIChatEnumModels,
   OpenAIEmbeddingEnumModels,
-  OpenAIEmbeddingModels,
 } from "@/presentation/helpers/openai-embedding-models";
 
 const envPath = path.resolve(
@@ -29,6 +28,12 @@ export const serverConfig = {
   node_env: process.env.NODE_ENV,
   apiPort: process.env.API_PORT ? Number(process.env.API_PORT) : 8000,
   socketPort: process.env.SOCKET_PORT ? Number(process.env.SOCKET_PORT) : 9000,
+  api_client_host: process.env.CLIENT_HOST,
+  cookieSecurity: process.env.COOKIE_SECURE === "true",
+  cookieSameSite: (process.env.COOKIE_SAME_SITE ?? "lax") as
+    | "lax"
+    | "strict"
+    | "none",
 };
 
 export const databaseConfig = {

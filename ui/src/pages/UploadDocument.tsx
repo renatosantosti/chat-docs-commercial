@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -140,14 +140,25 @@ const UploadDocument = () => {
 
   // Handle completion and navigation
   const handleComplete = () => {
-    notification.success("Document uploaded and ready for chat!");
-    navigate(`/chatdoc/${documentItem?.id ?? 0}`);
+    if (documentItem?.id) {
+      navigate(`/chatdoc/${documentItem.id}`);
+    }
   };
 
-  if (documentItem) {
-    setCurrentTab("complete");
-    notification.success("File upload & document details saved successfully.");
-  }
+  useEffect(() => {
+    let isMounted = true;
+
+    if (documentItem && isMounted) {
+      setCurrentTab("complete");
+      notification.success(
+        "File upload & document details saved successfully.",
+      );
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [documentItem]);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">

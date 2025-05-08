@@ -12,7 +12,6 @@ import PasswordHashAdapter from "@/infrastructure/adapters/password-hash-adapter
 import { container } from "tsyringe";
 import AuthUserDto from "@/domain/dtos/auth/user";
 import IPasswordHashAdapter from "@/application/interfaces/adapters/password-hashing";
-import { InternalError } from "@/shared/errors/internal-error";
 
 const onlyWithAccessAuthMiddleware = async (
   req: Request,

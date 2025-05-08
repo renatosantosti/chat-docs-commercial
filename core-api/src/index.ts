@@ -40,8 +40,11 @@ app.use(
   cors({
     origin: [
       "http://127.0.0.1:8080",
+      "http://localhost:4173",
       "http://localhost:8080",
       "http://ui:8080",
+      `http://${serverConfig.api_client_host}`,
+      `https://${serverConfig.api_client_host}`,
     ], // Allow requests from your React app
     credentials: true, // Allow cookies to be sent with requests
   }),
