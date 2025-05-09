@@ -34,17 +34,21 @@ const PORT = serverConfig.apiPort || 8000;
 
 const app: Application = express();
 
+console.log("CORS", {
+  origin: [
+    "http://127.0.0.1:8080",
+    "http://localhost:4173",
+    ...serverConfig.apiClientHosts.split(","),
+  ], // Allow requests from your React app
+  credentials: true, // Allow cookies to be sent with requests
+});
 // Enable CORS
-/* TODO: get host from env */
 app.use(
   cors({
     origin: [
       "http://127.0.0.1:8080",
       "http://localhost:4173",
-      "http://localhost:8080",
-      "http://ui:8080",
-      `http://${serverConfig.api_client_host}`,
-      `https://${serverConfig.api_client_host}`,
+      ...serverConfig.apiClientHosts.split(","),
     ], // Allow requests from your React app
     credentials: true, // Allow cookies to be sent with requests
   }),

@@ -28,7 +28,7 @@ export const serverConfig = {
   node_env: process.env.NODE_ENV,
   apiPort: process.env.API_PORT ? Number(process.env.API_PORT) : 8000,
   socketPort: process.env.SOCKET_PORT ? Number(process.env.SOCKET_PORT) : 9000,
-  api_client_host: process.env.CLIENT_HOST,
+  apiClientHosts: process.env.CLIENT_HOSTS ?? "",
   cookieSecurity: process.env.COOKIE_SECURE === "true",
   cookieSameSite: (process.env.COOKIE_SAME_SITE ?? "lax") as
     | "lax"
