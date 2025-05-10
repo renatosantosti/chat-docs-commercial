@@ -27,3 +27,8 @@ export interface Toast {
   description?: string;
   type?: "success" | "error" | "info" | "warning";
 }
+
+export interface SuggestionItem {
+  title: string;
+  description: string;
+}

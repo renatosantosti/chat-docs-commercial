@@ -26,7 +26,7 @@ function* handleCreateDocument() {
         formData.append("title", title);
         formData.append("description", description);
         formData.append("content", content); // File field
-
+        yield delay(5000);
         // Make API call
         const response = yield call(http.post, "/documents", formData, {
           headers: {

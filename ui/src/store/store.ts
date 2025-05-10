@@ -8,6 +8,7 @@ import searchReducer from "./search/slices";
 import toastReducer from "./toast/slices";
 import uploadReducer from "./upload/slices";
 import userReducer from "./user/slices";
+import getSuggestionsReducer from "./title-suggestions/slices";
 
 // Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -22,6 +23,7 @@ const store = configureStore({
     toast: toastReducer,
     upload: uploadReducer,
     user: userReducer,
+    suggestions: getSuggestionsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware), // Disable thunk and add saga middleware

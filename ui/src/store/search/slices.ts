@@ -3,7 +3,6 @@ import { SearchMode } from "@/shared/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface SearchResult {
-  term: string;
   pages: PageItem[];
 }
 

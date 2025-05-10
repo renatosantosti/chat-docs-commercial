@@ -51,9 +51,7 @@ export class GetDocumentSuggestionsUseCase
     ];
 
     // Runs Gpt Adapter on conversation mode
-    console.log("Messages to GptAdapter:", messages);
     const rawResponse = await this.gptAdapter.getResponse(messages);
-    console.log("Raw response from GptAdapter:", rawResponse);
 
     try {
       const parsed = JSON.parse(rawResponse ?? "");

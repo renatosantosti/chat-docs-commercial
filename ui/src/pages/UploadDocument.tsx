@@ -33,17 +33,31 @@ import {
 } from "@/store/upload/slices";
 
 import { extractTextFromPdf } from "@/shared/api/utils";
+import {
+  clearDocumentSuggestions,
+  DocumentSuggestionsState,
+  getSuggestionsRequest,
+} from "@/store/title-suggestions/slices";
+import Loading from "@/components/Loading";
 
 const UploadDocument = () => {
   const state = useSelector((store: { upload: UploadState }) => store.upload);
+
+  const suggestionsState = useSelector(
+    (store: { suggestions: DocumentSuggestionsState }) => store.suggestions,
+  );
+  const { isGenerated, suggestions } = suggestionsState;
   const dispatch = useDispatch();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { document: documentItem, hasError } = state;
+  const { document: documentItem, isUploading } = state;
   const [currentTab, setCurrentTab] = useState("upload");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [docTextContent, setDocTextContent] = useState<string>(null);
-  const [isUploading, setIsUploading] = useState(false);
+  const [isProcessing, setIsUploading] = useState(false);
+  const [isWaitingForSuggestion, setIsWaitingForSuggestion] = useState<
+    "title" | "summary" | null
+  >(null);
 
   // Form for document details
   const form = useForm({
@@ -64,18 +78,26 @@ const UploadDocument = () => {
       }
 
       const docTextPlain = await extractTextFromPdf(file);
+      if (!docTextPlain) {
+        notification.error("Failed to extract text from PDF");
+        return;
+      }
+      // clear previous suggestions when a new file is uploaded
+      dispatch(clearDocumentSuggestions());
+      const contentSample = docTextPlain.substring(0, 999); // Limit to 1000 characters
+      setDocTextContent(contentSample); // Limit to 1000 characters
+
       setIsUploading(true);
       setTimeout(() => {
         dispatch(resetUploadInfo());
         setUploadedFile(file);
         setIsUploading(false);
-        // setCurrentTab("details");
-      }, 1500);
+      }, 1000);
     }
   };
 
   // Handle drag and drop
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -87,14 +109,23 @@ const UploadDocument = () => {
         return;
       }
 
+      const docTextPlain = await extractTextFromPdf(file);
+      if (!docTextPlain) {
+        notification.error("Failed to extract text from PDF");
+        return;
+      }
+
+      // clear previous suggestions when a new file is uploaded
+      dispatch(clearDocumentSuggestions());
+      setDocTextContent(docTextPlain.substring(0, 100)); // Limit to 1000 characters
+
       setIsUploading(true);
       setTimeout(() => {
         dispatch(resetUploadInfo());
         setUploadedFile(file);
         setIsUploading(false);
         notification.success("File upload loaded, not saved yet!");
-        // setCurrentTab("details");
-      }, 1500);
+      }, 1000);
     }
   };
 
@@ -126,27 +157,52 @@ const UploadDocument = () => {
 
   // Generate content with AI
   const generateWithAI = (field: "title" | "summary") => {
-    // In a real app, this would call an AI service
-    notification.info("Generating content with AI...");
+    notification.info("Generating content with AI...", {
+      duration: 700,
+    });
 
-    setTimeout(() => {
-      if (field === "title") {
-        const generatedTitle = `${uploadedFile?.name.split(".")[0]} Analysis Document`;
-        form.setValue("title", generatedTitle);
-      } else {
-        form.setValue(
-          "summary",
-          "This document contains important information about the subject matter, with key insights and data points that can be referenced later.",
-        );
-      }
-      notification.success(`Generated ${field} with AI`);
-    }, 1000);
+    if (isGenerated) {
+      setTimeout(() => {
+        if (field === "title") {
+          // here we will a ramdom title from the suggestions
+          const randomIndex = Math.floor(Math.random() * suggestions.length);
+          const generatedTitle = suggestions[randomIndex].title;
+          form.setValue("title", generatedTitle);
+        } else {
+          // here we will a ramdom description from the suggestions
+          const randomIndex = Math.floor(Math.random() * suggestions.length);
+          const generatedDescription = suggestions[randomIndex].description;
+          form.setValue("summary", generatedDescription);
+        }
+        notification.success(`Generated ${field} with AI`);
+      }, 1000);
+    } else {
+      notification.info("Processing new suggestions, wait...", {
+        duration: 700,
+      });
+
+      dispatch(
+        getSuggestionsRequest({
+          fileName: uploadedFile?.name,
+          contentSample: docTextContent,
+        }),
+      );
+
+      // after dispatching the action, we will wait for the response.
+      setIsWaitingForSuggestion(field); // Mark that we are waiting
+    }
   };
 
   // Handle completion and navigation
   const handleComplete = () => {
     if (documentItem?.id) {
-      navigate(`/chatdoc/${documentItem.id}`);
+      const { id: documentId } = documentItem;
+      dispatch(clearDocumentSuggestions());
+      dispatch(resetUploadInfo());
+      setTimeout(() => {
+        notification.success("Now you can chat with this document!");
+        navigate(`/chatdoc/${documentId}`);
+      }, 1);
     }
   };
 
@@ -165,16 +221,31 @@ const UploadDocument = () => {
     };
   }, [documentItem]);
 
+  // Listen for the result
+  useEffect(() => {
+    if (isGenerated && isWaitingForSuggestion && suggestions?.length > 0) {
+      const randomIndex = Math.floor(Math.random() * suggestions.length);
+      const generated =
+        isWaitingForSuggestion === "title"
+          ? suggestions[randomIndex].title
+          : suggestions[randomIndex].description;
+
+      form.setValue(isWaitingForSuggestion, generated);
+      notification.success(`Generated ${isWaitingForSuggestion} with AI`);
+      setIsWaitingForSuggestion(null); // Reset
+    }
+  }, [isGenerated, suggestions, isWaitingForSuggestion]);
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <h1 className="text-3xl font-bold mb-6 gradient-text">Upload Document</h1>
-
+      <Loading isLoading={!!isWaitingForSuggestion || isUploading}></Loading>
       <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
         <TabsList className="grid grid-cols-3 mb-8">
           <TabsTrigger
             value="upload"
             className="data-[state=active]:border-b-2 data-[state=active]:border-primary relative"
-            disabled={currentTab !== "upload" && !uploadedFile}
+            disabled={true}
           >
             <span className="absolute -top-4 left-2 text-xs font-medium text-purple-600">
               Step 1/3
@@ -184,10 +255,7 @@ const UploadDocument = () => {
           <TabsTrigger
             value="details"
             className="data-[state=active]:border-b-2 data-[state=active]:border-primary relative"
-            disabled={
-              currentTab === "upload" ||
-              (currentTab === "complete" && !uploadedFile)
-            }
+            disabled={true}
           >
             <span className="absolute -top-4 left-2 text-xs font-medium text-purple-600">
               Step 2/3
@@ -197,7 +265,7 @@ const UploadDocument = () => {
           <TabsTrigger
             value="complete"
             className="data-[state=active]:border-b-2 data-[state=active]:border-primary relative"
-            disabled={currentTab === "upload" || currentTab === "details"}
+            disabled={true}
           >
             <span className="absolute -top-4 left-2 text-xs font-medium text-purple-600">
               Step 3/3
@@ -236,11 +304,11 @@ const UploadDocument = () => {
 
             <div className="mt-8 w-full flex justify-end">
               <Button
-                disabled={!uploadedFile && !isUploading}
+                disabled={!uploadedFile && !isProcessing}
                 onClick={() => setCurrentTab("details")}
                 className="px-6"
               >
-                {isUploading ? "Checking pdf..." : "Next"}
+                {isProcessing ? "Checking pdf..." : "Next"}
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             </div>

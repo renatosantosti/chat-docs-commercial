@@ -8,7 +8,11 @@ export const badRequestHttpError = (
 ): IBaseHttpResponse<Error> => ({
   description: "Bad Request",
   statusCode: HttpStatusCode.BAD_REQUEST,
-  data: { message: error.message, name: error.name, stack: error?.stack },
+  data: {
+    message: error?.stack ?? error.message,
+    name: error.name,
+    stack: error?.stack,
+  },
 });
 
 export const conflictRequestHttpError = (
