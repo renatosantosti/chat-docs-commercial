@@ -4,26 +4,23 @@ import IBaseMapper from "@/application/interfaces/base/base-mapper";
 import IDocumentRepository from "@/application/interfaces/repositories/document";
 import IUserRepository from "@/application/interfaces/repositories/user";
 import IAuthUseCase from "@/application/interfaces/use-cases/auth-usecase-interface";
-import { IChatDocUseCase } from "@/application/interfaces/use-cases/chatdoc-usecase-interface";
-import { ICreateDocumentUseCase } from "@/application/interfaces/use-cases/create-document-usecase-interface";
+import { IChatDocUseCase } from "@/application/interfaces/use-cases/chat-doc/chatdoc-usecase-interface";
 import { ICreateUserUseCase } from "@/application/interfaces/use-cases/create-user-usecase-interface";
-import { IDeleteDocumentUseCase } from "@/application/interfaces/use-cases/delete-document-usecase-interface";
-import { IGetAllDocumentUseCase } from "@/application/interfaces/use-cases/get-all-document-usecase-interface";
-import { IGetDocumentUseCase } from "@/application/interfaces/use-cases/get-document-usecase-interface";
+import { IGetAllDocumentUseCase } from "@/application/interfaces/use-cases/document/get-all/get-all-document-usecase-interface";
+import { IGetDocumentUseCase } from "@/application/interfaces/use-cases/document/get/get-document-usecase-interface";
 import { IGetUserUseCase } from "@/application/interfaces/use-cases/get-user-usecase-interface";
 import ILiveUseCase from "@/application/interfaces/use-cases/live-usecase-interface";
 import { ISearchTermUseCase } from "@/application/interfaces/use-cases/search-usecase-interface";
-import { IUpdateDocumentUseCase } from "@/application/interfaces/use-cases/update-document-usecase-interface";
 import { IUpdateUserUseCase } from "@/application/interfaces/use-cases/update-user-usecase-interface";
 import { ExtractDocumentTextPagesService } from "@/application/services/extract-document-text-pages-service";
 import { SearchIndexerService } from "@/application/services/indexer-pages-service";
 import AuthUseCase from "@/application/usecases/auth/auth-usecase";
 import ChatDocUseCase from "@/application/usecases/chatdoc/chatdoc-usecase";
-import CreateDocumentUseCase from "@/application/usecases/document/create-document/create-document-usecase";
-import DeleteDocumentUseCase from "@/application/usecases/document/delete-document/delete-document-usecase";
-import GetAllDocumentUseCase from "@/application/usecases/document/get-all-document/get-all-document-usecase";
-import GetDocumentUseCase from "@/application/usecases/document/get-document/get-document-usecase";
-import UpdateDocumentUseCase from "@/application/usecases/document/update-document/update-document-usecase";
+import CreateDocumentUseCase from "@/application/usecases/document/create/create-document-usecase";
+import DeleteDocumentUseCase from "@/application/usecases/document/delete/delete-document-usecase";
+import GetAllDocumentUseCase from "@/application/usecases/document/get-all/get-all-document-usecase";
+import GetDocumentUseCase from "@/application/usecases/document/get/get-document-usecase";
+import UpdateDocumentUseCase from "@/application/usecases/document/update/update-document-usecase";
 import LiveUseCase from "@/application/usecases/live/use-case";
 import SearchTermUseCase from "@/application/usecases/search/search-usecase";
 import CreateUserUseCase from "@/application/usecases/user/create-user/create-user-usecase";
@@ -60,6 +57,12 @@ import GetUserController from "@/presentation/controllers/user/get-user-controll
 import UpdateUserController from "@/presentation/controllers/user/update-user-controller";
 import { OpenAIChatEnumModels } from "@/presentation/helpers/openai-embedding-models";
 import { container } from "tsyringe";
+import { IUpdateDocumentUseCase } from "@/application/interfaces/use-cases/document/update/update-document-usecase-interface";
+import { IDeleteDocumentUseCase } from "@/application/interfaces/use-cases/document/delete/delete-document-usecase-interface";
+import { IGetDocumentSuggestionsUseCase } from "@/application/interfaces/use-cases/document/get-suggestions/get-document-suggestions-usecase-interface";
+import { GetDocumentSuggestionsUseCase } from "@/application/usecases/document/get-sugestions/get-document-sugestions-usecase";
+import { ICreateDocumentUseCase } from "@/application/interfaces/use-cases/document/create/create-document-usecase-interface";
+import GetDocSuggestionsController from "@/presentation/controllers/document/get-document-suggestions-controller";
 
 /* Register all adapters as singletons*/
 container.registerSingleton<ITimeAdapter>("ITimeAdapter", TimeProvider);
@@ -107,13 +110,6 @@ container.registerInstance<IDocumentRepository>(
     ),
   ),
 );
-
-// /* Register all controllers for user */
-// container.register("GetUserController", {useClass: GetUserController,});
-// container.register("GetAllDocumentController", {useClass: GetAllDocumentController,});
-// container.register("CreateDocumentController", {useClass: CreateDocumentController,});
-// container.register("UpdateDocumentController", {useClass: UpdateDocumentController,});
-// container.register("DeleteDocumentController", {useClass: DeleteDocumentController,});
 
 /* Shared instances */
 const timeProvider = container.resolve<ITimeAdapter>("ITimeAdapter");
@@ -218,6 +214,10 @@ const searchTermUseCase = new SearchTermUseCase(
   slasticSearchIndexer,
   elasticSearchConfig.indexName,
 );
+const getDocSuggestionsUseCase = new GetDocumentSuggestionsUseCase(
+  timeProvider,
+  openAiAdaptter,
+);
 
 container.registerInstance<ICreateDocumentUseCase>(
   "ICreateDocumentUseCase",
@@ -235,9 +235,15 @@ container.registerInstance<IGetDocumentUseCase>(
   "IGetDocumentUseCase",
   getDocumentUseCase,
 );
+
 container.registerInstance<IUpdateDocumentUseCase>(
   "IUpdateDocumentUseCase",
   updateDocumentUseCase,
+);
+
+container.registerInstance<IGetDocumentSuggestionsUseCase>(
+  "IGetDocumentSuggestionsUseCase",
+  getDocSuggestionsUseCase,
 );
 
 /* Register usecase for searching and chatting */
@@ -294,3 +300,11 @@ container.register("SearchTermController", { useClass: SearchTermController });
 
 /* Register chat with document controller */
 container.register("ChatDocController", { useClass: ChatDocController });
+
+/* Register get document controller */
+container.register("GetDocController", { useClass: ChatDocController });
+
+/* Register get document suggestions controller */
+container.register("GetDocSuggestionsController", {
+  useClass: GetDocSuggestionsController,
+});

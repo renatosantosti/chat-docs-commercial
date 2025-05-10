@@ -2,8 +2,8 @@ import AuthUserDto from "@/domain/dtos/auth/user";
 import { ErrorTypes } from "@/shared/errors/error-types";
 import IBaseController from "@/application/interfaces/base/base-controller";
 import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
-import GetAllDocumentResponse from "@/application/usecases/document/get-all-document/get-all-document-response";
-import { IGetAllDocumentUseCase } from "@/application/interfaces/use-cases/get-all-document-usecase-interface";
+import GetAllDocumentResponse from "@/application/interfaces/use-cases/document/get-all/get-all-document-response";
+import { IGetAllDocumentUseCase } from "@/application/interfaces/use-cases/document/get-all/get-all-document-usecase-interface";
 import {
   forbiddenHttpError,
   internalHttpError,

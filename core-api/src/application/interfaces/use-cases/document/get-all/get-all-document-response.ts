@@ -1,5 +1,5 @@
 import IBaseUseCaseResponse from "@/application/interfaces/base/base-usecase-response";
-import DocumentDto from "../../../../domain/dtos/document";
+import DocumentDto from "../../../../../domain/dtos/document";
 
 /**
  * Response object for the create document operation.

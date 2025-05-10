@@ -5,13 +5,14 @@ import GetDocumentController from "@/presentation/controllers/document/get-docum
 import HttpStatusCode from "@/presentation/helpers/http-status";
 import GetAllDocumentController from "@/presentation/controllers/document/get-all-document-controller";
 import CreateDocumentController from "@/presentation/controllers/document/create-document-controller";
-import CreateDocumentRequest from "@/application/usecases/document/create-document/create-document-request";
 import DeleteDocumentController from "@/presentation/controllers/document/delete-document-controller";
 import UpdateDocumentController from "@/presentation/controllers/document/update-document-controller";
-import UpdateDocumentRequest from "@/application/usecases/document/update-document/update-document-request";
+
 import { isValidPDF } from "@/shared/utils/validateFile";
 import { uploadMiddleware } from "@/presentation/http-middlewares/upload-middleware";
 import { BadRequestError, InternalError } from "@/shared/errors";
+import CreateDocumentRequest from "@/application/interfaces/use-cases/document/create/create-document-request";
+import UpdateDocumentRequest from "@/application/interfaces/use-cases/document/update/update-document-request";
 
 // Create route
 const documentRouters = express.Router();

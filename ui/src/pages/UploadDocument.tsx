@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+
 import {
   Form,
   FormControl,
@@ -31,6 +32,8 @@ import {
   UploadState,
 } from "@/store/upload/slices";
 
+import { extractTextFromPdf } from "@/shared/api/utils";
+
 const UploadDocument = () => {
   const state = useSelector((store: { upload: UploadState }) => store.upload);
   const dispatch = useDispatch();
@@ -39,6 +42,7 @@ const UploadDocument = () => {
   const { document: documentItem, hasError } = state;
   const [currentTab, setCurrentTab] = useState("upload");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [docTextContent, setDocTextContent] = useState<string>(null);
   const [isUploading, setIsUploading] = useState(false);
 
   // Form for document details
@@ -50,7 +54,7 @@ const UploadDocument = () => {
   });
 
   // Handle file upload
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
@@ -59,6 +63,7 @@ const UploadDocument = () => {
         return;
       }
 
+      const docTextPlain = await extractTextFromPdf(file);
       setIsUploading(true);
       setTimeout(() => {
         dispatch(resetUploadInfo());

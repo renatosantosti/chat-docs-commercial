@@ -1,14 +1,14 @@
 import AuthUserDto from "@/domain/dtos/auth/user";
-import { IDeleteDocumentUseCase } from "../../../interfaces/use-cases/delete-document-usecase-interface";
+import { IGetDocumentUseCase } from "../../../interfaces/use-cases/document/get/get-document-usecase-interface";
 import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
 import IDocumentRepository from "@/application/interfaces/repositories/document";
 import IBaseMapper from "@/application/interfaces/base/base-mapper";
 import DocumentDto from "@/domain/dtos/document";
 import Document from "@/domain/models/document";
-import DeleteDocumentRequest from "./delete-document-request";
-import DeleteDocumentResponse from "./delete-document-reponse";
-import { AccessForbiddenError } from "@/shared/errors/access-forbidden-error";
+import GetDocumentRequest from "../../../interfaces/use-cases/document/get/get-document-request";
+import GetDocumentResponse from "../../../interfaces/use-cases/document/get/get-document-response";
 import { InternalError } from "@/shared/errors/internal-error";
+import { AccessForbiddenError } from "@/shared/errors/access-forbidden-error";
 import { NotFoundError } from "@/shared/errors/not-found-error";
 
 /**
@@ -16,13 +16,14 @@ import { NotFoundError } from "@/shared/errors/not-found-error";
  * This class handles the logic for creating a new document in the system.
  * It implements the IBaseUseCaseHandler interface to adhere to a standard request-response pattern.
  */
-export default class DeleteDocumentUseCase implements IDeleteDocumentUseCase {
+export default class GetDocumentUseCase implements IGetDocumentUseCase {
   public currentUser?: AuthUserDto;
+
   /**
-   * Constructs a new DeleteDocumentUseCase.
+   * Constructs a new GetDocumentUseCase.
    *
-   * @param currentUser - The currently authenticated user.
    * @param timeProvider - The time provider used for obtaining the current UTC datetime.
+   * @param repository - The document repository used for data access.
    * @param mapper - Helper to map document model to DTO.
    */
   constructor(
@@ -32,48 +33,41 @@ export default class DeleteDocumentUseCase implements IDeleteDocumentUseCase {
   ) {}
 
   /**
-   * Handles the create document request.
-   *
+   * Handles the get document request.
    * @param currentUser - The currently authenticated user. This parameter is required to ensure that the use case is executed in the context of the authenticated user.
    *                     It is typically used for authorization checks or to associate the operation with the user.
-   * @param request - The request object containing the data needed to create a new document.
-   * @returns A promise that resolves to a DeleteDocumentResponse object containing the result of the document creation process.
+   * @param request - The request object containing the data needed to get a new document.
+   * @returns A promise that resolves to a GetDocumentResponse object containing the result of the document creation process.
    */
   async handler(
     currentUser: AuthUserDto,
-    request: DeleteDocumentRequest,
-  ): Promise<DeleteDocumentResponse | Error> {
+    request: GetDocumentRequest,
+  ): Promise<GetDocumentResponse | Error> {
     this.currentUser = currentUser;
 
     let document = null;
     try {
       // Fetch the document by ID
       document = await this.repository.getOneById(request.id);
-      if (!document) {
-        throw new NotFoundError();
-      }
     } catch (error) {
       console.error("Error fetching document:", error);
-      throw new InternalError("An error occurred while fetching the document.");
+      new InternalError("An error occurred while fetching the document.");
     }
 
-    // Check if the user has permission to view the requested document
-    if (this.currentUser.id !== document.userId) {
+    // Check if the document exists
+    if (!document) {
+      return new NotFoundError();
+    }
+
+    // Check if user can access this document
+    if (document.userId !== this.currentUser.id) {
       return new AccessForbiddenError();
     }
 
-    try {
-      const result = await this.repository.deleteOneById(request.id);
-
-      return {
-        success: !!result,
-        message: result
-          ? "User deleted successfully."
-          : "Unknow error to delete document.",
-      };
-    } catch (err: any) {
-      console.error("Error deleting document:", err);
-      throw new InternalError("An error occurred while deleting the document.");
-    }
+    return {
+      success: true,
+      message: "Document get successfully.",
+      document: document ? this.mapper.map(document) : null,
+    };
   }
 }

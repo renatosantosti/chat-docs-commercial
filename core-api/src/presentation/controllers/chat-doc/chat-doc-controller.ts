@@ -12,9 +12,9 @@ import {
   ok,
 } from "@/presentation/helpers/http-helper";
 import { isNotError } from "@/shared/utils/dto-is-error-type-guard ";
-import ChatDocRequest from "@/application/usecases/chatdoc/chatdoc-request";
-import { ChatDocResponse } from "@/application/usecases/chatdoc/chatdoc-response";
-import { IChatDocUseCase } from "@/application/interfaces/use-cases/chatdoc-usecase-interface";
+import ChatDocRequest from "@/application/interfaces/use-cases/chat-doc/chatdoc-request";
+import { ChatDocResponse } from "@/application/interfaces/use-cases/chat-doc/chatdoc-response";
+import { IChatDocUseCase } from "@/application/interfaces/use-cases/chat-doc/chatdoc-usecase-interface";
 
 @injectable()
 export default class ChatDocController

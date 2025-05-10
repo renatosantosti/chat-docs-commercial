@@ -1,11 +1,11 @@
 import AuthUserDto from "@/domain/dtos/auth/user";
-import ChatDocRequest from "./chatdoc-request";
+import ChatDocRequest from "../../interfaces/use-cases/chat-doc/chatdoc-request";
 import { InternalError } from "@/shared/errors/internal-error";
 import { BadRequestError } from "@/shared/errors/bad-request-error";
-import { ChatDocResponse } from "./chatdoc-response";
+import { ChatDocResponse } from "../../interfaces/use-cases/chat-doc/chatdoc-response";
 import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
 import IDocumentRepository from "@/application/interfaces/repositories/document";
-import { IChatDocUseCase } from "@/application/interfaces/use-cases/chatdoc-usecase-interface";
+import { IChatDocUseCase } from "@/application/interfaces/use-cases/chat-doc/chatdoc-usecase-interface";
 import { IGptTextAdapter } from "@/application/interfaces/adapters/gpt-adapter";
 import { ChatCompletatioDto } from "@/domain/dtos/chat-completation";
 import { SearchEmbeddedDocumentDto } from "@/domain/dtos/search-dtos";

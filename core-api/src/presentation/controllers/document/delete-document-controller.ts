@@ -2,9 +2,8 @@ import AuthUserDto from "@/domain/dtos/auth/user";
 import { ErrorTypes } from "@/shared/errors/error-types";
 import IBaseController from "@/application/interfaces/base/base-controller";
 import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
-import DeleteDocumentResponse from "@/application/usecases/document/delete-document/delete-document-reponse";
-import DeleteDocumentRequest from "@/application/usecases/document/delete-document/delete-document-request";
-import { IDeleteDocumentUseCase } from "@/application/interfaces/use-cases/delete-document-usecase-interface";
+import DeleteDocumentResponse from "@/application/interfaces/use-cases/document/delete/delete-document-reponse";
+import DeleteDocumentRequest from "@/application/interfaces/use-cases/document/delete/delete-document-request";
 import Joi from "joi";
 import {
   badRequestHttpError,
@@ -15,6 +14,7 @@ import {
 } from "@/presentation/helpers/http-helper";
 import { inject, injectable } from "tsyringe";
 import { isNotError } from "@/shared/utils/dto-is-error-type-guard ";
+import { IDeleteDocumentUseCase } from "@/application/interfaces/use-cases/document/delete/delete-document-usecase-interface";
 
 @injectable()
 export default class DeleteDocumentController

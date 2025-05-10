@@ -1,16 +1,19 @@
 import IBaseUseCaseRequestHandler from "@/application/interfaces/base/base-usecase-handler";
-import ChatDocRequest from "@/application/usecases/chatdoc/chatdoc-request";
-import { ChatDocResponse } from "@/application/usecases/chatdoc/chatdoc-response";
+import CreateDocumentRequest from "./create-document-request";
+import { CreateDocumentResponse } from "./create-document-response";
 import AuthUserDto from "@/domain/dtos/auth/user";
 
 /**
  * Interface representing a generic use case request handler.
  *
- * @template ChatDocRequest - The type representing the request object.
- * @template ChatDocResponse - The representing the response object.
+ * @template CreateDocumentRequest - The type orepresenting the request object.
+ * @template CreateDocumentResponse - The representing the response object.
  */
-export interface IChatDocUseCase
-  extends IBaseUseCaseRequestHandler<ChatDocRequest, ChatDocResponse> {
+export interface ICreateDocumentUseCase
+  extends IBaseUseCaseRequestHandler<
+    CreateDocumentRequest,
+    CreateDocumentResponse
+  > {
   /**
    * Handles a use case request and returns the corresponding response.
    *
@@ -21,6 +24,6 @@ export interface IChatDocUseCase
    */
   handler(
     currentUser: AuthUserDto,
-    request: ChatDocRequest,
-  ): Promise<ChatDocResponse | Error>;
+    request: CreateDocumentRequest,
+  ): Promise<CreateDocumentResponse | Error>;
 }

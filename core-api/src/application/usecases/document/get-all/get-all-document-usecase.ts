@@ -1,11 +1,11 @@
 import AuthUserDto from "@/domain/dtos/auth/user";
 import DocumentDto from "@/domain/dtos/document";
 import Document from "@/domain/models/document";
-import { IGetAllDocumentUseCase } from "../../../interfaces/use-cases/get-all-document-usecase-interface";
+import { IGetAllDocumentUseCase } from "../../../interfaces/use-cases/document/get-all/get-all-document-usecase-interface";
 import ITimeAdapter from "@/application/interfaces/adapters/time-provider";
 import IDocumentRepository from "@/application/interfaces/repositories/document";
 import IBaseMapper from "@/application/interfaces/base/base-mapper";
-import GetAllDocumentResponse from "./get-all-document-response";
+import GetAllDocumentResponse from "../../../interfaces/use-cases/document/get-all/get-all-document-response";
 import { InternalError } from "@/shared/errors/internal-error";
 
 /**

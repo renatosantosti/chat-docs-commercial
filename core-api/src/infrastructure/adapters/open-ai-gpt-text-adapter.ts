@@ -74,6 +74,7 @@ export default class OpenAIGptTextAdapter implements IGptTextAdapter {
       max_tokens: this.maxTokens,
     });
 
+    console.log("Gpt response:", completion);
     return completion.choices[0].message.content?.trim();
   }
 }

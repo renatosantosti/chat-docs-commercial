@@ -151,7 +151,6 @@ authRouter.post("/auth/login", async (req, res) => {
      */
     const { token, userId, userFullName } = (response as any)?.data;
     if (token && userId && userFullName) {
-      console.log("passando");
       return res
         .cookie("token", token, {
           httpOnly: true,

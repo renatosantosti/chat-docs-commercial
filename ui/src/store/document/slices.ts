@@ -45,6 +45,8 @@ const documentSlice = createSlice({
     },
 
     documentListFailure: (state: DocumentState) => {
+      state.isFiltered = false;
+      state.isLoading = false;
       state.documents = [];
     },
 

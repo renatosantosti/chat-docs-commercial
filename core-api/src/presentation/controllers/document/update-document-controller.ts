@@ -2,9 +2,6 @@ import AuthUserDto from "@/domain/dtos/auth/user";
 import { ErrorTypes } from "@/shared/errors/error-types";
 import IBaseController from "@/application/interfaces/base/base-controller";
 import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
-import UpdateDocumentRequest from "@/application/usecases/document/update-document/update-document-request";
-import { UpdateDocumentResponse } from "@/application/usecases/document/update-document/update-document-response";
-import { IUpdateDocumentUseCase } from "@/application/interfaces/use-cases/update-document-usecase-interface";
 import Joi from "joi";
 import {
   badRequestHttpError,
@@ -15,6 +12,9 @@ import {
 } from "@/presentation/helpers/http-helper";
 import { inject, injectable } from "tsyringe";
 import { isNotError } from "@/shared/utils/dto-is-error-type-guard ";
+import UpdateDocumentRequest from "@/application/interfaces/use-cases/document/update/update-document-request";
+import { UpdateDocumentResponse } from "@/application/interfaces/use-cases/document/update/update-document-response";
+import { IUpdateDocumentUseCase } from "@/application/interfaces/use-cases/document/update/update-document-usecase-interface";
 
 @injectable()
 export default class UpdateDocumentController

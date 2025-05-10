@@ -2,9 +2,9 @@ import AuthUserDto from "@/domain/dtos/auth/user";
 import { ErrorTypes } from "@/shared/errors/error-types";
 import IBaseController from "@/application/interfaces/base/base-controller";
 import IBaseHttpResponse from "@/application/interfaces/base/base-http-response";
-import GetDocumentRequest from "@/application/usecases/document/get-document/get-document-request";
-import GetDocumentResponse from "@/application/usecases/document/get-document/get-document-response";
-import { IGetDocumentUseCase } from "@/application/interfaces/use-cases/get-document-usecase-interface";
+import GetDocumentRequest from "@/application/interfaces/use-cases/document/get/get-document-request";
+import GetDocumentResponse from "@/application/interfaces/use-cases/document/get/get-document-response";
+import { IGetDocumentUseCase } from "@/application/interfaces/use-cases/document/get/get-document-usecase-interface";
 import {
   badRequestHttpError,
   forbiddenHttpError,

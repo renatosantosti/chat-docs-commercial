@@ -29,24 +29,19 @@ import "@/infrastructure/container/config";
 import chatDocRouters from "@/presentation/routes/chat-doc";
 import searchRouters from "@/presentation/routes/search";
 import swaggerRouter from "@/presentation/routes/swagger";
+import suggestionsDocRouters from "./presentation/routes/doc-suggestions";
 
 const PORT = serverConfig.apiPort || 8000;
 
 const app: Application = express();
 
-console.log("CORS", {
-  origin: [
-    "http://127.0.0.1:8080",
-    "http://localhost:4173",
-    ...serverConfig.apiClientHosts.split(","),
-  ], // Allow requests from your React app
-  credentials: true, // Allow cookies to be sent with requests
-});
 // Enable CORS
 app.use(
   cors({
     origin: [
       "http://127.0.0.1:8080",
+      "http://localhost:8080",
+      "http://127.0.0.1:4173",
       "http://localhost:4173",
       ...serverConfig.apiClientHosts.split(","),
     ], // Allow requests from your React app
@@ -113,6 +108,7 @@ app.use(userRouters);
 app.use(documentRouters);
 app.use(searchRouters);
 app.use(chatDocRouters);
+app.use(suggestionsDocRouters);
 
 app.listen(PORT, () => {
   console.log("Server started on port", PORT);
